@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 
+/*************** Falta un botón de cerrar sesión ***************************/
 
 
 namespace PedidosRapids.Vista
 {
-    
-    public partial class login : Window
+    public partial class Main : Window
     {
-        public login()
+        public Main()
         {
             InitializeComponent();
         }
@@ -45,21 +45,7 @@ namespace PedidosRapids.Vista
             {
                 this.Close();
             }
-          
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            /*Al clickear "INICIAR" verifica si el usuario y la contrasena es corecta,
-             * luego carga la ventana Main*/
-
-            Main main = new Main();
-            main.Show();
-            this.Close();
-            
 
         }
     }
 }
-
-
