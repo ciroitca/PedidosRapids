@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:PedidosRapids"
              StartupUri="Vista/Login.xaml">
     <Application.Resources>
-         
+
+        <ResourceDictionary Source="/Estilo/UIColores.xaml"/>
+
     </Application.Resources>
 </Application>
