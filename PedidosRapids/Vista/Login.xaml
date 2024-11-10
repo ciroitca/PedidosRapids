@@ -20,15 +20,15 @@
         <Border BorderThickness="2" Opacity="0.8" CornerRadius="15">
             <Border.BorderBrush>
                 <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                    <GradientStop Color="#FCE41A" Offset="0.5"/>
-                    <GradientStop Color="#DC7C15" Offset="1.2"/>
+                    <GradientStop Color="{StaticResource winBorderColor1}" Offset="0.5"/>
+                    <GradientStop Color="{StaticResource winBorderColor2}" Offset="1.2"/>
                 </LinearGradientBrush>
             </Border.BorderBrush>
 
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
-                    <GradientStop Color="#D4320E" Offset="0.8"/>
-                    <GradientStop Color="DarkOrange" Offset="0.1"/>
+                    <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0.8"/>
+                    <GradientStop Color="{StaticResource primaryBackColor2}" Offset="0.1"/>
                 </LinearGradientBrush>
             </Border.Background>
 

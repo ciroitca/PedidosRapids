@@ -1,29 +1,21 @@
 ﻿<Window x:Class="PedidosRapids.Vista.Main"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Main" Height="700" Width="1000"
+        Title="Main" Height="750" Width="1200"
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown">
+
+    
+    
     <Border CornerRadius="15">
-        <Border.Background>
-            <ImageBrush ImageSource="/Img/LoginImage.jpg">
-                <ImageBrush.RelativeTransform>
-                    <RotateTransform Angle="-90" CenterX="0.5" CenterY="0.5"/>
-                </ImageBrush.RelativeTransform>
-            </ImageBrush>
-        </Border.Background>
+       
 
         <Border BorderThickness="2" Opacity="0.8" CornerRadius="15">
-            <Border.BorderBrush>
-                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                    <GradientStop Color="{StaticResource winBorderColor1}" Offset="0.5"/>
-                    <GradientStop Color="{StaticResource winBorderColor2}" Offset="1.2"/>
-                </LinearGradientBrush>
-            </Border.BorderBrush>
+           
 
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
@@ -34,15 +26,38 @@
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
-                    <!-- Menú lateral -->
+                    <ColumnDefinition Width="250"/>
+                    <!-- Menú Navegación Lateral -->
                     <ColumnDefinition Width="*"/>
-                    <!-- Contenido principal -->
+                    <!-- Contenido -->
                 </Grid.ColumnDefinitions>
 
                 <!-- Menú Lateral -->
+                <Border CornerRadius="10,0,0,10"
+                        Grid.Column="0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                            <GradientStop Color="{StaticResource primaryBackColor1}" Offset=".9"/>
+                         </LinearGradientBrush>
+                    </Border.Background>
+
+                    <StackPanel>
+                        
+                        <!-- LOGO -->
+
+                        <StackPanel Orientation="Horizontal"
+                                    Height="100"
+                                    Margin="15,25,0,40">
+                            <Image Source="\Img\Rapid plus.png" Height="100"/>
+                        </StackPanel>
+                        
+                    </StackPanel>    
+                    
+                </Border>
                 
+                <!-- Contenido -->
                 
+
 
                 <!-- Contenido principal -->
                 <Grid Grid.Column="1">
