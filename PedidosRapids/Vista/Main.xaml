@@ -47,8 +47,16 @@
 
                         <StackPanel Orientation="Horizontal"
                                     Height="100"
-                                    Margin="15,25,0,40">
-                            <Image Source="\Img\Rapid plus.png" Height="100"/>
+                                    Margin="10,15,0,40">
+                            <Image Source="\Img\LogoBlanco.png" Height="100"/>
+                            <TextBlock Margin="8,5,0,.5" Foreground="{StaticResource titleColor1}" 
+                                       FontSize="40" 
+                                       FontFamily="Montserrat"
+                                       >
+                                    <Run Text="RAPID"/>
+                                    <LineBreak/>
+                                    <Run Text="PLUS"/>
+                            </TextBlock>
                         </StackPanel>
                         
                     </StackPanel>    
