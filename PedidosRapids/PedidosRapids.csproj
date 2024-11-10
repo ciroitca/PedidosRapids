@@ -65,6 +65,10 @@
     <Compile Include="Vista\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
     </Compile>
+    <Page Include="Estilo\ButtonEstilos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Estilo\UIColores.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,6 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Img\loginImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\LogoBlanco.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

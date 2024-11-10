@@ -31,12 +31,27 @@
     <SolidColorBrush x:Key="titleColor1" Color="#F1FAEE"/>
     <SolidColorBrush x:Key="titleColor2" Color="#a2b3a3"/>
     <SolidColorBrush x:Key="titleColor3" Color="#393534"/>
-    
+
+    <!--Panel Colors-->
+    <SolidColorBrush x:Key="panelColor" Color="#393534"/>
+    <!-- Gris oscuro para el fondo de los paneles, discreto y neutral -->
+    <SolidColorBrush x:Key="panelOverColor" Color="#5D7B6F"/>
+    <!-- Verde grisáceo para paneles resaltados o sobre los que el usuario pasa el mouse -->
+    <SolidColorBrush x:Key="panelActiveColor" Color="#B94335"/>
+    <!-- Rojo oscuro para paneles activos o seleccionados, resaltando la interacción del usuario -->
+
+    <!--Button Colors-->
+    <SolidColorBrush x:Key="buttonColor" Color="#FFDB25"/>
+    <!-- Amarillo brillante para botones principales, llamativo y fácil de identificar -->
+    <SolidColorBrush x:Key="buttonHoverColor" Color="#FFFF8C00"/>
+    <!-- Naranja fuerte para el efecto hover en botones, brindando retroalimentación visual -->
+    <SolidColorBrush x:Key="buttonActiveColor" Color="#B94335"/>
+    <!-- Rojo oscuro para botones en estado activo o presionado, para reforzar la acción del usuario -->
+    <SolidColorBrush x:Key="buttonDisabledColor" Color="#a2b3a3"/>
+    <!-- Verde grisáceo claro para botones deshabilitados, indicando estado inactivo -->
 
 
-    <!-- <SolidColorBrush x:Key="plainTextColor1" Color="#"/> -->
-    
-    
+
     <!--Panel Colors-->
     <!-- <SolidColorBrush x:Key="panelColor" Color="#"/> -->
     <!-- <SolidColorBrush x:Key="panelOverColor" Color="#"/> -->
