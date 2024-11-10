@@ -40,7 +40,7 @@ namespace PedidosRapids.Vista
 
         private void btnCerrar_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("¿Está seguro que desea salir?", "Confirmación", MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show("¿Está seguro que desea salir?", "SALIR", MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
                 this.Close();
