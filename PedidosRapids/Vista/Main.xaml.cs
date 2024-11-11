@@ -74,6 +74,7 @@ namespace PedidosRapids.Vista
             lblPlatos.Visibility = Visibility.Visible;
             grdPlatos.Visibility = Visibility.Visible;
             btnAgregarPlatos.Visibility = Visibility.Visible;
+            btnAgOrden.IsChecked = false;
         }
 
         private void btnMainMenu_Checked(object sender, RoutedEventArgs e)
@@ -84,6 +85,8 @@ namespace PedidosRapids.Vista
             {
                 MostrarMenu();
                 btnMainMenu.Visibility = Visibility.Hidden;
+                btnAgOrden.IsChecked= false;
+                btnAgregarPlatos.IsChecked= false;
             }
             else
             {
@@ -96,6 +99,7 @@ namespace PedidosRapids.Vista
             lblOrden.Visibility = Visibility.Visible;
             grdOrdenes.Visibility = Visibility.Visible;
             btnAgOrden.Visibility = Visibility.Visible;
+            btnAgregarPlatos.IsChecked = false;
         }
 
         private void btnMesas_Checked(object sender, RoutedEventArgs e)
