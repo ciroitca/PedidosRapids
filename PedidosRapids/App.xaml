@@ -3,9 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PedidosRapids"
              StartupUri="Vista/Login.xaml">
+    
+    
+    
     <Application.Resources>
-
-        <ResourceDictionary Source="/Estilo/UIColores.xaml"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Estilo/UIColores.xaml"/>
+                <ResourceDictionary Source="/Estilo/ButtonEstilos.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
 
     </Application.Resources>
+
+  
+
 </Application>
