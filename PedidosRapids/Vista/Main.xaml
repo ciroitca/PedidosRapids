@@ -169,11 +169,21 @@
                             </StackPanel>
                         </RadioButton>
 
+                        <!-- BOTON -AGREGAR AGREGAR ORDEN- -->
+
+                        <RadioButton x:Name="btnAgOrden"  Style="{StaticResource ComunButton}"
+                                 Tag="{StaticResource color3}"
+                                 Command="{Binding ShowCustomerViewCommand}" Checked="btnAgOrden_Click" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="50"
+                                 Visibility="Hidden">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+                                <TextBlock Text="AGREGAR ORDEN" Style="{StaticResource botonComunText}"/>
+                            </StackPanel>
+                        </RadioButton>
+
                         <DataGrid x:Name="grdPlatos" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" Visibility="Hidden"/>
                         <Label x:Name="lblPlatos" Content="PLATOS" HorizontalAlignment="Center" Height="51" Margin="0,66,0,0" VerticalAlignment="Top" Width="144" FontSize="36" Visibility="Hidden"/>
                         <Label x:Name="lblOrden" Content="ORDENES" HorizontalAlignment="Center" Height="51" Margin="0,66,0,0" VerticalAlignment="Top" Width="176" FontSize="36" Visibility="Hidden"/>
                         <DataGrid x:Name="grdOrdenes" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" av:ItemsSource="{av:SampleData ItemCount=5}" Visibility="Hidden"/>
-                        <Button x:Name="btnAgOrden" Content="AGREGAR ORDEN" HorizontalAlignment="Left" Height="50" Margin="689,637,0,0" VerticalAlignment="Top" Width="190" FontSize="22" Visibility="Hidden" Click="btnAgOrden_Click"/>
                         <Label x:Name="lblMesas" Content="MESAS DISPONIBLES" HorizontalAlignment="Center" Height="61" Margin="0,66,0,0" VerticalAlignment="Top" Width="342" FontSize="36" Visibility="Hidden"/>
                         <DataGrid x:Name="grdMesas" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" av:ItemsSource="{av:SampleData ItemCount=5}" Visibility="Hidden"/>
 
