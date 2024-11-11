@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 
-
 namespace PedidosRapids.Vista
 {
     
