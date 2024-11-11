@@ -31,6 +31,12 @@ namespace PedidosRapids.Vista
         public Main()
         {
             InitializeComponent();
+            CargarCategorias(); // Cargar las categorías al iniciar
+            CargarOrdenes();// Cargar las ordenes al iniciar
+            CargarMesas();
+            grdPlatos.ItemsSource = datos; // Enlazar los datos al DataGrid
+            grdOrdenes.ItemsSource = datosOrdenes;// Enlazar los datos al DataGrid
+            grdMesas.ItemsSource = datosMesa;
         }
 
         [DllImport("user32.dll")]
