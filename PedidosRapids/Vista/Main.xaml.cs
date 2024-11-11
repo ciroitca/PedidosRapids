@@ -53,7 +53,7 @@ namespace PedidosRapids.Vista
                 this.WindowState = WindowState.Maximized;
             else this.WindowState = WindowState.Normal;
         }
-
+        //Boton salir, para cerrar sesion y volver al login
         private void btnSalir_Checked(object sender, RoutedEventArgs e)
         {
             login login = new login();
@@ -66,6 +66,117 @@ namespace PedidosRapids.Vista
             else { 
                 btnSalir.IsChecked = false;
             }
+        }
+        //muestra las opciones de platos
+        private void btnPlatos_Checked(object sender, RoutedEventArgs e)
+        {
+            OcultarParaPlatos();
+            lblPlatos.Visibility = Visibility.Visible;
+            grdPlatos.Visibility = Visibility.Visible;
+            btnAgregarPlatos.Visibility = Visibility.Visible;
+        }
+
+        private void btnMainMenu_Checked(object sender, RoutedEventArgs e)
+        {
+            login login = new login();
+            MessageBoxResult result = MessageBox.Show("Desea volver al menu Principal", "Volver", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                MostrarMenu();
+                btnMainMenu.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+               btnMainMenu.IsChecked = false;
+            }
+        }
+        private void btnOrdenes_Checked(object sender, RoutedEventArgs e)
+        {
+            OcultarParaOrdenes();
+            lblOrden.Visibility = Visibility.Visible;
+            grdOrdenes.Visibility = Visibility.Visible;
+            btnAgOrden.Visibility = Visibility.Visible;
+        }
+
+        private void btnMesas_Checked(object sender, RoutedEventArgs e)
+        {
+            OcultarParaMesas();
+            lblMesas.Visibility = Visibility.Visible;
+            grdMesas.Visibility = Visibility.Visible;
+        }
+
+        //Funcion para ocultar todo excepto lo que se debe mostrar para ordenes
+        private void OcultarParaPlatos()
+        {
+            lblOrden.Visibility = Visibility.Hidden;
+            grdOrdenes.Visibility = Visibility.Hidden;
+            btnAgOrden.Visibility = Visibility.Hidden;
+            lblMesas.Visibility = Visibility.Hidden;
+            grdMesas.Visibility = Visibility.Hidden;
+        }
+        //Funcion para ocultar todo excepto lo que se debe mostrar para Platos
+        private void OcultarParaOrdenes()
+        {
+            lblMesas.Visibility = Visibility.Hidden;
+            grdMesas.Visibility = Visibility.Hidden;
+            lblPlatos.Visibility = Visibility.Hidden;
+            grdPlatos.Visibility = Visibility.Hidden;
+            btnAgregarPlatos.Visibility = Visibility.Hidden;
+        }
+
+        private void OcultarParaMesas()
+        {
+            lblOrden.Visibility = Visibility.Hidden;
+            grdOrdenes.Visibility = Visibility.Hidden;
+            btnAgOrden.Visibility = Visibility.Hidden;
+            lblPlatos.Visibility = Visibility.Hidden;
+            grdPlatos.Visibility = Visibility.Hidden;
+            btnAgregarPlatos.Visibility = Visibility.Hidden;
+        }
+
+        private void MostrarMenu()
+        {
+            lblOrden.Visibility = Visibility.Hidden;
+            grdOrdenes.Visibility = Visibility.Hidden;
+            btnAgOrden.Visibility = Visibility.Hidden;
+            lblPlatos.Visibility = Visibility.Hidden;
+            grdPlatos.Visibility = Visibility.Hidden;
+            btnAgregarPlatos.Visibility = Visibility.Hidden;
+            lblMesas.Visibility = Visibility.Hidden;
+            grdMesas.Visibility = Visibility.Hidden;
+            btnAgOrden.Visibility = Visibility.Visible;
+            btnCambiarUsuario.Visibility = Visibility.Visible;
+            btnMesas.Visibility = Visibility.Visible;
+            btnPlatos.Visibility = Visibility.Visible;
+            btnSalir.Visibility = Visibility.Visible;
+            btnUser.Visibility = Visibility.Visible;
+            btnOrdenes.Visibility = Visibility.Visible;
+        }
+
+        private void btnAgOrden_Click(object sender, RoutedEventArgs e)
+        {
+            OcultarParaAgOrden();
+            btnMainMenu.Visibility = Visibility.Visible;
+        }
+
+
+        private void OcultarParaAgOrden()
+        {
+            lblOrden.Visibility = Visibility.Hidden;
+            grdOrdenes.Visibility = Visibility.Hidden;
+            btnAgOrden.Visibility = Visibility.Hidden;
+            lblPlatos.Visibility = Visibility.Hidden;
+            grdPlatos.Visibility = Visibility.Hidden;
+            btnAgregarPlatos.Visibility = Visibility.Hidden;
+            lblMesas.Visibility = Visibility.Hidden;
+            grdMesas.Visibility = Visibility.Hidden;
+            btnAgOrden.Visibility = Visibility.Hidden;
+            btnCambiarUsuario.Visibility = Visibility.Hidden;
+            btnMesas.Visibility = Visibility.Hidden;
+            btnPlatos.Visibility = Visibility.Hidden;
+            btnSalir.Visibility = Visibility.Hidden;
+            btnUser.Visibility = Visibility.Hidden;
+            btnOrdenes.Visibility = Visibility.Hidden;
         }
     }
 
