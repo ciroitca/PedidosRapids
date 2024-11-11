@@ -202,7 +202,7 @@ namespace PedidosRapids.Vista
 
         public void CargarOrdenes()
         {
-            datos = new List<Categoria>();
+            datosOrdenes = new List<Ordenes>();
             string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
             string storedProcedureName = "Listar_Ordenes";
 
@@ -218,9 +218,9 @@ namespace PedidosRapids.Vista
 
                     while (reader.Read())
                     {
-                        datos.Add(new Categoria
+                        datosOrdenes.Add(new Ordenes
                         {
-                            NombreCategoria = reader["NombreCategoria"].ToString()
+                            Orden = reader["NombreCategoria"].ToString()
                             // Agrega más propiedades si es necesario
                         });
                     }
