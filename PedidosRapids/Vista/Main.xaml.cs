@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,9 +9,11 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Runtime;
 
 
 /*************** Falta un botón de cerrar sesión ***************************/
@@ -25,27 +28,33 @@ namespace PedidosRapids.Vista
             InitializeComponent();
         }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+        private void pnlControlBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                DragMove();
-            }
+            WindowInteropHelper helper = new WindowInteropHelper(this);
+            SendMessage(helper.Handle, 161, 2, 0);
         }
-
-        private void btnMinimizar_Click(object sender, RoutedEventArgs e)
+        private void pnlControlBar_MouseEnter(object sender, MouseEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
         }
-
-        private void btnCerrar_Click(object sender, RoutedEventArgs e)
+        private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("¿Está seguro que desea salir?", "SALIR", MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
-            {
-                this.Close();
-            }
-
+            Application.Current.Shutdown();
+        }
+        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+        private void btnMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Normal)
+                this.WindowState = WindowState.Maximized;
+            else this.WindowState = WindowState.Normal;
         }
     }
+
 }
+
+
