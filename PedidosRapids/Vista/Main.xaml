@@ -8,14 +8,14 @@
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         AllowsTransparency="True"
-        MouseDown="Window_MouseDown">
+        >
 
-    
-    
+
+
     <Border CornerRadius="15">
        
 
-        <Border BorderThickness="2" Opacity="0.8" CornerRadius="15">
+        <Border BorderThickness="2" Opacity="0.95" CornerRadius="15">
            
 
             <Border.Background>
@@ -39,11 +39,11 @@
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
                             <GradientStop Color="{StaticResource primaryBackColor1}" Offset=".9"/>
-                         </LinearGradientBrush>
+                        </LinearGradientBrush>
                     </Border.Background>
 
                     <StackPanel>
-                        
+
                         <!-- LOGO -->
 
                         <StackPanel Orientation="Horizontal"
@@ -62,15 +62,16 @@
                         </StackPanel>
 
                         <!--Menu Buttons-->
-                        
+
                         <!--Boton USUARIO-->
                         <RadioButton Style="{StaticResource MenuButton}"
                                  Tag="{StaticResource color8}"
                                  IsChecked="True"
                                  Command="{Binding ShowCustomerViewCommand}">
                             <StackPanel Orientation="Horizontal">
-                                <snack:IconImage Icon="User" Style="{StaticResource menuButtonIcon}"/>  
-                                <TextBlock Text="USUARIO (edit)" Style="{StaticResource menuButtonText}"/> <!--Yo le puse usuario pero debe ser según el usuario que se conecte así es el contenido que se muestra-->
+                                <snack:IconImage Icon="User" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="USUARIO (edit)" Style="{StaticResource menuButtonText}"/>
+                                <!--Yo le puse usuario pero debe ser según el usuario que se conecte así es el contenido que se muestra-->
                             </StackPanel>
                         </RadioButton>
 
@@ -88,7 +89,7 @@
 
                         <RadioButton Style="{StaticResource MenuButton}"
                                 Tag="{StaticResource color8}"
-                                Command="{Binding ShowCustomerViewCommand}">   
+                                Command="{Binding ShowCustomerViewCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <snack:IconImage Icon="CartShopping" Style="{StaticResource menuButtonIcon}"/>
                                 <TextBlock Text="ORDENES" Style="{StaticResource menuButtonText}"/>
@@ -120,114 +121,60 @@
                                 </TextBlock>
                             </StackPanel>
                         </RadioButton>
-                        
+
                         <!--Boton Salir-->
 
                         <!--Boton PLATOS-->
                         <RadioButton Style="{StaticResource MenuButton}"
                               Tag="{StaticResource color8}"
                               Command="{Binding ShowCustomerViewCommand}">
-                                <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal">
                                 <snack:IconImage Icon="DoorOpen" Style="{StaticResource menuButtonIcon}"/>
                                 <TextBlock Text="SALIR" Style="{StaticResource menuButtonText}"/>
                             </StackPanel>
                         </RadioButton>
 
-                    </StackPanel>    
-                    
+                    </StackPanel>
+
                 </Border>
-                
+
                 <!-- Contenido -->
-                
 
-
-                <!-- Contenido principal -->
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="25"/>
-                        <RowDefinition Height="25"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Header Section -->
+                <!--Main Section-->
+                <Border CornerRadius="0,10,10,0"
+                    Grid.Column="1">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                            <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0"/>
+                            <GradientStop Color="{StaticResource primaryBackColor2}" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="25"/>
-                            <ColumnDefinition Width="25"/>
-                            <ColumnDefinition Width="10"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <!--Control bar-->
+                            <RowDefinition Height="25"/>
+                            <!--Header / Caption-->
+                            <RowDefinition Height="35"/>
+                            <!--Content section / Child views-->
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <!--***CONTROL BAR***-->
+                        <StackPanel x:Name="pnlControlBar"
+                                Grid.Row="0"
+                                Orientation="Horizontal"
+                                FlowDirection="RightToLeft"
+                                Background="Transparent"
+                                Margin="0,0,5,0"
+                                MouseLeftButtonDown="pnlControlBar_MouseLeftButtonDown"
+                                MouseEnter="pnlControlBar_MouseEnter">
+                        </StackPanel>
 
-                        <TextBlock/>
-
-                        <!-- Minimize Button -->
-                        <Button x:Name="btnMinimizar"
-                                BorderThickness="1"
-                                Content="_"
-                                Foreground="white"
-                                FontSize="14"
-                                FontFamily="Montserrat"
-                                Cursor="Hand"
-                                Grid.Column="1"
-                                Click="btnMinimizar_Click">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Background" Value="#278BEF"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="AliceBlue"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Width="20" Height="20"
-                                            CornerRadius="4"
-                                            Background="{TemplateBinding Background}">
-                                        <ContentPresenter VerticalAlignment="Center"
-                                                          HorizontalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-
-                        <!-- Close Button -->
                         <Button x:Name="btnCerrar"
-                                Content="X"
-                                FontSize="14"
-                                FontFamily="Montserrat"
-                                Foreground="White"
-                                Cursor="Hand"
-                                Grid.Column="2"
-                                Width="25"
-                                Height="25"
-                                Background="Red"
-                                BorderThickness="0"
-                                Click="btnCerrar_Click">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Background" Value="Blue"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="Red"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Width="20" Height="20"
-                                            CornerRadius="4"
-                                            Background="{TemplateBinding Background}">
-                                        <ContentPresenter VerticalAlignment="Center"
-                                                          HorizontalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
+                                Style="{StaticResource ControlButton}"/>
+
+
                     </Grid>
-                </Grid>
+                </Border>
             </Grid>
         </Border>
     </Border>
