@@ -53,6 +53,20 @@ namespace PedidosRapids.Vista
                 this.WindowState = WindowState.Maximized;
             else this.WindowState = WindowState.Normal;
         }
+
+        private void btnSalir_Checked(object sender, RoutedEventArgs e)
+        {
+            login login = new login();
+            MessageBoxResult result = MessageBox.Show("Esta seguro que desea cerrar sesión?","CERRAR SESION",MessageBoxButton.YesNo,MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                this.Close();
+                login.Show();
+            }
+            else { 
+                btnSalir.IsChecked = false;
+            }
+        }
     }
 
 }

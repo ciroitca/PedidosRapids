@@ -76,7 +76,7 @@
                         </RadioButton>
 
                         <!--Boton PLATOS-->
-                        <RadioButton Style="{StaticResource MenuButton}"
+                        <RadioButton x:Name="btnPlatos" Style="{StaticResource MenuButton}"
                                  Tag="{StaticResource color8}"
                                  Command="{Binding ShowCustomerViewCommand}">
                             <StackPanel Orientation="Horizontal">
@@ -87,7 +87,7 @@
 
                         <!--Boton ORDENES-->
 
-                        <RadioButton Style="{StaticResource MenuButton}"
+                        <RadioButton x:Name="btnOrdenes" Style="{StaticResource MenuButton}"
                                 Tag="{StaticResource color8}"
                                 Command="{Binding ShowCustomerViewCommand}">
                             <StackPanel Orientation="Horizontal">
@@ -98,7 +98,7 @@
 
                         <!--Boton MESA-->
 
-                        <RadioButton Style="{StaticResource MenuButton}"
+                        <RadioButton x:Name="btnMesas" Style="{StaticResource MenuButton}"
                                  Tag="{StaticResource color8}"
                                  Command="{Binding ShowCustomerViewCommand}">
                             <StackPanel Orientation="Horizontal">
@@ -125,9 +125,9 @@
                         <!--Boton Salir-->
 
                         <!--Boton PLATOS-->
-                        <RadioButton Style="{StaticResource MenuButton}"
+                        <RadioButton x:Name="btnSalir"  Style="{StaticResource MenuButton}"
                               Tag="{StaticResource color8}"
-                              Command="{Binding ShowCustomerViewCommand}">
+                              Command="{Binding ShowCustomerViewCommand}" Checked="btnSalir_Checked">
                             <StackPanel Orientation="Horizontal">
                                 <snack:IconImage Icon="DoorOpen" Style="{StaticResource menuButtonIcon}"/>
                                 <TextBlock Text="SALIR" Style="{StaticResource menuButtonText}"/>
