@@ -1,6 +1,7 @@
 ﻿<Window x:Class="PedidosRapids.Vista.Main"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:snack="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         Title="Main" Height="750" Width="1200"
         WindowStyle="None"
         ResizeMode="NoResize"
@@ -52,13 +53,33 @@
                             <TextBlock Margin="8,5,0,.5" Foreground="{StaticResource titleColor1}" 
                                        FontSize="40" 
                                        FontFamily="Montserrat"
+                                       FontWeight="Bold"
                                        >
                                     <Run Text="RAPID"/>
                                     <LineBreak/>
                                     <Run Text="PLUS"/>
                             </TextBlock>
                         </StackPanel>
-                        
+
+                        <!--Menu Buttons-->
+                        <RadioButton Style="{StaticResource MenuButton}"
+                                 Tag="{StaticResource color1}"
+                                 IsChecked="True"
+                                 Command="{Binding ShowCustomerViewCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <snack:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>  <!-- No sale el icono compita-->
+                                <TextBlock Text="USUARIO (edit)" Style="{StaticResource menuButtonText}"/>
+                            </StackPanel>
+                        </RadioButton>
+                        <RadioButton Style="{StaticResource MenuButton}"
+                                 Tag="{StaticResource color2}"
+                                 Command="{Binding ShowCustomerViewCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <snack:IconImage Icon="BowlFood" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="PLATOS" Style="{StaticResource menuButtonText}"/>
+                            </StackPanel>
+                        </RadioButton>
+
                     </StackPanel>    
                     
                 </Border>
