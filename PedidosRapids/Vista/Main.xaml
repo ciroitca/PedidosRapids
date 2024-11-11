@@ -62,21 +62,45 @@
                         </StackPanel>
 
                         <!--Menu Buttons-->
+                        
+                        <!--Boton USUARIO-->
                         <RadioButton Style="{StaticResource MenuButton}"
-                                 Tag="{StaticResource color1}"
+                                 Tag="{StaticResource color8}"
                                  IsChecked="True"
                                  Command="{Binding ShowCustomerViewCommand}">
                             <StackPanel Orientation="Horizontal">
-                                <snack:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>  <!-- No sale el icono compita-->
-                                <TextBlock Text="USUARIO (edit)" Style="{StaticResource menuButtonText}"/>
+                                <snack:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>  
+                                <TextBlock Text="USUARIO (edit)" Style="{StaticResource menuButtonText}"/> <!--Yo le puse usuario pero debe ser según el usuario que se conecte así es el contenido que se muestra-->
                             </StackPanel>
                         </RadioButton>
+
+                        <!--Boton PLATOS-->
                         <RadioButton Style="{StaticResource MenuButton}"
-                                 Tag="{StaticResource color2}"
+                                 Tag="{StaticResource color8}"
                                  Command="{Binding ShowCustomerViewCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <snack:IconImage Icon="BowlFood" Style="{StaticResource menuButtonIcon}"/>
                                 <TextBlock Text="PLATOS" Style="{StaticResource menuButtonText}"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <!--Boton ORDENES-->
+
+                        <RadioButton Style="{StaticResource MenuButton}"
+                                Tag="{StaticResource color8}"
+                                Command="{Binding ShowCustomerViewCommand}">   
+                            <StackPanel Orientation="Horizontal">
+                                <snack:IconImage Icon="CartShopping" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="ORDENES" Style="{StaticResource menuButtonText}"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <RadioButton Style="{StaticResource MenuButton}"
+                                 Tag="{StaticResource color8}"
+                                 Command="{Binding ShowCustomerViewCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <snack:IconImage Icon="KitchenSet" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="MESAS" Style="{StaticResource menuButtonText}"/>
                             </StackPanel>
                         </RadioButton>
 
