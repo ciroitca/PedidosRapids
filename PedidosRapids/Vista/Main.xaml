@@ -69,7 +69,7 @@
                                  IsChecked="True"
                                  Command="{Binding ShowCustomerViewCommand}">
                             <StackPanel Orientation="Horizontal">
-                                <snack:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>  
+                                <snack:IconImage Icon="User" Style="{StaticResource menuButtonIcon}"/>  
                                 <TextBlock Text="USUARIO (edit)" Style="{StaticResource menuButtonText}"/> <!--Yo le puse usuario pero debe ser según el usuario que se conecte así es el contenido que se muestra-->
                             </StackPanel>
                         </RadioButton>
@@ -95,12 +95,41 @@
                             </StackPanel>
                         </RadioButton>
 
+                        <!--Boton MESA-->
+
                         <RadioButton Style="{StaticResource MenuButton}"
                                  Tag="{StaticResource color8}"
                                  Command="{Binding ShowCustomerViewCommand}">
                             <StackPanel Orientation="Horizontal">
                                 <snack:IconImage Icon="KitchenSet" Style="{StaticResource menuButtonIcon}"/>
                                 <TextBlock Text="MESAS" Style="{StaticResource menuButtonText}"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <!--Boton CAMBIAR DE USUARIO-->
+
+                        <RadioButton Style="{StaticResource MenuButton}"
+                                 Tag="{StaticResource color8}"
+                                 Command="{Binding ShowCustomerViewCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <snack:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Style="{StaticResource menuButtonText}">
+                                    <Run Text="CAMBIAR"/>
+                                    <LineBreak/>
+                                    <Run Text="DE USUARIO"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </RadioButton>
+                        
+                        <!--Boton Salir-->
+
+                        <!--Boton PLATOS-->
+                        <RadioButton Style="{StaticResource MenuButton}"
+                              Tag="{StaticResource color8}"
+                              Command="{Binding ShowCustomerViewCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                <snack:IconImage Icon="DoorOpen" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="SALIR" Style="{StaticResource menuButtonText}"/>
                             </StackPanel>
                         </RadioButton>
 
