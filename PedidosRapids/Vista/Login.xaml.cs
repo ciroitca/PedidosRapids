@@ -50,14 +50,30 @@ namespace PedidosRapids.Vista
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            /*Al clickear "INICIAR" verifica si el usuario y la contrasena es corecta,
-             * luego carga la ventana Main*/
+            // lógica de validación de usuario
+            string usuario = txtUsuario.Text;
+            string contraseña = txtContra.Password;
 
-            Main main = new Main();
-            main.Show();
-            this.Close();
-            
-
+            // validación 
+            if (usuario == "admin" && contraseña == "1234") // Usuario administrador
+            {
+                Main main = new Main();
+                main.Show();
+                this.Close();
+            }
+            /*
+             * 
+             * else if (usuario == "empleado" && contraseña == "1234") // Usuario empleado
+            {
+                Empleado empleado = new Empleado();
+                empleado.Show();
+                this.Close();
+            }
+            */
+            else
+            {
+                MessageBox.Show("Usuario o contraseña incorrecta.");
+            }
         }
     }
 }
