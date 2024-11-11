@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Runtime;
+using System.Data.SqlClient;
+using System.Data;
 
 
 /*************** Falta un botón de cerrar sesión ***************************/
@@ -23,6 +25,9 @@ namespace PedidosRapids.Vista
 {
     public partial class Main : Window
     {
+        private List<Categoria> datos;
+        private List<Ordenes> datosOrdenes;
+        private List<Mesas> datosMesa;
         public Main()
         {
             InitializeComponent();
@@ -109,6 +114,122 @@ namespace PedidosRapids.Vista
             grdMesas.Visibility = Visibility.Visible;
         }
 
+
+
+        private void btnAgOrden_Click(object sender, RoutedEventArgs e)
+        {
+            OcultarParaAgOrden();
+            btnMainMenu.Visibility = Visibility.Visible;
+        }
+
+        //**********************Funciones para la navegacion de menus******************
+
+        public void CargarMesas()
+        {
+            datosMesa = new List<Mesas>();
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedureName = "Listar_Ordenes";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedureName, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        datosMesa.Add(new Mesas
+                        {
+                            Mesa = reader["Mesa"].ToString()
+                            // Agrega más propiedades si es necesario
+                        });
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+
+            }
+        }
+
+        public void CargarCategorias()
+        {
+            datos = new List<Categoria>();
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedureName = "Listar_Categoria";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedureName, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        datos.Add(new Categoria
+                        {
+                            NombreCategoria = reader["NombreCategoria"].ToString()
+                            // Agrega más propiedades si es necesario
+                        });
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+
+            }
+        }
+
+        public void CargarOrdenes()
+        {
+            datos = new List<Categoria>();
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedureName = "Listar_Ordenes";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedureName, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        datos.Add(new Categoria
+                        {
+                            NombreCategoria = reader["NombreCategoria"].ToString()
+                            // Agrega más propiedades si es necesario
+                        });
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+
+            }
+        }
+
+
         //Funcion para ocultar todo excepto lo que se debe mostrar para ordenes
         private void OcultarParaPlatos()
         {
@@ -155,14 +276,9 @@ namespace PedidosRapids.Vista
             btnSalir.Visibility = Visibility.Visible;
             btnUser.Visibility = Visibility.Visible;
             btnOrdenes.Visibility = Visibility.Visible;
+            btnAgOrden.Visibility = Visibility.Hidden;
+            btnMainMenu.IsChecked = false;
         }
-
-        private void btnAgOrden_Click(object sender, RoutedEventArgs e)
-        {
-            OcultarParaAgOrden();
-            btnMainMenu.Visibility = Visibility.Visible;
-        }
-
 
         private void OcultarParaAgOrden()
         {
@@ -183,6 +299,28 @@ namespace PedidosRapids.Vista
             btnOrdenes.Visibility = Visibility.Hidden;
         }
 
+        public class Categoria
+        {
+            public string NombreCategoria { get; set; }
+            public string NombrePlatillo { get; set; }
+            public string TiempoPreparacion { get; set; }
+            public string Descripcion { get; set; }
+
+        }
+
+        public class Ordenes
+        {
+            public string Orden { get; set; }
+            public string Mesa { get; set; }
+            public string Estado { get; set; }
+            public string hora_Pedido { get; set; }
+            public string total { get; set; }
+        }
+
+        public class Mesas
+        {
+            public string Mesa { get; set; }
+        }
 
         //
         //
