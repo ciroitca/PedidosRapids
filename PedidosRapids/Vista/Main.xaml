@@ -139,19 +139,36 @@
 
                 </Border>
 
-                <!-- Contenido -->
+                
 
                 <!--Main Section-->
+                
+                <!-- ESTILO DEL GRID  -->
                 <Border CornerRadius="0,10,10,0"
-                    Grid.Column="1" RenderTransformOrigin="0.499,0.562" Margin="0,10,0,-10" Visibility="Visible">
+                    Grid.Column="1" RenderTransformOrigin="0.499,0.562" Visibility="Visible">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
                             <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0"/>
                             <GradientStop Color="{StaticResource primaryBackColor2}" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
+
+
+                    <!-- ***C O N T E N I D O*** -->
+
                     <Grid>
-                        <Button x:Name="btnAgregarPlatos" Content="AGREGAR" HorizontalAlignment="Left" Width="120" Height="50" Margin="689,637,0,59" Visibility="Hidden" FontSize="22"/>
+
+                        <!-- BOTON -AGREGAR PLATOS- -->
+
+                        <RadioButton x:Name="btnAgregarPlatos"  Style="{StaticResource ComunButton}"
+                             Tag="{StaticResource color3}"
+                             Command="{Binding ShowCustomerViewCommand}" Checked="btnAgregarPlatos_click" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="50"
+                                     Visibility="Hidden">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">                                
+                                <TextBlock Text="AGREGAR" Style="{StaticResource botonComunText}"/>
+                            </StackPanel>
+                        </RadioButton>
+
                         <DataGrid x:Name="grdPlatos" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" Visibility="Hidden"/>
                         <Label x:Name="lblPlatos" Content="PLATOS" HorizontalAlignment="Center" Height="51" Margin="0,66,0,0" VerticalAlignment="Top" Width="144" FontSize="36" Visibility="Hidden"/>
                         <Label x:Name="lblOrden" Content="ORDENES" HorizontalAlignment="Center" Height="51" Margin="0,66,0,0" VerticalAlignment="Top" Width="176" FontSize="36" Visibility="Hidden"/>

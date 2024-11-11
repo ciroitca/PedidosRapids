@@ -178,6 +178,26 @@ namespace PedidosRapids.Vista
             btnUser.Visibility = Visibility.Hidden;
             btnOrdenes.Visibility = Visibility.Hidden;
         }
+
+
+        //
+        //
+        //
+
+        /* ACTIONES DE BOTONES DEL GRID */
+
+        //
+        //
+        //
+
+        //  BOTON AGREGAR -- VENTANA: PLATOS
+
+        private void btnAgregarPlatos_click(object sender, RoutedEventArgs e)
+        {
+           
+
+
+        }
     }
 
 }
