@@ -580,7 +580,7 @@ namespace PedidosRapids.Vista
         {
             OcultarParaPlatos();
             OcultarMenu();
-            grdPlatos.Visibility = Visibility.Hidden;
+            grdPlatos1.Visibility = Visibility.Hidden;
             btnAgregarPlatos.Visibility = Visibility.Hidden;
             btnVolverPlatos.Visibility = Visibility.Visible;
             lblCategoria.Visibility = Visibility.Visible;
@@ -599,8 +599,8 @@ namespace PedidosRapids.Vista
         private void btnVolPlatos_Click(object sender, RoutedEventArgs e)
         {
             OcultarParaPlatos();
-            lblPlatos.Visibility = Visibility.Visible;
-            grdPlatos.Visibility = Visibility.Visible;
+            lblPlatos1.Visibility = Visibility.Visible;
+            grdPlatos1.Visibility = Visibility.Visible;
             btnAgregarPlatos.Visibility = Visibility.Visible;
             btnVolverPlatos.Visibility = Visibility.Hidden;
             btnAgOrden.IsChecked = false;
