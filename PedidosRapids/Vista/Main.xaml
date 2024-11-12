@@ -43,7 +43,7 @@
                         </LinearGradientBrush>
                     </Border.Background>
 
-                    <StackPanel>
+                    <StackPanel x:Name ="StPanel" Visibility ="Visible">
 
                         <!-- LOGO -->
 
@@ -177,6 +177,17 @@
                                  Visibility="Hidden">
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
                                 <TextBlock Text="AGREGAR ORDEN" Style="{StaticResource botonComunText}"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <!-- BOTON -AGREGAR AGREGAR ORDEN- -->
+
+                        <RadioButton x:Name="btnVolverPlatos"  Style="{StaticResource ComunButton}"
+                                  Tag="{StaticResource color3}"
+                                  Command="{Binding ShowCustomerViewCommand}" Checked="btnVolPlatos_Click" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="50,0,400,50"
+                                  Visibility="Hidden">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+                                <TextBlock Text="VOLVER" Style="{StaticResource botonComunText}"/>
                             </StackPanel>
                         </RadioButton>
 

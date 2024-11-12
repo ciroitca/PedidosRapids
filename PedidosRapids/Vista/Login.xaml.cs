@@ -53,21 +53,23 @@ namespace PedidosRapids.Vista
             string contraseña = txtContra.Password;
 
             // validación 
+            
+            
+            
             if (usuario == "admin" && contraseña == "1234") // Usuario administrador
             {
                 Main main = new Main();
                 main.Show();
                 this.Close();
             }
-            /*
-             * 
-             * else if (usuario == "empleado" && contraseña == "1234") // Usuario empleado
+
+          /* else if (usuario == "empleado" && contraseña == "1234") // Usuario empleado
             {
                 Empleado empleado = new Empleado();
                 empleado.Show();
                 this.Close();
-            }
-            */
+            } */
+            
             else
             {
                 MessageBox.Show("Usuario o contraseña incorrecta.");
