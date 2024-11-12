@@ -61,7 +61,7 @@ namespace PedidosRapids.Vista
 
             {
                 // Si las credenciales son válidas, verificamos el usuario específico
-                if (info.NombreUsuario == "admin" && info.ContrasenaUsuario == "admin1234")
+                if (info.NombreUsuario == usuario && info.ContrasenaUsuario == contraseña)
                 {
                    Main admin = new Main();
                     admin.Show();
