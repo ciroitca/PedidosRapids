@@ -171,6 +171,15 @@
                             </StackPanel>
                         </RadioButton>
 
+                        <RadioButton x:Name="btnInsertarPlatos"  Style="{StaticResource ComunButton}"
+                             Tag="{StaticResource color3}"
+                             Command="{Binding ShowCustomerViewCommand}" Checked="btnInsertarPlatos_click" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="50"
+                                     Visibility="Hidden">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+                                <TextBlock Text="INSERTAR" Style="{StaticResource botonComunText}"/>
+                            </StackPanel>
+                        </RadioButton>
+
                         <!-- BOTON -AGREGAR AGREGAR ORDEN- -->
 
                         <RadioButton x:Name="btnAgOrden"  Style="{StaticResource ComunButton}"
@@ -191,6 +200,8 @@
                                   Visibility="Hidden">
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
                                 <TextBlock Text="VOLVER" Style="{StaticResource botonComunText}"/>
+                            </StackPanel>
+                        </RadioButton>
 
                         <!--BOTON PARA AGREGAR LA ORDEN-->
                         <RadioButton x:Name="btnAgOrdenBD"  Style="{StaticResource ComunButton}"
@@ -253,6 +264,20 @@
                         <Label x:Name="lblNPassEd" Content="NUEVO CONTRASEÑA:" HorizontalAlignment="Left" Height="51" Margin="118,419,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
                         <TextBox x:Name="txtNPass" HorizontalAlignment="Left" Height="30" Margin="358,419,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
                         <Label x:Name="lblAdmin" Content="ADMINISTRADOR" HorizontalAlignment="Left" Height="48" Margin="269,45,0,0" VerticalAlignment="Top" Width="292" FontSize="36" Visibility="Hidden"/>
+
+                        <!-- SECCION AGREGAR PLATOS -->
+
+                        <Label x:Name="lblCategoria" Content="Categoria:" HorizontalAlignment="Left" Height="51" Margin="50,130,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Foreground="{StaticResource titleColor1}" Visibility="Hidden"/>
+                        <TextBox x:Name="txtCategoria" HorizontalAlignment="Left" Height="35" Margin="269,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" Visibility="Hidden"/>
+
+                        <Label x:Name="lblPlatillo" Content="Platillo:" HorizontalAlignment="Left" Height="51" Margin="50,230,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Foreground="{StaticResource titleColor1}" Visibility="Hidden"/>
+                        <TextBox x:Name="txtPlatillo" HorizontalAlignment="Left" Height="35" Margin="269,232,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" Visibility="Hidden"/>
+
+                        <Label x:Name="lblTiempo" Content="Tiempo de espera:" HorizontalAlignment="Left" Height="51" Margin="50,330,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Foreground="{StaticResource titleColor1}" Visibility="Hidden"/>
+                        <TextBox x:Name="txtTiempo" HorizontalAlignment="Left" Height="35" Margin="269,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" Visibility="Hidden"/>
+
+                        <Label x:Name="lblDescripcion" Content="Comentarios:" HorizontalAlignment="Left" Height="51" Margin="50,430,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Foreground="{StaticResource titleColor1}" Visibility="Hidden" />
+                        <TextBox x:Name="txtDescripcion" HorizontalAlignment="Left" Height="35" Margin="269,437,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="552" Visibility="Hidden"/>
 
                     </Grid>
                 </Border>
