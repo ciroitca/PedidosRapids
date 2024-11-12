@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,30 +49,72 @@ namespace PedidosRapids.Vista
 
         private void IniciarSesion_Click(object sender, RoutedEventArgs e)
         {
-            // lógica de validación de usuario
+            // Obtenemos el usuario y contraseña ingresados
             string usuario = txtUsuario.Text;
             string contraseña = txtContra.Password;
 
-            // validación 
-            if (usuario == "admin" && contraseña == "1234") // Usuario administrador
+            // Validamos las credenciales
+            UsuarioInfo info = ValidarCredenciales(usuario, contraseña);
+
+            if (info != null)
             {
-                Main main = new Main();
-                main.Show();
-                this.Close();
+                // Si las credenciales son válidas, verificamos el usuario específico
+                if (info.NombreUsuario == "admin" && info.ContrasenaUsuario == "admin1234")
+                {
+                   Main admin = new Main();
+                    admin.Show();
+                    this.Close();
+                }
             }
-            /*
-             * 
-             * else if (usuario == "empleado" && contraseña == "1234") // Usuario empleado
-            {
-                Empleado empleado = new Empleado();
-                empleado.Show();
-                this.Close();
-            }
-            */
             else
             {
-                MessageBox.Show("Usuario o contraseña incorrecta.");
+                MessageBox.Show("Credenciales no válidas", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private UsuarioInfo ValidarCredenciales(string usuario, string contraseña)
+        {
+            string conexionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            UsuarioInfo usuarioInfo = null;
+
+            using (SqlConnection conexion = new SqlConnection(conexionString))
+            {
+                try
+                {
+                    conexion.Open();
+                    string consulta = "SELECT Usuario, Password FROM usuario WHERE Usuario = @usuario AND Password = @contrasena";
+                    using (SqlCommand comando = new SqlCommand(consulta, conexion))
+                    {
+                        comando.Parameters.AddWithValue("@usuario", usuario);
+                        comando.Parameters.AddWithValue("@contrasena", contraseña);
+
+                        using (SqlDataReader reader = comando.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                usuarioInfo = new UsuarioInfo
+                                {
+                                    NombreUsuario = reader.GetString(0),
+                                    ContrasenaUsuario = reader.GetString(1)
+                                };
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error de conexión: " + ex.Message);
+                }
+            }
+
+            return usuarioInfo;
+        }
+
+        public class UsuarioInfo
+        {
+            public string NombreUsuario { get; set; }
+            public string ContrasenaUsuario { get; set; }
         }
     }
 }
