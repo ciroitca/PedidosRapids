@@ -34,6 +34,7 @@ namespace PedidosRapids.Vista
             CargarCategorias(); // Cargar las categorías al iniciar
             CargarOrdenes();// Cargar las ordenes al iniciar
             CargarMesas();
+            MostrarValorEnTextBox();
             grdPlatos.ItemsSource = datos; // Enlazar los datos al DataGrid
             grdOrdenes.ItemsSource = datosOrdenes;// Enlazar los datos al DataGrid
             grdMesas.ItemsSource = datosMesa;
@@ -236,6 +237,65 @@ namespace PedidosRapids.Vista
         }
 
 
+        private void MostrarValorEnTextBox()
+        {
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string query = "SELECT Usuario FROM Usuario WHERE Id_Usuario = 1"; // Ajusta el query según tus necesidades
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        // Asume que el TextBox se llama txtUsuario
+                        txtUserEd.Text = reader["Usuario"].ToString();
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            }
+        }
+
+
+        private void mostrarMenuAdmin()
+        {
+            lblAdmin.Visibility = Visibility.Visible;
+            btnAdminBebida.Visibility = Visibility.Visible;
+            btnAdminEm.Visibility = Visibility.Visible;
+            btnAdminUsers.Visibility = Visibility.Visible;
+            btnMainMenu.Visibility = Visibility.Visible;
+            OcultarParaAgOrden();
+            OcultarParaMesas();
+            OcultarParaPlatos();
+            OcultarParaOrdenes();
+        }
+        private void MostrarEditUser()
+        {
+            btnMainMenu.Visibility = Visibility.Visible;
+            lblNPassEd.Visibility = Visibility.Visible;
+            lblNUserEdit.Visibility = Visibility.Visible;
+            lblEdUser.Visibility = Visibility.Visible;
+            lblNUserName.Visibility = Visibility.Visible;
+            txtUserEd.Visibility = Visibility.Visible;
+            txtNUserName.Visibility = Visibility.Visible;
+            txtNPass.Visibility = Visibility.Visible;
+            btnEditUser.Visibility = Visibility.Visible;
+            OcultarParaAgOrden();
+            OcultarParaMesas();
+            OcultarParaPlatos();
+            OcultarParaOrdenes();
+        }
+
         //Funcion para ocultar todo excepto lo que se debe mostrar para ordenes
         private void OcultarParaPlatos()
         {
@@ -284,6 +344,20 @@ namespace PedidosRapids.Vista
             btnOrdenes.Visibility = Visibility.Visible;
             btnAgOrden.Visibility = Visibility.Hidden;
             btnMainMenu.IsChecked = false;
+            btnMainMenu.Visibility = Visibility.Hidden;
+            lblNPassEd.Visibility = Visibility.Hidden;
+            lblNUserEdit.Visibility = Visibility.Hidden;
+            lblEdUser.Visibility = Visibility.Hidden;
+            lblNUserName.Visibility = Visibility.Hidden;
+            txtUserEd.Visibility = Visibility.Hidden;
+            txtNUserName.Visibility = Visibility.Hidden;
+            txtNPass.Visibility = Visibility.Hidden;
+            lblAdmin.Visibility = Visibility.Hidden;
+            btnAdminBebida.Visibility = Visibility.Hidden;
+            btnAdminEm.Visibility = Visibility.Hidden;
+            btnAdminUsers.Visibility = Visibility.Hidden;
+            btnMainMenu.Visibility = Visibility.Hidden;
+            btnEditUser.Visibility = Visibility.Hidden;
         }
 
         private void OcultarMenu()
@@ -365,6 +439,57 @@ namespace PedidosRapids.Vista
             OcultarMenu();
             StPanel.Visibility = Visibility.Visible;
 
+        }
+
+        private void btnUser_Checked(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Desea editar este usuario?","Editar", MessageBoxButton.YesNo,MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                MostrarEditUser();
+                btnUser.IsChecked = false;
+            }
+            else
+            {
+                btnUser.IsChecked = false;
+                mostrarMenuAdmin();
+            }
+        }
+
+        private void btnEditUser_Checked(object sender, RoutedEventArgs e)
+        {
+            MostrarEditUser();
+            btnUser.IsChecked = false;
+
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string query = "UPDATE Usuario SET Usuario = @Usuario, Password = @Password WHERE Id_Usuario = 1";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Usuario", txtNUserName.Text);
+                command.Parameters.AddWithValue("@Password", txtNPass.Text);
+
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Usuario Actualizado Corectamente");
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se encontró el Usuario con el ID especificado.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+
+            }
         }
     }
 
