@@ -28,16 +28,19 @@ namespace PedidosRapids.Vista
         private List<Categoria> datos;
         private List<Ordenes> datosOrdenes;
         private List<Mesas> datosMesa;
+        private List<Bebidas> datosBebidas;
         public Main()
         {
             InitializeComponent();
             CargarCategorias(); // Cargar las categorías al iniciar
             CargarOrdenes();// Cargar las ordenes al iniciar
             CargarMesas();
+            CargarBebidas();
             MostrarValorEnTextBox();
-            grdPlatos.ItemsSource = datos; // Enlazar los datos al DataGrid
-            grdOrdenes.ItemsSource = datosOrdenes;// Enlazar los datos al DataGrid
-            grdMesas.ItemsSource = datosMesa;
+            grdPlatos1.ItemsSource = datos; // Enlazar los datos al DataGrid
+            grdOrdenes1.ItemsSource = datosOrdenes;// Enlazar los datos al DataGrid
+            grdMesas1.ItemsSource = datosMesa;
+            grdBebidas1.ItemsSource = datosBebidas;
         }
 
         [DllImport("user32.dll")]
@@ -83,8 +86,8 @@ namespace PedidosRapids.Vista
         private void btnPlatos_Checked(object sender, RoutedEventArgs e)
         {
             OcultarParaPlatos();
-            lblPlatos.Visibility = Visibility.Visible;
-            grdPlatos.Visibility = Visibility.Visible;
+            lblPlatos1.Visibility = Visibility.Visible;
+            grdPlatos1.Visibility = Visibility.Visible;
             btnAgregarPlatos.Visibility = Visibility.Visible;
             btnAgOrden.IsChecked = false;
         }
@@ -108,8 +111,8 @@ namespace PedidosRapids.Vista
         private void btnOrdenes_Checked(object sender, RoutedEventArgs e)
         {
             OcultarParaOrdenes();
-            lblOrden.Visibility = Visibility.Visible;
-            grdOrdenes.Visibility = Visibility.Visible;
+            lblOrden1.Visibility = Visibility.Visible;
+            grdOrdenes1.Visibility = Visibility.Visible;
             btnAgOrden.Visibility = Visibility.Visible;
             btnAgregarPlatos.IsChecked = false;
         }
@@ -117,8 +120,8 @@ namespace PedidosRapids.Vista
         private void btnMesas_Checked(object sender, RoutedEventArgs e)
         {
             OcultarParaMesas();
-            lblMesas.Visibility = Visibility.Visible;
-            grdMesas.Visibility = Visibility.Visible;
+            lblMesas1.Visibility = Visibility.Visible;
+            grdMesas1.Visibility = Visibility.Visible;
         }
 
 
@@ -129,7 +132,69 @@ namespace PedidosRapids.Vista
             btnMainMenu.Visibility = Visibility.Visible;
         }
 
+        private void btnUser_Checked(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Desea editar este usuario?", "Editar", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                MostrarEditUser();
+                btnUser.IsChecked = false;
+            }
+            else
+            {
+                btnUser.IsChecked = false;
+                mostrarMenuAdmin();
+            }
+        }
+
+        private void btnAggBebidaABD_Checked(object sender, RoutedEventArgs e)
+        {
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedure = "Agregar_Bebida";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@NombreBebida", txtNameBebida1.Text);
+                command.Parameters.AddWithValue("@Alcoholica", txtPriceBebida.Text);
+                command.Parameters.AddWithValue("@Precio", txtCantBebida.Text);
+                command.Parameters.AddWithValue("@Cantidad", txtCantBebida.Text);
+                command.Parameters.AddWithValue("@Activo", rdSiBebida1.IsChecked == true ? 1 : 0);
+
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Bebidas Agregadas con exito");
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo agregar la bebida.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            }
+        }
+
+        private void btnAggBebida1_Checked(object sender, RoutedEventArgs e)
+        {
+            MostrarAggBebida();
+        }
+
         //**********************Funciones para la navegacion de menus******************
+
+        private void btnAdminBebida_Checked(object sender, RoutedEventArgs e)
+        {
+            MostrarAdBebida();
+        }
 
         public void CargarMesas()
         {
@@ -166,6 +231,39 @@ namespace PedidosRapids.Vista
             }
         }
 
+        private void CargarBebidas()
+        {
+            datosBebidas = new List<Bebidas>();
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedureName = "Listar_Bebidas";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedureName, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        datosBebidas.Add(new Bebidas
+                        {
+                            NombreBebidas = reader["NombreBebidas"].ToString()
+                        });
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+
+            }
+        }
         public void CargarCategorias()
         {
             datos = new List<Categoria>();
@@ -254,7 +352,7 @@ namespace PedidosRapids.Vista
                     if (reader.Read())
                     {
                         // Asume que el TextBox se llama txtUsuario
-                        txtUserEd.Text = reader["Usuario"].ToString();
+                        txtUserEd1.Text = reader["Usuario"].ToString();
                     }
 
                     reader.Close();
@@ -269,11 +367,12 @@ namespace PedidosRapids.Vista
 
         private void mostrarMenuAdmin()
         {
-            lblAdmin.Visibility = Visibility.Visible;
+            lblAdmin1.Visibility = Visibility.Visible;
             btnAdminBebida.Visibility = Visibility.Visible;
             btnAdminEm.Visibility = Visibility.Visible;
             btnAdminUsers.Visibility = Visibility.Visible;
             btnMainMenu.Visibility = Visibility.Visible;
+            lblAdmin1.Visibility = Visibility.Hidden;
             OcultarParaAgOrden();
             OcultarParaMesas();
             OcultarParaPlatos();
@@ -282,13 +381,13 @@ namespace PedidosRapids.Vista
         private void MostrarEditUser()
         {
             btnMainMenu.Visibility = Visibility.Visible;
-            lblNPassEd.Visibility = Visibility.Visible;
-            lblNUserEdit.Visibility = Visibility.Visible;
-            lblEdUser.Visibility = Visibility.Visible;
-            lblNUserName.Visibility = Visibility.Visible;
-            txtUserEd.Visibility = Visibility.Visible;
-            txtNUserName.Visibility = Visibility.Visible;
-            txtNPass.Visibility = Visibility.Visible;
+            lblNPassEd1.Visibility = Visibility.Visible;
+            lblNUserEdit1.Visibility = Visibility.Visible;
+            lblEdUser1.Visibility = Visibility.Visible;
+            lblNUserName1.Visibility = Visibility.Visible;
+            txtUserEd1.Visibility = Visibility.Visible;
+            txtNUserName1.Visibility = Visibility.Visible;
+            txtNPass1.Visibility = Visibility.Visible;
             btnEditUser.Visibility = Visibility.Visible;
             OcultarParaAgOrden();
             OcultarParaMesas();
@@ -299,42 +398,42 @@ namespace PedidosRapids.Vista
         //Funcion para ocultar todo excepto lo que se debe mostrar para ordenes
         private void OcultarParaPlatos()
         {
-            lblOrden.Visibility = Visibility.Hidden;
-            grdOrdenes.Visibility = Visibility.Hidden;
+            lblOrden1.Visibility = Visibility.Hidden;
+            grdOrdenes1.Visibility = Visibility.Hidden;
             btnAgOrden.Visibility = Visibility.Hidden;
-            lblMesas.Visibility = Visibility.Hidden;
-            grdMesas.Visibility = Visibility.Hidden;
+            lblMesas1.Visibility = Visibility.Hidden;
+            grdMesas1.Visibility = Visibility.Hidden;
         }
         //Funcion para ocultar todo excepto lo que se debe mostrar para Platos
         private void OcultarParaOrdenes()
         {
-            lblMesas.Visibility = Visibility.Hidden;
-            grdMesas.Visibility = Visibility.Hidden;
-            lblPlatos.Visibility = Visibility.Hidden;
-            grdPlatos.Visibility = Visibility.Hidden;
+            lblMesas1.Visibility = Visibility.Hidden;
+            grdMesas1.Visibility = Visibility.Hidden;
+            lblPlatos1.Visibility = Visibility.Hidden;
+            grdPlatos1.Visibility = Visibility.Hidden;
             btnAgregarPlatos.Visibility = Visibility.Hidden;
         }
 
         private void OcultarParaMesas()
         {
-            lblOrden.Visibility = Visibility.Hidden;
-            grdOrdenes.Visibility = Visibility.Hidden;
+            lblOrden1.Visibility = Visibility.Hidden;
+            grdOrdenes1.Visibility = Visibility.Hidden;
             btnAgOrden.Visibility = Visibility.Hidden;
-            lblPlatos.Visibility = Visibility.Hidden;
-            grdPlatos.Visibility = Visibility.Hidden;
+            lblPlatos1.Visibility = Visibility.Hidden;
+            grdPlatos1.Visibility = Visibility.Hidden;
             btnAgregarPlatos.Visibility = Visibility.Hidden;
         }
 
         private void MostrarMenu()
         {
-            lblOrden.Visibility = Visibility.Hidden;
-            grdOrdenes.Visibility = Visibility.Hidden;
+            lblOrden1.Visibility = Visibility.Hidden;
+            grdOrdenes1.Visibility = Visibility.Hidden;
             btnAgOrden.Visibility = Visibility.Hidden;
-            lblPlatos.Visibility = Visibility.Hidden;
-            grdPlatos.Visibility = Visibility.Hidden;
+            lblPlatos1.Visibility = Visibility.Hidden;
+            grdPlatos1.Visibility = Visibility.Hidden;
             btnAgregarPlatos.Visibility = Visibility.Hidden;
-            lblMesas.Visibility = Visibility.Hidden;
-            grdMesas.Visibility = Visibility.Hidden;
+            lblMesas1.Visibility = Visibility.Hidden;
+            grdMesas1.Visibility = Visibility.Hidden;
             btnAgOrden.Visibility = Visibility.Visible;
             btnCambiarUsuario.Visibility = Visibility.Visible;
             btnMesas.Visibility = Visibility.Visible;
@@ -345,19 +444,24 @@ namespace PedidosRapids.Vista
             btnAgOrden.Visibility = Visibility.Hidden;
             btnMainMenu.IsChecked = false;
             btnMainMenu.Visibility = Visibility.Hidden;
-            lblNPassEd.Visibility = Visibility.Hidden;
-            lblNUserEdit.Visibility = Visibility.Hidden;
-            lblEdUser.Visibility = Visibility.Hidden;
-            lblNUserName.Visibility = Visibility.Hidden;
-            txtUserEd.Visibility = Visibility.Hidden;
-            txtNUserName.Visibility = Visibility.Hidden;
-            txtNPass.Visibility = Visibility.Hidden;
-            lblAdmin.Visibility = Visibility.Hidden;
+            lblNPassEd1.Visibility = Visibility.Hidden;
+            lblNUserEdit1.Visibility = Visibility.Hidden;
+            lblEdUser1.Visibility = Visibility.Hidden;
+            lblNUserName1.Visibility = Visibility.Hidden;
+            txtUserEd1.Visibility = Visibility.Hidden;
+            txtNUserName1.Visibility = Visibility.Hidden;
+            txtNPass1.Visibility = Visibility.Hidden;
+            lblAdmin1.Visibility = Visibility.Hidden;
             btnAdminBebida.Visibility = Visibility.Hidden;
             btnAdminEm.Visibility = Visibility.Hidden;
             btnAdminUsers.Visibility = Visibility.Hidden;
             btnMainMenu.Visibility = Visibility.Hidden;
             btnEditUser.Visibility = Visibility.Hidden;
+            lblAdminBebidas1.Visibility = Visibility.Hidden;
+            grdBebidas1.Visibility = Visibility.Hidden;
+            btnEliminarBebida.Visibility = Visibility.Hidden;
+            btnEditBebida.Visibility = Visibility.Hidden;
+            btnAggBebida.Visibility = Visibility.Hidden;
         }
 
         private void OcultarMenu()
@@ -365,14 +469,14 @@ namespace PedidosRapids.Vista
 
         private void OcultarParaAgOrden()
         {
-            lblOrden.Visibility = Visibility.Hidden;
-            grdOrdenes.Visibility = Visibility.Hidden;
+            lblOrden1.Visibility = Visibility.Hidden;
+            grdOrdenes1.Visibility = Visibility.Hidden;
             btnAgOrden.Visibility = Visibility.Hidden;
-            lblPlatos.Visibility = Visibility.Hidden;
-            grdPlatos.Visibility = Visibility.Hidden;
+            lblPlatos1.Visibility = Visibility.Hidden;
+            grdPlatos1.Visibility = Visibility.Hidden;
             btnAgregarPlatos.Visibility = Visibility.Hidden;
-            lblMesas.Visibility = Visibility.Hidden;
-            grdMesas.Visibility = Visibility.Hidden;
+            lblMesas1.Visibility = Visibility.Hidden;
+            grdMesas1.Visibility = Visibility.Hidden;
             btnAgOrden.Visibility = Visibility.Hidden;
             btnCambiarUsuario.Visibility = Visibility.Hidden;
             btnMesas.Visibility = Visibility.Hidden;
@@ -382,6 +486,53 @@ namespace PedidosRapids.Vista
             btnOrdenes.Visibility = Visibility.Hidden;
         }
 
+        private void MostrarAdBebida()
+        {
+            lblAdminBebidas1.Visibility = Visibility.Visible;
+            grdBebidas1.Visibility = Visibility.Visible;
+            btnEliminarBebida.Visibility = Visibility.Visible;
+            btnEditBebida.Visibility = Visibility.Visible;
+            btnAggBebida.Visibility= Visibility.Visible;
+            OcultarParaOrdenes();
+        }
+
+        private void MostrarAggBebida()
+        {
+            lblAggBebida1.Visibility = Visibility.Visible;
+            lblNombreBebida.Visibility = Visibility.Visible;
+            txtNameBebida1.Visibility = Visibility.Visible;
+            lblAlcoholicaB.Visibility = Visibility.Visible;
+            rdSiBebida1.Visibility = Visibility.Visible;
+            rdNoBebida1.Visibility = Visibility.Visible;
+            lblPrecioBebida.Visibility = Visibility.Visible;
+            txtPriceBebida.Visibility = Visibility.Visible;
+            lblCantidadBebida.Visibility = Visibility.Visible;
+            txtCantBebida.Visibility = Visibility.Visible;
+            btnAggBebida.Visibility= Visibility.Hidden;
+        }
+
+        private void AgregarBebida()
+        {
+            lblAggBebida1.Visibility = Visibility.Visible;
+            lblNombreBebida.Visibility = Visibility.Visible;
+            txtNameBebida1.Visibility = Visibility.Visible;
+            lblAlcoholicaB.Visibility = Visibility.Visible;
+            rdSiBebida1.Visibility = Visibility.Visible;
+            rdNoBebida1.Visibility = Visibility.Visible;
+            lblPrecioBebida.Visibility = Visibility.Visible;
+            txtPriceBebida.Visibility = Visibility.Visible;
+            lblCantidadBebida.Visibility = Visibility.Visible;
+            txtCantBebida.Visibility = Visibility.Visible;
+            lblAdminBebidas1.Visibility = Visibility.Hidden;
+            grdBebidas1.Visibility = Visibility.Hidden;
+            btnEliminarBebida.Visibility = Visibility.Hidden;
+            btnEditBebida.Visibility = Visibility.Hidden;
+            btnAggBebida.Visibility = Visibility.Hidden;
+            btnAdminEm.Visibility = Visibility.Hidden;
+            btnAdminUsers.Visibility = Visibility.Hidden;
+            btnAdminBebida.Visibility= Visibility.Hidden;
+            btnAggBebidaABD.Visibility = Visibility.Visible;
+        }
         public class Categoria
         {
             public string NombreCategoria { get; set; }
@@ -403,6 +554,14 @@ namespace PedidosRapids.Vista
         public class Mesas
         {
             public string Mesa { get; set; }
+        }
+
+        public class Bebidas
+        {
+            public string NombreBebidas { get; set; }
+            public string Alcoholica { get; set; }
+            public string Id_Producto { get; set; }
+
         }
 
         //
@@ -465,20 +624,7 @@ namespace PedidosRapids.Vista
             //BOTON INSERTAR PLATOS ACÁ, AGREGAR LA LOGICA        
         }
 
-        private void btnUser_Checked(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Desea editar este usuario?","Editar", MessageBoxButton.YesNo,MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
-            {
-                MostrarEditUser();
-                btnUser.IsChecked = false;
-            }
-            else
-            {
-                btnUser.IsChecked = false;
-                mostrarMenuAdmin();
-            }
-        }
+
 
         private void btnEditUser_Checked(object sender, RoutedEventArgs e)
         {
@@ -491,8 +637,8 @@ namespace PedidosRapids.Vista
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Usuario", txtNUserName.Text);
-                command.Parameters.AddWithValue("@Password", txtNPass.Text);
+                command.Parameters.AddWithValue("@Usuario", txtNUserName1.Text);
+                command.Parameters.AddWithValue("@Password", txtNPass1.Text);
 
                 try
                 {
@@ -502,6 +648,8 @@ namespace PedidosRapids.Vista
                     if (rowsAffected > 0)
                     {
                         MessageBox.Show("Usuario Actualizado Corectamente");
+                        txtNUserName1.Text = "";
+                        txtNPass1.Text = "";
                     }
                     else
                     {
@@ -514,6 +662,11 @@ namespace PedidosRapids.Vista
                 }
 
             }
+        }
+
+        private void btnAggBebida_Checked(object sender, RoutedEventArgs e)
+        {
+            AgregarBebida();
         }
     }
 
