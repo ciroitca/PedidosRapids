@@ -304,15 +304,20 @@
                         <Label x:Name="lblAggBebida1" Content="AGREGAR BEBIDA" HorizontalAlignment="Left" Height="51" Margin="269,45,0,0" VerticalAlignment="Top" Width="396" FontSize="36" Visibility="Hidden"/>
                         <Label x:Name="lblAdminBebidas1" Content="ADMINISTRAR BEBIDAS" HorizontalAlignment="Left" Height="51" Margin="269,45,0,0" VerticalAlignment="Top" Width="396" FontSize="36" Visibility="Hidden"/>
                         <DataGrid x:Name="grdBebidas1" HorizontalAlignment="Center" Height="320" Margin="0,168,0,0" VerticalAlignment="Top" Width="846" av:ItemsSource="{av:SampleData ItemCount=5}" Visibility="Hidden"/>
-                        <Label x:Name="lblNombreBebida" Content="Nombre de la Bebida:" HorizontalAlignment="Left" Height="51" Margin="81,157,0,0" VerticalAlignment="Top" Width="226" FontSize="22" Visibility="Hidden"/>
-                        <Label x:Name="lblAlcoholicaB" Content="Alcoholica: " HorizontalAlignment="Left" Height="50" Margin="195,268,0,0" VerticalAlignment="Top" Width="112" FontSize="22" Visibility="Hidden"/>
-                        <Label x:Name="lblPrecioBebida" Content="Precio: " HorizontalAlignment="Left" Height="50" Margin="207,361,0,0" VerticalAlignment="Top" Width="79" FontSize="22" Visibility="Hidden"/>
-                        <TextBox x:Name="txtNameBebida1" HorizontalAlignment="Left" Height="32" Margin="312,168,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Visibility="Hidden"/>
-                        <RadioButton x:Name="rdSiBebida1" Content="Si" HorizontalAlignment="Left" Margin="341,285,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
-                        <RadioButton x:Name="rdNoBebida1" Content="No" HorizontalAlignment="Left" Margin="469,285,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
-                        <TextBox x:Name="txtPriceBebida" HorizontalAlignment="Left" Height="32" Margin="316,361,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Visibility="Hidden"/>
-                        <Label x:Name="lblCantidadBebida" Content="Cantidad:" HorizontalAlignment="Left" Height="50" Margin="186,444,0,0" VerticalAlignment="Top" Width="104" FontSize="22" Visibility="Hidden"/>
-                        <TextBox x:Name="txtCantBebida" HorizontalAlignment="Left" Height="32" Margin="324,440,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Visibility="Hidden"/>
+
+                        <!--Formulario para agreagar bebida-->
+
+                        <Label x:Name="lblNombreBebida" Content="Nombre de la Bebida:" HorizontalAlignment="Left" Height="51" Margin="72,210,0,0" VerticalAlignment="Top" Width="226" FontSize="22" Visibility="Hidden"/>
+                        <Label x:Name="lblAlcoholicaB" Content="Alcoholica: " HorizontalAlignment="Left" Height="50" Margin="186,321,0,0" VerticalAlignment="Top" Width="112" FontSize="22" Visibility="Hidden"/>
+                        <Label x:Name="lblPrecioBebida" Content="Precio: " HorizontalAlignment="Left" Height="50" Margin="198,414,0,0" VerticalAlignment="Top" Width="79" FontSize="22" Visibility="Hidden"/>
+                        <TextBox x:Name="txtNameBebida1" HorizontalAlignment="Left" Height="32" Margin="303,221,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Visibility="Hidden"/>
+                        <RadioButton x:Name="rdSiBebida1" Content="Si" HorizontalAlignment="Left" Margin="332,338,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+                        <RadioButton x:Name="rdNoBebida1" Content="No" HorizontalAlignment="Left" Margin="460,338,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+                        <TextBox x:Name="txtPriceBebida" HorizontalAlignment="Left" Height="32" Margin="307,414,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Visibility="Hidden"/>
+                        <Label x:Name="lblCantidadBebida" Content="Cantidad:" HorizontalAlignment="Left" Height="50" Margin="177,497,0,0" VerticalAlignment="Top" Width="104" FontSize="22" Visibility="Hidden"/>
+                        <TextBox x:Name="txtCantBebida" HorizontalAlignment="Left" Height="32" Margin="315,493,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Visibility="Hidden"/>
+                        <Label x:Name="lblId_Bebida" Content="ID de la Bebida:" HorizontalAlignment="Left" Height="51" Margin="133,130,0,0" VerticalAlignment="Top" Width="170" FontSize="22" Visibility="Hidden"/>
+                        <TextBox x:Name="txtId_Bebida" HorizontalAlignment="Left" Height="32" Margin="303,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Visibility="Hidden"/>
 
                         <!-- SECCION AGREGAR PLATOS -->
 
@@ -327,6 +332,7 @@
 
                         <Label x:Name="lblDescripcion" Content="Comentarios:" HorizontalAlignment="Left" Height="51" Margin="50,430,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Foreground="{StaticResource titleColor1}" Visibility="Hidden" />
                         <TextBox x:Name="txtDescripcion" HorizontalAlignment="Left" Height="35" Margin="269,437,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="552" Visibility="Hidden"/>
+
 
                     </Grid>
                 </Border>

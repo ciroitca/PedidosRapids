@@ -157,11 +157,12 @@ namespace PedidosRapids.Vista
                 SqlCommand command = new SqlCommand(storedProcedure, connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
+                command.Parameters.AddWithValue("@Id_Producto", int.Parse(txtId_Bebida.Text));
                 command.Parameters.AddWithValue("@NombreBebida", txtNameBebida1.Text);
-                command.Parameters.AddWithValue("@Alcoholica", txtPriceBebida.Text);
-                command.Parameters.AddWithValue("@Precio", txtCantBebida.Text);
-                command.Parameters.AddWithValue("@Cantidad", txtCantBebida.Text);
-                command.Parameters.AddWithValue("@Activo", rdSiBebida1.IsChecked == true ? 1 : 0);
+                command.Parameters.AddWithValue("@Alcoholica", rdSiBebida1.IsChecked == true ? "True" : "False");
+                command.Parameters.AddWithValue("@Precio", float.Parse(txtPriceBebida.Text));
+                command.Parameters.AddWithValue("@Cantidad", int.Parse(txtCantBebida.Text));
+                
 
                 try
                 {
@@ -182,6 +183,8 @@ namespace PedidosRapids.Vista
                     MessageBox.Show("Error: " + ex.Message);
                 }
             }
+
+            btnAggBebidaABD.IsChecked = false;
         }
 
         private void btnAggBebida1_Checked(object sender, RoutedEventArgs e)
@@ -473,6 +476,8 @@ namespace PedidosRapids.Vista
             lblCantidadBebida.Visibility = Visibility.Hidden;
             txtCantBebida.Visibility = Visibility.Hidden;
             btnAggBebidaABD.Visibility = Visibility.Hidden;
+            lblId_Bebida.Visibility = Visibility.Hidden;
+            txtId_Bebida.Visibility = Visibility.Hidden;
         }
 
         private void OcultarMenu()
@@ -543,6 +548,8 @@ namespace PedidosRapids.Vista
             btnAdminUsers.Visibility = Visibility.Hidden;
             btnAdminBebida.Visibility= Visibility.Hidden;
             btnAggBebidaABD.Visibility = Visibility.Visible;
+            lblId_Bebida.Visibility = Visibility.Visible;
+            txtId_Bebida.Visibility = Visibility.Visible;
         }
         public class Categoria
         {
