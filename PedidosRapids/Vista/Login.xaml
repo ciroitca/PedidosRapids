@@ -178,7 +178,7 @@
                                  Width="200"
                                  VerticalContentAlignment="Center"
                                  Margin="0,5,0,0"/>
-                    <Button Content="INICIAR"  Margin="70,50,70,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.5,1.227" Click="Button_Click"/>
+                    <Button x:Name="btnIniciarSesion" Content="INICIAR"  Margin="70,50,70,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.5,1.227" Click="IniciarSesion_Click"/>
 
                 </StackPanel>
              </Grid>

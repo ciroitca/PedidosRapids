@@ -46,7 +46,7 @@ namespace PedidosRapids.Vista
           
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void IniciarSesion_Click(object sender, RoutedEventArgs e)
         {
             // lógica de validación de usuario
             string usuario = txtUsuario.Text;
