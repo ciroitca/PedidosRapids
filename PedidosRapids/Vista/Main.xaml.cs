@@ -357,6 +357,7 @@ namespace PedidosRapids.Vista
             btnAdminEm.Visibility = Visibility.Hidden;
             btnAdminUsers.Visibility = Visibility.Hidden;
             btnMainMenu.Visibility = Visibility.Hidden;
+            btnEditUser.Visibility = Visibility.Hidden;
         }
 
         private void OcultarParaAgOrden()
