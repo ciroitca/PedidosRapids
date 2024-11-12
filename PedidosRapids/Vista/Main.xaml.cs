@@ -462,6 +462,17 @@ namespace PedidosRapids.Vista
             btnEliminarBebida.Visibility = Visibility.Hidden;
             btnEditBebida.Visibility = Visibility.Hidden;
             btnAggBebida.Visibility = Visibility.Hidden;
+            lblAggBebida1.Visibility = Visibility.Hidden;
+            lblNombreBebida.Visibility = Visibility.Hidden;
+            txtNameBebida1.Visibility = Visibility.Hidden;
+            lblAlcoholicaB.Visibility = Visibility.Hidden;
+            rdSiBebida1.Visibility = Visibility.Hidden;
+            rdNoBebida1.Visibility = Visibility.Hidden;
+            lblPrecioBebida.Visibility = Visibility.Hidden;
+            txtPriceBebida.Visibility = Visibility.Hidden;
+            lblCantidadBebida.Visibility = Visibility.Hidden;
+            txtCantBebida.Visibility = Visibility.Hidden;
+            btnAggBebidaABD.Visibility = Visibility.Hidden;
         }
 
         private void OcultarMenu()
