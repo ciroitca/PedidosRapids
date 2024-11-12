@@ -53,10 +53,12 @@ namespace PedidosRapids.Vista
             string usuario = txtUsuario.Text;
             string contraseña = txtContra.Password;
 
+         
             // Validamos las credenciales
             UsuarioInfo info = ValidarCredenciales(usuario, contraseña);
 
             if (info != null)
+
             {
                 // Si las credenciales son válidas, verificamos el usuario específico
                 if (info.NombreUsuario == "admin" && info.ContrasenaUsuario == "admin1234")
@@ -66,6 +68,7 @@ namespace PedidosRapids.Vista
                     this.Close();
                 }
             }
+
             else
             {
                 MessageBox.Show("Credenciales no válidas", "Error",
@@ -79,6 +82,7 @@ namespace PedidosRapids.Vista
             UsuarioInfo usuarioInfo = null;
 
             using (SqlConnection conexion = new SqlConnection(conexionString))
+
             {
                 try
                 {
