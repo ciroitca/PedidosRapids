@@ -424,7 +424,16 @@ namespace PedidosRapids.Vista
             grdPlatos.Visibility = Visibility.Hidden;
             btnAgregarPlatos.Visibility = Visibility.Hidden;
             btnVolverPlatos.Visibility = Visibility.Visible;
-            
+            lblCategoria.Visibility = Visibility.Visible;
+            txtCategoria.Visibility = Visibility.Visible;
+            lblDescripcion.Visibility = Visibility.Visible;
+            txtDescripcion.Visibility = Visibility.Visible;
+            lblPlatillo.Visibility = Visibility.Visible;
+            txtPlatillo.Visibility = Visibility.Visible;
+            lblTiempo.Visibility = Visibility.Visible;
+            txtTiempo.Visibility = Visibility.Visible;
+            btnInsertarPlatos.Visibility = Visibility.Visible;
+
 
         }
 
@@ -438,7 +447,22 @@ namespace PedidosRapids.Vista
             btnAgOrden.IsChecked = false;
             OcultarMenu();
             StPanel.Visibility = Visibility.Visible;
+            lblCategoria.Visibility = Visibility.Hidden;
+            txtCategoria.Visibility = Visibility.Hidden;
+            lblDescripcion.Visibility = Visibility.Hidden;
+            txtDescripcion.Visibility = Visibility.Hidden;
+            lblPlatillo.Visibility = Visibility.Hidden;
+            txtPlatillo.Visibility = Visibility.Hidden;
+            lblTiempo.Visibility = Visibility.Hidden;
+            txtTiempo.Visibility = Visibility.Hidden;  
+            btnInsertarPlatos.Visibility =(Visibility) Visibility.Hidden;
+            
 
+        }
+
+        private void btnInsertarPlatos_click(object sender, RoutedEventArgs e)
+        { 
+            //BOTON INSERTAR PLATOS ACÁ, AGREGAR LA LOGICA        
         }
 
         private void btnUser_Checked(object sender, RoutedEventArgs e)
