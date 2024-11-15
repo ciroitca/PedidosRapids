@@ -11,13 +11,12 @@
         AllowsTransparency="True"
         >
 
-
+        <!-- ESTILO DE VENTANA MAIN //// Configuración Visual -->
 
     <Border CornerRadius="15">
 
 
         <Border BorderThickness="2" Opacity="0.95" CornerRadius="15">
-
 
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,2">
@@ -33,9 +32,21 @@
                     <ColumnDefinition Width="*"/>
                     <!-- Contenido -->
                 </Grid.ColumnDefinitions>
+                
+                
 
-                <!-- Menú Lateral -->
-                <Border CornerRadius="10,0,0,10"
+    <!-- MENÚ LATERAL //// Configuración Visual -->
+                
+        <!-- CONFIGURACIÓN DEL BORDE /// EFECTO GRADIENTE, DOS COLORES -->
+
+            <!-- BORDES DEL GRID DE MENÚ -->
+                
+                
+                
+                
+                
+
+                <Border CornerRadius="10,0,0,10" 
                         Grid.Column="0">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
@@ -45,8 +56,7 @@
 
                     <StackPanel x:Name ="StPanel" Visibility ="Visible">
 
-                        <!-- LOGO -->
-
+            <!-- LOGO -->
                         <StackPanel Orientation="Horizontal"
                                     Height="100"
                                     Margin="10,15,0,40">
@@ -57,10 +67,16 @@
                                        FontWeight="Bold"
                                        ><Run Text="RAPID"/><LineBreak/><Run Text="PLUS"/></TextBlock>
                         </StackPanel>
+    
+                        
+                        
+                        
+        <!--***  BOTONES - - MENÚ PRINCIPAL  ***-->
+                        
 
-                        <!--Menu Buttons-->
+                    
 
-                        <!--Boton USUARIO-->
+                    <!--Boton USUARIO-->
                         <RadioButton x:Name="btnUser" Style="{StaticResource MenuButton}"
                                  Tag="{StaticResource color8}"
                                  IsChecked="False"
@@ -72,9 +88,9 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <!--Boton Salir-->
+                    <!--Boton Salir-->
 
-                        <!--Boton PLATOS-->
+                    <!--Boton PLATOS-->
                         <RadioButton x:Name="btnPlatos" Style="{StaticResource MenuButton}"
                                  Tag="{StaticResource color8}"
                                  Command="{Binding ShowCustomerViewCommand}" Checked="btnPlatos_Checked">
@@ -84,7 +100,7 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <!--Boton ORDENES-->
+                    <!--Boton ORDENES-->
 
                         <RadioButton x:Name="btnOrdenes" Style="{StaticResource MenuButton}"
                                 Tag="{StaticResource color8}"
@@ -95,7 +111,7 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <!--Boton MESA-->
+                    <!--Boton MESA-->
 
                         <RadioButton x:Name="btnMesas" Style="{StaticResource MenuButton}"
                                  Tag="{StaticResource color8}"
@@ -106,7 +122,7 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <!--Boton CAMBIAR DE USUARIO-->
+                    <!--Boton CAMBIAR DE USUARIO-->
 
                         <RadioButton x:Name="btnCambiarUsuario" Style="{StaticResource MenuButton}"
                                  Tag="{StaticResource color8}"
@@ -117,7 +133,7 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <!--Boton PLATOS-->
+                    <!--Boton PLATOS-->
                         <RadioButton x:Name="btnSalir"  Style="{StaticResource MenuButton}"
                               Tag="{StaticResource color8}"
                               Command="{Binding ShowCustomerViewCommand}" Checked="btnSalir_Checked">
@@ -134,6 +150,8 @@
                                 <snack:IconImage Icon="DoorOpen" Style="{StaticResource menuButtonIcon}" Visibility="Hidden"/>
                                 <TextBlock Text="SALIR" Style="{StaticResource menuButtonText}"/>
                             </StackPanel>
+                            
+                            
                         </RadioButton>
 
 
@@ -142,12 +160,9 @@
                 </Border>
 
 
-
-                <!--Main Section-->
-
-                <!-- ESTILO DEL GRID  -->
+              <!-- ESTILO DEL GRID  -->
                 <Border CornerRadius="0,10,10,0"
-                    Grid.Column="1" RenderTransformOrigin="0.499,0.562" Visibility="Visible">
+                     Grid.Column="1" RenderTransformOrigin="0.499,0.562" Visibility="Visible">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
                             <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0"/>
@@ -156,9 +171,13 @@
                     </Border.Background>
 
 
-                    <!-- ***C O N T E N I D O*** -->
+
+                    <!-- ***  CONTENIDO DE CADA SECCIÓN *** -->
 
                     <Grid>
+                        
+        <!--///// CONTENIDO SECCIÓN MENÚ ** PLATOS ** \\\\\-->                                                                       
+        <!-- *** ELEMENOS A VISUALIZAR EN ESTA SECCIÓN *** -->
 
                         <!-- BOTON -AGREGAR PLATOS- -->
 
@@ -287,12 +306,21 @@
                                 <TextBlock Text="AGREGAR" Style="{StaticResource botonComunText}" FontSize="22"/>
                             </StackPanel>
                         </RadioButton>
+
+
+                        <!-- CONTENIDO / PLATOS -->
                         <DataGrid x:Name="grdPlatos1" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" Visibility="Hidden"/>
                         <Label x:Name="lblPlatos1" Content="PLATOS" HorizontalAlignment="Center" Height="51" Margin="0,66,0,0" VerticalAlignment="Top" Width="144" FontSize="36" Visibility="Hidden"/>
+
+                        <!-- CONTENIDO / ORDENES -->
                         <Label x:Name="lblOrden1" Content="ORDENES" HorizontalAlignment="Center" Height="51" Margin="0,66,0,0" VerticalAlignment="Top" Width="176" FontSize="36" Visibility="Hidden"/>
                         <DataGrid x:Name="grdOrdenes1" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" av:ItemsSource="{av:SampleData ItemCount=5}" Visibility="Hidden"/>
+
+                        <!-- CONTENIDO / MESAS -->
                         <Label x:Name="lblMesas1" Content="MESAS DISPONIBLES" HorizontalAlignment="Center" Height="61" Margin="0,66,0,0" VerticalAlignment="Top" Width="342" FontSize="36" Visibility="Hidden"/>
                         <DataGrid x:Name="grdMesas1" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" av:ItemsSource="{av:SampleData ItemCount=5}" Visibility="Hidden"/>
+
+                        <!-- CONTENIDO / USUARIO -->
                         <Label x:Name="lblNUserEdit1" Content="NOMBRE DE USUARIO:" HorizontalAlignment="Left" Height="51" Margin="118,238,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
                         <Label x:Name="lblEdUser1" Content="EDITAR USUARIO" HorizontalAlignment="Left" Height="50" Margin="344,64,0,0" VerticalAlignment="Top" Width="284" FontSize="36" Visibility="Hidden"/>
                         <TextBox x:Name="txtUserEd1" HorizontalAlignment="Left" Height="30" Margin="358,238,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" IsReadOnly="True" Visibility="Hidden"/>
@@ -319,7 +347,7 @@
                         <Label x:Name="lblId_Bebida" Content="ID de la Bebida:" HorizontalAlignment="Left" Height="51" Margin="133,130,0,0" VerticalAlignment="Top" Width="170" FontSize="22" Visibility="Hidden"/>
                         <TextBox x:Name="txtId_Bebida" HorizontalAlignment="Left" Height="32" Margin="303,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="233" Visibility="Hidden"/>
 
-                        <!-- SECCION AGREGAR PLATOS -->
+                        <!-- FORMULARIO PARA AGREGAR PLATOS -->
 
                         <Label x:Name="lblCategoria" Content="Categoria:" HorizontalAlignment="Left" Height="51" Margin="50,130,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Foreground="{StaticResource titleColor1}" Visibility="Hidden"/>
                         <TextBox x:Name="txtCategoria" HorizontalAlignment="Left" Height="35" Margin="269,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="300" Visibility="Hidden"/>
