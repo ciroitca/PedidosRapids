@@ -254,7 +254,9 @@ namespace PedidosRapids.Vista
                     {
                         datosBebidas.Add(new Bebidas
                         {
-                            Bebida = reader["Bebida"].ToString()
+                            Bebida = reader["Bebida"].ToString(),
+                            Alcoholica = reader["Alcoholica"].ToString(),
+                            Id_Producto = reader["Id_Producto"].ToString()
                         });
                     }
 
