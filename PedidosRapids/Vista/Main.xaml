@@ -332,6 +332,7 @@
 
                         <Label x:Name="lblDescripcion" Content="Comentarios:" HorizontalAlignment="Left" Height="51" Margin="50,430,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Foreground="{StaticResource titleColor1}" Visibility="Hidden" />
                         <TextBox x:Name="txtDescripcion" HorizontalAlignment="Left" Height="35" Margin="269,437,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="552" Visibility="Hidden"/>
+                        <Label Content="" HorizontalAlignment="Left" Height="103" Margin="271,70,0,0" VerticalAlignment="Top" Width="251"/>
 
 
                     </Grid>
