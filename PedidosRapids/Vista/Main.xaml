@@ -87,9 +87,7 @@
                                 <!--Yo le puse usuario pero debe ser según el usuario que se conecte así es el contenido que se muestra-->
                             </StackPanel>
                         </RadioButton>
-
-                    <!--Boton Salir-->
-
+                    
                     <!--Boton PLATOS-->
                         <RadioButton x:Name="btnPlatos" Style="{StaticResource MenuButton}"
                                  Tag="{StaticResource color8}"
@@ -97,6 +95,17 @@
                             <StackPanel Orientation="Horizontal">
                                 <snack:IconImage Icon="BowlFood" Style="{StaticResource menuButtonIcon}"/>
                                 <TextBlock Text="PLATOS" Style="{StaticResource menuButtonText}"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                    <!--Boton BEBIDAS-->
+
+                        <RadioButton x:Name="btnEditBebida" Style="{StaticResource MenuButton}"
+                                  Tag="{StaticResource color8}"
+                                  Command="{Binding ShowCustomerViewCommand}" Checked="btnAdminBebida_Checked">
+                            <StackPanel Orientation="Horizontal">
+                                <snack:IconImage Icon="MartiniGlassCitrus" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="BEBIDAS" Style="{StaticResource menuButtonText}"/>
                             </StackPanel>
                         </RadioButton>
 
@@ -278,16 +287,7 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <!--BOTON PARA EDITAR BEBIDAS-->
-                        <RadioButton x:Name="btnEditBebida"  Style="{StaticResource ComunButton}"
-                            Tag="{StaticResource color3}"
-                            Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="397,564,0,0" FontSize="36" Visibility="Hidden" >
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
-                                <TextBlock Text="EDITAR BEBIDA" Style="{StaticResource botonComunText}" FontSize="22"/>
-                            </StackPanel>
-                        </RadioButton>
-
-
+                        
                         <!--BOTON PARA EDITAR BEBIDAS-->
                         <RadioButton x:Name="btnEliminarBebida"  Style="{StaticResource ComunButton}"
                             Tag="{StaticResource color3}"
@@ -316,6 +316,14 @@
                         <Label x:Name="lblOrden1" Content="ORDENES" HorizontalAlignment="Center" Height="51" Margin="0,66,0,0" VerticalAlignment="Top" Width="176" FontSize="36" Visibility="Hidden"/>
                         <DataGrid x:Name="grdOrdenes1" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" av:ItemsSource="{av:SampleData ItemCount=5}" Visibility="Hidden"/>
 
+                        <!-- CONTENIDO / BEBIDAS -->
+                             <!-- PRIMERA VISTA -->
+                        <Label x:Name="lblBebida1s" Content="BEBIDAS" HorizontalAlignment="Center" Height="51" Margin="0,66,0,0" VerticalAlignment="Top" Width="176" FontSize="36" Visibility="Hidden"/>
+                        <DataGrid x:Name="grdBebidas1" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" av:ItemsSource="{av:SampleData ItemCount=5}" Visibility="Hidden"/>
+                             <!-- VISTA AL PRESIONAR BOTÓN AGREGAR BEBIDA -->
+                        <Label x:Name="lblAggBebida1" Content="AGREGAR BEBIDA" HorizontalAlignment="Left" Height="51" Margin="269,45,0,0" VerticalAlignment="Top" Width="396" FontSize="36" Visibility="Hidden"/>
+                        <Label x:Name="lblAdminBebidas1" Content="ADMINISTRAR BEBIDAS" HorizontalAlignment="Left" Height="51" Margin="269,45,0,0" VerticalAlignment="Top" Width="396" FontSize="36" Visibility="Hidden"/>
+
                         <!-- CONTENIDO / MESAS -->
                         <Label x:Name="lblMesas1" Content="MESAS DISPONIBLES" HorizontalAlignment="Center" Height="61" Margin="0,66,0,0" VerticalAlignment="Top" Width="342" FontSize="36" Visibility="Hidden"/>
                         <DataGrid x:Name="grdMesas1" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" av:ItemsSource="{av:SampleData ItemCount=5}" Visibility="Hidden"/>
@@ -329,10 +337,7 @@
                         <Label x:Name="lblNPassEd1" Content="NUEVO CONTRASEÑA:" HorizontalAlignment="Left" Height="51" Margin="118,419,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
                         <TextBox x:Name="txtNPass1" HorizontalAlignment="Left" Height="30" Margin="358,419,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
                         <Label x:Name="lblAdmin1" Content="ADMINISTRADOR" HorizontalAlignment="Left" Height="48" Margin="269,45,0,0" VerticalAlignment="Top" Width="292" FontSize="36" Visibility="Hidden"/>
-                        <Label x:Name="lblAggBebida1" Content="AGREGAR BEBIDA" HorizontalAlignment="Left" Height="51" Margin="269,45,0,0" VerticalAlignment="Top" Width="396" FontSize="36" Visibility="Hidden"/>
-                        <Label x:Name="lblAdminBebidas1" Content="ADMINISTRAR BEBIDAS" HorizontalAlignment="Left" Height="51" Margin="269,45,0,0" VerticalAlignment="Top" Width="396" FontSize="36" Visibility="Hidden"/>
-                        <DataGrid x:Name="grdBebidas1" HorizontalAlignment="Center" Height="320" Margin="0,168,0,0" VerticalAlignment="Top" Width="846" av:ItemsSource="{av:SampleData ItemCount=5}" Visibility="Hidden"/>
-
+                       
                         <!--Formulario para agreagar bebida-->
 
                         <Label x:Name="lblNombreBebida" Content="Nombre de la Bebida:" HorizontalAlignment="Left" Height="51" Margin="72,210,0,0" VerticalAlignment="Top" Width="226" FontSize="22" Visibility="Hidden"/>
