@@ -482,9 +482,6 @@ namespace PedidosRapids.Vista
             txtId_Bebida.Visibility = Visibility.Hidden;
         }
 
-        private void OcultarMenu()
-        {  StPanel.Visibility = Visibility.Hidden; }
-
         private void OcultarParaAgOrden()
         {
             lblOrden1.Visibility = Visibility.Hidden;
@@ -599,7 +596,10 @@ namespace PedidosRapids.Vista
         private void btnAgregarPlatos_click(object sender, RoutedEventArgs e)
         {
             OcultarParaPlatos();
-            OcultarMenu();
+            OcultarParaAgOrden();
+            OcultarParaMesas();
+            OcultarParaPlatos();
+            OcultarParaOrdenes();
             grdPlatos1.Visibility = Visibility.Hidden;
             btnAgregarPlatos.Visibility = Visibility.Hidden;
             btnVolverPlatos.Visibility = Visibility.Visible;
@@ -618,13 +618,13 @@ namespace PedidosRapids.Vista
 
         private void btnVolPlatos_Click(object sender, RoutedEventArgs e)
         {
+            MostrarMenu();
             OcultarParaPlatos();
             lblPlatos1.Visibility = Visibility.Visible;
             grdPlatos1.Visibility = Visibility.Visible;
             btnAgregarPlatos.Visibility = Visibility.Visible;
             btnVolverPlatos.Visibility = Visibility.Hidden;
             btnAgOrden.IsChecked = false;
-            OcultarMenu();
             StPanel.Visibility = Visibility.Visible;
             lblCategoria.Visibility = Visibility.Hidden;
             txtCategoria.Visibility = Visibility.Hidden;
@@ -634,9 +634,8 @@ namespace PedidosRapids.Vista
             txtPlatillo.Visibility = Visibility.Hidden;
             lblTiempo.Visibility = Visibility.Hidden;
             txtTiempo.Visibility = Visibility.Hidden;  
-            btnInsertarPlatos.Visibility =(Visibility) Visibility.Hidden;
-            
-
+            btnInsertarPlatos.Visibility =(Visibility) Visibility.Hidden;     
+                       
         }
 
         private void btnInsertarPlatos_click(object sender, RoutedEventArgs e)

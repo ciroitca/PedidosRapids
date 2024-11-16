@@ -149,11 +149,18 @@
                             <StackPanel Orientation="Horizontal">
                                 <snack:IconImage Icon="DoorOpen" Style="{StaticResource menuButtonIcon}" Visibility="Hidden"/>
                                 <TextBlock Text="SALIR" Style="{StaticResource menuButtonText}"/>
-                            </StackPanel>
-                            
+                            </StackPanel>                         
                             
                         </RadioButton>
 
+                        <RadioButton x:Name="btnVolverPlatos"  Style="{StaticResource MenuButton}"
+                              Tag="{StaticResource color8}"
+                              Command="{Binding ShowCustomerViewCommand}" Checked="btnVolPlatos_Click" Visibility="Hidden">
+                            <StackPanel Orientation="Horizontal">
+                                <snack:IconImage Icon="DoorOpen" Style="{StaticResource menuButtonIcon}" Visibility="Hidden"/>
+                                <TextBlock Text="SALIR" Style="{StaticResource menuButtonText}"/>
+                            </StackPanel>
+                        </RadioButton>
 
                     </StackPanel>
 
@@ -213,14 +220,7 @@
 
                         <!-- BOTON -AGREGAR AGREGAR ORDEN- -->
 
-                        <RadioButton x:Name="btnVolverPlatos"  Style="{StaticResource ComunButton}"
-                                  Tag="{StaticResource color3}"
-                                  Command="{Binding ShowCustomerViewCommand}" Checked="btnVolPlatos_Click" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="50,0,400,50"
-                                  Visibility="Hidden">
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
-                                <TextBlock Text="VOLVER" Style="{StaticResource botonComunText}"/>
-                            </StackPanel>
-                        </RadioButton>
+                       
 
                         <!--BOTON PARA AGREGAR LA ORDEN-->
                         <RadioButton x:Name="btnAgOrdenBD"  Style="{StaticResource ComunButton}"
