@@ -394,6 +394,7 @@ namespace PedidosRapids.Vista
             txtNUserName1.Visibility = Visibility.Visible;
             txtNPass1.Visibility = Visibility.Visible;
             btnEditUser.Visibility = Visibility.Visible;
+            btnEditBebida.Visibility = Visibility.Hidden;
             OcultarParaAgOrden();
             OcultarParaMesas();
             OcultarParaPlatos();
@@ -408,6 +409,10 @@ namespace PedidosRapids.Vista
             btnAgOrden.Visibility = Visibility.Hidden;
             lblMesas1.Visibility = Visibility.Hidden;
             grdMesas1.Visibility = Visibility.Hidden;
+            lblAdminBebidas1.Visibility = Visibility.Hidden;
+            grdBebidas1.Visibility = Visibility.Hidden;
+            btnEliminarBebida.Visibility = Visibility.Hidden;
+            btnAggBebida.Visibility = Visibility.Hidden;
         }
         //Funcion para ocultar todo excepto lo que se debe mostrar para Platos
         private void OcultarParaOrdenes()
@@ -417,6 +422,10 @@ namespace PedidosRapids.Vista
             lblPlatos1.Visibility = Visibility.Hidden;
             grdPlatos1.Visibility = Visibility.Hidden;
             btnAgregarPlatos.Visibility = Visibility.Hidden;
+            lblAdminBebidas1.Visibility = Visibility.Visible;
+            grdBebidas1.Visibility = Visibility.Hidden;
+            btnEliminarBebida.Visibility = Visibility.Hidden;
+            btnAggBebida.Visibility = Visibility.Hidden;
         }
 
         private void OcultarParaMesas()
@@ -427,6 +436,10 @@ namespace PedidosRapids.Vista
             lblPlatos1.Visibility = Visibility.Hidden;
             grdPlatos1.Visibility = Visibility.Hidden;
             btnAgregarPlatos.Visibility = Visibility.Hidden;
+            lblAdminBebidas1.Visibility = Visibility.Visible;
+            grdBebidas1.Visibility = Visibility.Hidden;
+            btnEliminarBebida.Visibility = Visibility.Hidden;
+            btnAggBebida.Visibility = Visibility.Hidden;
         }
 
         private void MostrarMenu()
@@ -480,6 +493,7 @@ namespace PedidosRapids.Vista
             btnAggBebidaABD.Visibility = Visibility.Hidden;
             lblId_Bebida.Visibility = Visibility.Hidden;
             txtId_Bebida.Visibility = Visibility.Hidden;
+            btnEditBebida.Visibility = Visibility.Visible;
         }
 
         private void OcultarParaAgOrden()
@@ -499,6 +513,10 @@ namespace PedidosRapids.Vista
             btnSalir.Visibility = Visibility.Hidden;
             btnUser.Visibility = Visibility.Hidden;
             btnOrdenes.Visibility = Visibility.Hidden;
+            lblAdminBebidas1.Visibility = Visibility.Hidden;
+            grdBebidas1.Visibility = Visibility.Hidden;
+            btnEliminarBebida.Visibility = Visibility.Hidden;
+            btnAggBebida.Visibility = Visibility.Hidden;
         }
 
         private void MostrarAdBebida()
@@ -508,7 +526,6 @@ namespace PedidosRapids.Vista
             btnEliminarBebida.Visibility = Visibility.Visible;
             btnEditBebida.Visibility = Visibility.Visible;
             btnAggBebida.Visibility= Visibility.Visible;
-            OcultarParaOrdenes();
         }
 
         private void MostrarAggBebida()
