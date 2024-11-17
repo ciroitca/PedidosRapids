@@ -281,7 +281,7 @@
                         <!--BOTON PARA AGREGAR BEBIDAS-->
                         <RadioButton x:Name="btnAggBebida"  Style="{StaticResource ComunButton}"
                                 Tag="{StaticResource color3}"
-                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="608,564,0,0" FontSize="36" Checked="btnAggBebida_Checked" Visibility="Hidden" >
+                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="608,564,0,0" FontSize="36" Checked="btnAggBebida_Checked" Visibility="Hidden"  >
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
                                 <TextBlock Text="AGREGAR BEBIDA" Style="{StaticResource botonComunText}" FontSize="22"/>
                             </StackPanel>
@@ -301,7 +301,7 @@
                         <!--BOTON PARA EDITAR BEBIDAS-->
                         <RadioButton x:Name="btnAggBebidaABD"  Style="{StaticResource ComunButton}"
                                Tag="{StaticResource color3}"
-                               Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="648,646,0,0" FontSize="36" Checked="btnAggBebidaABD_Checked" Visibility="Hidden" >
+                               Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="633,614,0,0" FontSize="36" Checked="btnAggBebidaABD_Checked" Visibility="Hidden" >
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
                                 <TextBlock Text="AGREGAR" Style="{StaticResource botonComunText}" FontSize="22"/>
                             </StackPanel>
