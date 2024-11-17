@@ -107,8 +107,8 @@
                                 <snack:IconImage Icon="MartiniGlassCitrus" Style="{StaticResource menuButtonIcon}"/>
                                 <TextBlock Text="BEBIDAS" Style="{StaticResource menuButtonText}"/>
                             </StackPanel>
-                        </RadioButton>
-
+                        </RadioButton>                  
+                        
                     <!--Boton ORDENES-->
 
                         <RadioButton x:Name="btnOrdenes" Style="{StaticResource MenuButton}"
@@ -142,7 +142,7 @@
                             </StackPanel>
                         </RadioButton>
 
-                    <!--Boton PLATOS-->
+                    <!--BOTON SALIR MENU LATERAL-->
                         <RadioButton x:Name="btnSalir"  Style="{StaticResource MenuButton}"
                               Tag="{StaticResource color8}"
                               Command="{Binding ShowCustomerViewCommand}" Checked="btnSalir_Checked">
@@ -151,6 +151,23 @@
                                 <TextBlock Text="SALIR" Style="{StaticResource menuButtonText}"/>
                             </StackPanel>
                         </RadioButton>
+                        
+                        
+                        <!-- * BOTONES DE REGRESAR A LA VENTANA PRINCIPAL * -->
+                        
+
+                        <!--Boton SALIR AGREGAR BEBIDAS-->
+
+                        <RadioButton x:Name="btnSalirMenuAggBebidas"  Style="{StaticResource MenuButton}"
+                              Tag="{StaticResource color8}"
+                              Command="{Binding ShowCustomerViewCommand}" Checked="btnSalirAggBebidas_Checked" Visibility="Hidden">
+                            <StackPanel Orientation="Horizontal">
+                                <snack:IconImage Icon="DoorOpen" Style="{StaticResource menuButtonIcon}" />
+                                <TextBlock Text="SALIR" Style="{StaticResource menuButtonText}"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <!--Boton SALIR USUARIO-->
 
                         <RadioButton x:Name="btnMainMenu"  Style="{StaticResource MenuButton}"
                               Tag="{StaticResource color8}"
@@ -161,6 +178,8 @@
                             </StackPanel>                         
                             
                         </RadioButton>
+
+                    <!--Boton SALIR AGREGAR PLATOS-->
 
                         <RadioButton x:Name="btnVolverPlatos"  Style="{StaticResource MenuButton}"
                               Tag="{StaticResource color8}"
@@ -365,7 +384,6 @@
 
                         <Label x:Name="lblDescripcion" Content="Comentarios:" HorizontalAlignment="Left" Height="51" Margin="50,430,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Foreground="{StaticResource titleColor1}" Visibility="Hidden" />
                         <TextBox x:Name="txtDescripcion" HorizontalAlignment="Left" Height="35" Margin="269,437,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="552" Visibility="Hidden"/>
-                        <Label Content="" HorizontalAlignment="Left" Height="103" Margin="271,70,0,0" VerticalAlignment="Top" Width="251"/>
 
 
                     </Grid>
