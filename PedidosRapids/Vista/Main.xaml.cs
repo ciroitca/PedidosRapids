@@ -195,6 +195,11 @@ namespace PedidosRapids.Vista
             btnAggBebidaABD.IsChecked = false;
         }
 
+        private void btnAggUserBD_Checked(object sender, RoutedEventArgs e)
+        {
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+        }
+
         private void btnAggBebida1_Checked(object sender, RoutedEventArgs e)
         {
             MostrarAggBebida();
@@ -207,6 +212,36 @@ namespace PedidosRapids.Vista
             btnAdminBebida.IsChecked = false;
             MostrarAdBebida();
             OcultarFormAgregarBebida();  
+        }
+
+        private void btnAdminEm_Checked(object sender, RoutedEventArgs e)
+        {
+            MostrarAdEmpleado();
+        }
+
+        private void btnAdminUsers_Checked(object sender, RoutedEventArgs e)
+        {
+            MostrarAdUsers();
+        }
+
+        private void btnAggEmpleado_Checked(object sender, RoutedEventArgs e)
+        {
+            MostrarAggEmpleado();
+        }
+
+        private void btnEditEmpleado_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAggUser_Checked(object sender, RoutedEventArgs e)
+        {
+            MostrarAggUser();
+        }
+
+        private void btnEliminarEmpleado_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
 
         public void CargarMesas()
@@ -516,7 +551,25 @@ namespace PedidosRapids.Vista
             lblId_Bebida.Visibility = Visibility.Hidden;
             txtId_Bebida.Visibility = Visibility.Hidden;
             btnEditBebida.Visibility = Visibility.Visible;
+            lblAdministrarEmpleados.Visibility = Visibility.Hidden;
+            grdEmpleados.Visibility = Visibility.Hidden;
+            btnAdminEm.IsChecked = false;
+            lblAdministrarUser.Visibility = Visibility.Hidden;
+            grdAdUsers.Visibility = Visibility.Hidden;
+            btnAdminUsers.IsChecked = false;
+            btnAggEmpleado.Visibility = Visibility.Hidden;
+            btnEditEmpleado.Visibility = Visibility.Hidden;
+            btnAggUser.Visibility = Visibility.Hidden;
+            btnEditUser.Visibility = Visibility.Hidden;
+            btnEliminarEmpleado.Visibility = Visibility.Hidden;
+            lblNuevoUser.Visibility = Visibility.Hidden;
+            lblAggUser.Visibility = Visibility.Hidden;
+            txtAggUser.Visibility = Visibility.Hidden;
+            lblContrasenia.Visibility = Visibility.Hidden;
+            txtContrasenia.Visibility = Visibility.Hidden;
+            btnAggUserBD.Visibility = Visibility.Hidden;
             OcultarFormEditBebidas();
+
         }
 
         private void OcultarParaAgOrden()
@@ -560,6 +613,64 @@ namespace PedidosRapids.Vista
             lblMesas1.Visibility = Visibility.Hidden;
             grdMesas1.Visibility = Visibility.Hidden;
             OcultarFormEditBebidas();
+        }
+
+        private void MostrarAdEmpleado()
+        {
+            lblAdministrarEmpleados.Visibility = Visibility.Visible;
+            grdEmpleados.Visibility = Visibility.Visible;
+            btnAggEmpleado.Visibility = Visibility.Visible;
+            btnEditEmpleado.Visibility = Visibility.Visible;
+            btnEliminarEmpleado.Visibility = Visibility.Visible;
+            OcultarParaEmpleado();
+        }
+
+        private void OcultarParaEmpleado()
+        {
+            lblAdminBebidas1.Visibility = Visibility.Hidden;
+            btnAdminBebida.Visibility = Visibility.Hidden;
+            btnAdminEm.Visibility = Visibility.Hidden;
+            btnAdminUsers.Visibility = Visibility.Hidden;
+            
+        }
+
+        private void MostrarAdUsers()
+        {
+            lblAdministrarUser.Visibility = Visibility.Visible;
+            grdAdUsers.Visibility = Visibility.Visible;
+            btnAggUser.Visibility = Visibility.Visible;
+            OcultarParaUser();
+        }
+
+        private void OcultarParaUser()
+        {
+            lblAdminBebidas1.Visibility = Visibility.Hidden;
+            btnAdminBebida.Visibility = Visibility.Hidden;
+            btnAdminEm.Visibility = Visibility.Hidden;
+            btnAdminUsers.Visibility = Visibility.Hidden;
+        }
+
+        private void OcultarUser()
+        {
+            lblAdministrarUser.Visibility = Visibility.Hidden;
+            grdAdUsers.Visibility = Visibility.Hidden;
+            btnAggUser.Visibility = Visibility.Hidden;
+        }
+
+        private void MostrarAggEmpleado()
+        {
+
+        }
+
+        private void MostrarAggUser()
+        {
+            lblNuevoUser.Visibility = Visibility.Visible;
+            lblAggUser.Visibility = Visibility.Visible;
+            txtAggUser.Visibility = Visibility.Visible;
+            lblContrasenia.Visibility = Visibility.Visible;
+            txtContrasenia.Visibility = Visibility.Visible;
+            btnAggUserBD.Visibility = Visibility.Visible;
+            OcultarUser();
         }
 
         private void MostrarAggBebida()
