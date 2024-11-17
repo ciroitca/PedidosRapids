@@ -1121,6 +1121,7 @@ namespace PedidosRapids.Vista
             btnEditarBebidaABD.Visibility = Visibility.Visible;
             btnVolverBebidas.Visibility = Visibility.Visible;
             lblAdminBebidas1.Visibility = Visibility.Hidden;
+            lblBebida1s.Visibility = Visibility.Hidden;
             grdBebidas1.Visibility = Visibility.Hidden;
             btnEliminarBebida.Visibility = Visibility.Hidden;
             btnEditBebida.Visibility = Visibility.Visible;
