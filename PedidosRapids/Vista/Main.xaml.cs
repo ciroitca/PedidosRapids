@@ -200,6 +200,7 @@ namespace PedidosRapids.Vista
 
         private void btnAdminBebida_Checked(object sender, RoutedEventArgs e)
         {
+            btnAdminBebida.IsChecked = false;
             MostrarAdBebida();
         }
 
@@ -861,6 +862,7 @@ namespace PedidosRapids.Vista
 
         private void btnEditarBebida_Checked(object sender, RoutedEventArgs e)
         {
+            btnEditarBebida.IsChecked = false;
             if (grdBebidas1.SelectedItem == null)
             {
                 MessageBox.Show("Por favor, seleccione una bebida para editar.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -868,7 +870,14 @@ namespace PedidosRapids.Vista
             }
 
             var bebidaSeleccionada = (Bebidas)grdBebidas1.SelectedItem;
-
+            btnEditarBebidaABD.Visibility = Visibility.Visible;
+            btnVolverBebidas.Visibility = Visibility.Visible;
+            lblAdminBebidas1.Visibility = Visibility.Hidden;
+            grdBebidas1.Visibility = Visibility.Hidden;
+            btnEliminarBebida.Visibility = Visibility.Hidden;
+            btnEditBebida.Visibility = Visibility.Hidden;
+            btnAggBebida.Visibility = Visibility.Hidden;
+            btnEditarBebida.Visibility = Visibility.Hidden;
             // Llenar los TextBox con los datos de la bebida seleccionada
             txtIdBebida.Text = bebidaSeleccionada.Id_Bebida.ToString();
             txtIdProducto.Text = bebidaSeleccionada.Id_Producto.ToString();
