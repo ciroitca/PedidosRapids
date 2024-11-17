@@ -484,6 +484,8 @@ namespace PedidosRapids.Vista
             btnEliminarBebida.Visibility = Visibility.Hidden;
             grdBebidas1.Visibility = Visibility.Hidden;
             lblBebida1s.Visibility = Visibility.Hidden;
+            btnEditarBebida.Visibility = Visibility.Hidden;
+
         }
 
         private void OcultarParaBebidas()
@@ -513,10 +515,10 @@ namespace PedidosRapids.Vista
             lblPlatos1.Visibility = Visibility.Hidden;
             btnAggBebidaABD.Visibility = Visibility.Hidden;
             lblAdminBebidas1.Visibility = Visibility.Hidden;
-            grdBebidas1.Visibility = Visibility.Hidden;
-            btnEliminarBebida.Visibility = Visibility.Hidden;
-            btnAggBebida.Visibility = Visibility.Hidden;
-            btnEditarBebida.Visibility = Visibility.Hidden;
+            grdBebidas1.Visibility = Visibility.Visible;
+            btnEliminarBebida.Visibility = Visibility.Visible;
+            btnAggBebida.Visibility = Visibility.Visible;
+            btnEditarBebida.Visibility = Visibility.Visible;    
             OcultarFormEditBebidas();
          }
 
@@ -524,6 +526,7 @@ namespace PedidosRapids.Vista
         //Funcion para ocultar todo excepto lo que se debe mostrar para Platos
         private void OcultarParaOrdenes()
         {
+            btnEditarBebida.Visibility = Visibility.Hidden;
             lblMesas1.Visibility = Visibility.Hidden;
             grdMesas1.Visibility = Visibility.Hidden;
             lblPlatos1.Visibility = Visibility.Hidden;
@@ -673,6 +676,7 @@ namespace PedidosRapids.Vista
             grdBebidas1.Visibility = Visibility.Hidden;
             btnEliminarBebida.Visibility = Visibility.Hidden;
             btnAggBebida.Visibility = Visibility.Hidden;
+            
             OcultarFormEditBebidas();
         }
 
@@ -690,6 +694,7 @@ namespace PedidosRapids.Vista
             grdOrdenes1.Visibility = Visibility.Hidden;
             lblMesas1.Visibility = Visibility.Hidden;
             grdMesas1.Visibility = Visibility.Hidden;
+            
             OcultarParaBebidas();
             OcultarFormEditBebidas();
         }
@@ -788,7 +793,7 @@ namespace PedidosRapids.Vista
             lblAdminBebidas1.Visibility = Visibility.Hidden;
             grdBebidas1.Visibility = Visibility.Hidden;
             btnEliminarBebida.Visibility = Visibility.Hidden;
-            btnEditBebida.Visibility = Visibility.Visible;
+            btnEditBebida.Visibility = Visibility.Hidden;
             btnAggBebida.Visibility = Visibility.Hidden;
             btnAdminEm.Visibility = Visibility.Hidden;
             btnAdminUsers.Visibility = Visibility.Hidden;
@@ -801,6 +806,7 @@ namespace PedidosRapids.Vista
             lblOrden1.Visibility = Visibility.Hidden;
             grdOrdenes1.Visibility = Visibility.Hidden;
             btnAgOrden.Visibility = Visibility.Hidden;
+            btnVolverBebidas.Visibility = Visibility.Hidden;
             OcultarFormEditBebidas();
         }
 
@@ -819,8 +825,7 @@ namespace PedidosRapids.Vista
             txtCantBebida.Visibility = Visibility.Hidden;
             lblId_Bebida.Visibility = Visibility.Hidden;
             txtId_Bebida.Visibility = Visibility.Hidden;
-            btnAggBebidaABD.Visibility= Visibility.Hidden;
-
+            btnAggBebidaABD.Visibility= Visibility.Hidden;           
         }
         public class Categoria
         {
@@ -929,6 +934,7 @@ namespace PedidosRapids.Vista
             txtBebida.Visibility = Visibility.Hidden;
             lblAlcoholicaEdit.Visibility = Visibility.Hidden;
             chkAlcoholica.Visibility = Visibility.Hidden;
+            
         }
 
         private void btnInsertarPlatos_click(object sender, RoutedEventArgs e)
@@ -1216,6 +1222,7 @@ namespace PedidosRapids.Vista
 
         private void btnVolverBebidas_Checked(object sender, RoutedEventArgs e)
         {
+            btnAggBebida.Visibility = Visibility.Visible;
             btnEditarBebidaABD.Visibility = Visibility.Hidden;
             btnVolverBebidas.Visibility = Visibility.Hidden;
             OcultarFormEditBebidas();
