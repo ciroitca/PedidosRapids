@@ -115,7 +115,6 @@ namespace PedidosRapids.Vista
         }
         private void btnOrdenes_Checked(object sender, RoutedEventArgs e)
         {
-            //Restaurar
             OcultarFormAgregarBebida();
             OcultarParaPlatos();
             OcultarParaOrdenes();
