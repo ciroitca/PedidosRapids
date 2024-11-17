@@ -10,7 +10,7 @@
         MouseDown="Window_MouseDown">
     <Border CornerRadius="15">
         <Border.Background>
-            <ImageBrush ImageSource="/Img/LoginImage.jpg">
+            <ImageBrush ImageSource="/Img/loginImage.jpg">
                 <ImageBrush.RelativeTransform>
                     <RotateTransform Angle="-90" CenterX="0.5" CenterY="0.5"/>
                 </ImageBrush.RelativeTransform>
