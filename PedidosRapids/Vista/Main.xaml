@@ -262,21 +262,65 @@
                         <!--BOTON PARA ADMINISTRAR LOS USUARIOS-->
                         <RadioButton x:Name="btnAdminEm"  Style="{StaticResource ComunButton}"
                                 Tag="{StaticResource color3}"
-                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="118,268,0,0" FontSize="36" Visibility="Hidden">
+                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="118,268,0,0" FontSize="36" Visibility="Hidden" Checked="btnAdminEm_Checked">
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
                                 <TextBlock Text="ADMINISTRAR EMPLEADOS" Style="{StaticResource botonComunText}" FontSize="22"/>
                             </StackPanel>
                         </RadioButton>
 
+						<!--BOTON PARA AGREGAR LOS EMPLEADOS-->
+						<RadioButton x:Name="btnAggEmpleado"  Style="{StaticResource ComunButton}"
+                                Tag="{StaticResource color3}"
+                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,0,0,20" FontSize="36" Visibility="Hidden" Checked="btnAggEmpleado_Checked">
+							<StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+								<TextBlock Text="AGREGAR EMPLEADOS" Style="{StaticResource botonComunText}" FontSize="22"/>
+							</StackPanel>
+						</RadioButton>
+
+						<!--BOTON PARA EDITAR LOS EMPLEADOS-->
+						<RadioButton x:Name="btnEditEmpleado"  Style="{StaticResource ComunButton}"
+                                Tag="{StaticResource color3}"
+                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="20,0,0,20" FontSize="36" Visibility="Hidden" Checked="btnEditEmpleado_Checked">
+							<StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+								<TextBlock Text="EDITAR EMPLEADOS" Style="{StaticResource botonComunText}" FontSize="22"/>
+							</StackPanel>
+						</RadioButton>
+
+						<!--BOTON PARA EDITAR LOS EMPLEADOS-->
+						<RadioButton x:Name="btnEliminarEmpleado"  Style="{StaticResource ComunButton}"
+                                Tag="{StaticResource color3}"
+                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20,0,0,20" FontSize="36" Visibility="Hidden" Checked="btnEliminarEmpleado_Checked">
+							<StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+								<TextBlock Text="ELIMINAR EMPLEADOS" Style="{StaticResource botonComunText}" FontSize="22"/>
+							</StackPanel>
+						</RadioButton>
+						
                         <!--BOTON PARA ADMINISTRAR LOS USUARIOS-->
                         <RadioButton x:Name="btnAdminUsers"  Style="{StaticResource ComunButton}"
                                 Tag="{StaticResource color3}"
-                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="118,340,0,0" FontSize="36" Visibility="Hidden">
+                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="118,340,0,0" FontSize="36" Visibility="Hidden" Checked="btnAdminUsers_Checked">
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
                                 <TextBlock Text="ADMINISTRAR USUARIOS" Style="{StaticResource botonComunText}" FontSize="22"/>
-
                             </StackPanel>
                         </RadioButton>
+
+						<!--BOTON PARA AGREGAR LOS USUARIOS-->
+						<RadioButton x:Name="btnAggUser"  Style="{StaticResource ComunButton}"
+                                Tag="{StaticResource color3}"
+                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="20,0,0,20" FontSize="36" Visibility="Hidden" Checked="btnAggUser_Checked">
+							<StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+								<TextBlock Text="AGREGAR USUARIOS" Style="{StaticResource botonComunText}" FontSize="22"/>
+							</StackPanel>
+						</RadioButton>
+
+						<!--BOTON PARA AGREGAR LOS USUARIOS-->
+						<RadioButton x:Name="btnAggUserBD"  Style="{StaticResource ComunButton}"
+                                Tag="{StaticResource color3}"
+                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="20,0,0,20" FontSize="36" Visibility="Hidden" Checked="btnAggUserBD_Checked">
+							<StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+								<TextBlock Text="AGREGAR" Style="{StaticResource botonComunText}" FontSize="22"/>
+							</StackPanel>
+						</RadioButton>
 
                         <!--BOTON PARA AGREGAR BEBIDAS-->
                         <RadioButton x:Name="btnAggBebida"  Style="{StaticResource ComunButton}"
@@ -366,9 +410,22 @@
                         <Label x:Name="lblDescripcion" Content="Comentarios:" HorizontalAlignment="Left" Height="51" Margin="50,430,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Foreground="{StaticResource titleColor1}" Visibility="Hidden" />
                         <TextBox x:Name="txtDescripcion" HorizontalAlignment="Left" Height="35" Margin="269,437,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="552" Visibility="Hidden"/>
                         <Label Content="" HorizontalAlignment="Left" Height="103" Margin="271,70,0,0" VerticalAlignment="Top" Width="251"/>
-
-
-                    </Grid>
+                        
+						<!-- Administrar Empleado -->
+						<Label x:Name="lblAdministrarEmpleados" Content="Administrar Empleados" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="36" Margin="0,20,0,0" Visibility="Hidden"/>
+                        <DataGrid x:Name="grdEmpleados" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" av:ItemsSource="{av:SampleData ItemCount=5}" Visibility="Hidden"/>
+                        
+					    <!-- Administrar Usuario -->
+					    <Label x:Name="lblAdministrarUser" Content="Administrar Usuarios" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="36" Margin="0,20,0,0" Visibility="Hidden"/>
+                        <DataGrid x:Name="grdAdUsers" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" av:ItemsSource="{av:SampleData ItemCount=5}" Visibility="Hidden"/>
+                        
+						<!-- Form nuevo Usuario -->
+						<Label x:Name="lblNuevoUser" Content="Agregar Usuario" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="36" Margin="0,20,0,0" Visibility="Hidden"/>
+						<Label x:Name="lblAggUser" Content="NOMBRE DE USUARIO:" HorizontalAlignment="Left" Height="51" Margin="118,238,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
+						<TextBox x:Name="txtAggUser" HorizontalAlignment="Left" Height="30" Margin="358,238,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" IsReadOnly="True" Visibility="Hidden"/>
+						<Label x:Name="lblContrasenia" Content="CONTRASENA:" HorizontalAlignment="Left" Height="51" Margin="118,325,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
+						<TextBox x:Name="txtContrasenia" HorizontalAlignment="Left" Height="30" Margin="358,325,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
+					</Grid>
                 </Border>
             </Grid>
         </Border>
