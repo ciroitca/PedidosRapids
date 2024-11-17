@@ -1108,7 +1108,8 @@ namespace PedidosRapids.Vista
 
 
         private void btnEditarBebida_Checked(object sender, RoutedEventArgs e)
-        {           
+        {
+            btnSalirMenuAggBebidas.IsChecked = false;
             btnEditarBebida.IsChecked = false;
             if (grdBebidas1.SelectedItem == null)
             {
