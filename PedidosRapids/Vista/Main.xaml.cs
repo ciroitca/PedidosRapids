@@ -1031,6 +1031,7 @@ namespace PedidosRapids.Vista
             OcultarParaMesas();
             OcultarParaOrdenes();
             OcultarParaBebidas();
+
             grdPlatos1.Visibility = Visibility.Hidden;
             btnAgregarPlatos.Visibility = Visibility.Hidden;
             btnVolverPlatos.Visibility = Visibility.Visible;
