@@ -900,6 +900,7 @@ namespace PedidosRapids.Vista
             public string Bebida { get; set; }
             public string Alcoholica { get; set; }
             public string Id_Producto { get; set; }
+            public bool Alcoholica { get; set; }
 
         }
 
@@ -915,7 +916,6 @@ namespace PedidosRapids.Vista
             public int Id_Persona{ get; set; }
             public string Salario { get; set; }
             public string Estado_Laboal { get; set; }
-            public bool Alcoholica { get; set; }
         }
 
 
