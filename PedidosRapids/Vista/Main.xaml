@@ -275,7 +275,7 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <!--BOTON PARA ADMINISTRAR LAS BEBIDAS-->
+                        <!--BOTON PARA ADMINISTRAR LAS BEBIDAS--> 
                         <RadioButton x:Name="btnAdminBebida"  Style="{StaticResource ComunButton}"
                                 Tag="{StaticResource color3}"
                                 Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="118,186,0,0" FontSize="36" Visibility="Hidden"  Checked="btnAdminBebida_Checked" >
