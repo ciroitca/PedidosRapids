@@ -202,7 +202,7 @@
 
 
                 <!-- ESTILO DEL GRID  -->
-                <Border CornerRadius="0,10,10,0">
+                <Border CornerRadius="0,10,10,0"
                      Grid.Column="1" RenderTransformOrigin="0.499,0.562" Visibility="Visible">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
@@ -355,15 +355,7 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <!--BOTON PARA AGREGAR LOS USUARIOS-->
-                           <RadioButton x:Name="btnAggUserBD"  Style="{StaticResource ComunButton}"
-                                Tag="{StaticResource color3}"
-                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="20,0,0,20" FontSize="36" Visibility="Hidden" Checked="btnAggUserBD_Checked">
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
-                                <TextBlock Text="AGREGAR" Style="{StaticResource botonComunText}" FontSize="22"/>
-                            </StackPanel>
-                        </RadioButton>
-
+                   
                         <!--BOTON PARA AGREGAR BEBIDAS-->
                         <RadioButton x:Name="btnAggBebida"  Style="{StaticResource ComunButton}"
                                 Tag="{StaticResource color3}"
@@ -494,18 +486,14 @@
                         <TextBox x:Name="txtIdEmpleado" HorizontalAlignment="Left" Height="30" Margin="358,238,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
                         <Label x:Name="lblNuevoUser" Content="Agregar Usuario" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="36" Margin="0,20,0,0" Visibility="Hidden"/>
                         <Label x:Name="lblAggUser" Content="NOMBRE DE USUARIO:" HorizontalAlignment="Left" Height="51" Margin="118,325,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
-                        <TextBox x:Name="txtAggUser" HorizontalAlignment="Left" Height="30" Margin="358,325,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
                         <Label x:Name="lblContrasenia" Content="CONTRASEÑA:" HorizontalAlignment="Left" Height="51" Margin="118,419,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
                         <TextBox x:Name="txtContrasenia" HorizontalAlignment="Left" Height="30" Margin="358,419,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
-                      </Grid>
-                        <Label x:Name="lblAggUser" Content="NOMBRE DE USUARIO:" HorizontalAlignment="Left" Height="51" Margin="118,238,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
                         <TextBox x:Name="txtAggUser" HorizontalAlignment="Left" Height="30" Margin="358,238,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" IsReadOnly="True" Visibility="Hidden"/>
-                        <Label x:Name="lblContrasenia" Content="CONTRASENA:" HorizontalAlignment="Left" Height="51" Margin="118,325,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
-                        <TextBox x:Name="txtContrasenia" HorizontalAlignment="Left" Height="30" Margin="358,325,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
-				
+                    
 
 
-                        <!--FORMULARIO PARA ADITAR UNA BEBIDA-->
+
+                    <!--FORMULARIO PARA ADITAR UNA BEBIDA-->
                         <Label x:Name="lblEditBebidas" Content="EDITAR BEBIDA" HorizontalAlignment="Center" Height="51" Margin="0,66,0,0" VerticalAlignment="Top" Width="255" FontSize="36" Visibility="Hidden"/>
 
                         <Label x:Name="lblId_BebidaEdit" Content="Id Bebida:" HorizontalAlignment="Left" Height="44" Margin="90,212,0,0" Width="111" FontSize="24" VerticalAlignment="Top" Visibility="Hidden"/>

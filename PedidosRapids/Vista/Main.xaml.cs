@@ -991,8 +991,6 @@ namespace PedidosRapids.Vista
             public decimal Precio { get; set; }
             public int Existencia { get; set; }
             public string Bebida { get; set; }
-            public string Alcoholica { get; set; }
-            public string Id_Producto { get; set; }
             public bool Alcoholica { get; set; }
 
         }
