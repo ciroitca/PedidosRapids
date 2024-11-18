@@ -33,6 +33,7 @@ namespace PedidosRapids.Vista
         private List<Ordenes> datosOrdenes;
         private List<Mesas> datosMesa;
         private List<Bebidas> datosBebidas;
+        private List<User> datosUsuarios;
         public Main()
         {
             InitializeComponent();
@@ -40,6 +41,7 @@ namespace PedidosRapids.Vista
             CargarOrdenes();// Cargar las ordenes al iniciar
             CargarMesas();
             CargarBebidas();
+            CargarUsuarios();
             MostrarValorEnTextBox();
             CargarDatosBebidas();
             grdPlatos1.ItemsSource = datos; // Enlazar los datos al DataGrid
@@ -198,7 +200,85 @@ namespace PedidosRapids.Vista
         private void btnAggUserBD_Checked(object sender, RoutedEventArgs e)
         {
             string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedure = "Agregar_Usuario";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@Id_Empleado", int.Parse(txtIdEmpleado.Text));
+                command.Parameters.AddWithValue("@Usuario", txtAggUser.Text);
+                command.Parameters.AddWithValue("Password", txtContrasenia.Text);
+
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Usuario agregado con exito");
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo agregar el usuario.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            }
+            btnAggUserBD.IsChecked = false;
         }
+
+        private void btnAEliminarUser_Checked(object sender, RoutedEventArgs e)
+        {
+            // Verifica si hay un elemento seleccionado en el DataGrid
+            if (grdAdUsers.SelectedItem is User selectedUser)
+    {
+        // Mostrar una confirmación al usuario
+        var result = MessageBox.Show($"¿Estás seguro de que deseas eliminar al usuario '{selectedUser.Usuario}'?",
+                                     "Confirmación",
+                                     MessageBoxButton.YesNo,
+                                     MessageBoxImage.Warning);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            // Ejecutar el procedimiento almacenado para eliminar al usuario
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedure = "Eliminar_Usuario";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id_Usuario", selectedUser.Id_Empleado);
+
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery(); // Ejecuta el procedimiento almacenado
+                    MessageBox.Show("Usuario eliminado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Recarga los datos del DataGrid
+                    CargarUsuarios();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al eliminar el usuario: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+    }
+    else
+    {
+        MessageBox.Show("Por favor, selecciona un usuario para eliminar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+    }
+            btnAEliminarUser.IsChecked = false;
+    }
+      
 
         private void btnAggBebida1_Checked(object sender, RoutedEventArgs e)
         {
@@ -407,6 +487,48 @@ namespace PedidosRapids.Vista
             }
         }
 
+        public void CargarUsuarios()
+        {
+            datosUsuarios = new List<User>();
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedure = "Listar_Usuarios";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        datosUsuarios.Add(new User
+                        {
+                            Id_Empleado = Convert.ToInt32(reader["Id_Empleado"]),
+                            Usuario = reader["Usuario"].ToString(),
+                            Password = reader["Contrasena"].ToString()
+                            // Agrega más propiedades si es necesario
+                        });
+                    }
+
+                    reader.Close();
+                    grdAdUsers.ItemsSource = datosUsuarios;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+
+            }
+        }
+
+        private void CargarEmpleados()
+        {
+
+        }
 
         private void MostrarValorEnTextBox()
         {
@@ -628,6 +750,9 @@ namespace PedidosRapids.Vista
             lblContrasenia.Visibility = Visibility.Hidden;
             txtContrasenia.Visibility = Visibility.Hidden;
             btnAggUserBD.Visibility = Visibility.Hidden;
+            lblIdEmpleado.Visibility = Visibility.Hidden;
+            txtIdEmpleado.Visibility = Visibility.Hidden;
+            btnAEliminarUser.Visibility = Visibility.Hidden;
             OcultarFormEditBebidas();
         }
 
@@ -719,6 +844,7 @@ namespace PedidosRapids.Vista
             lblAdministrarUser.Visibility = Visibility.Visible;
             grdAdUsers.Visibility = Visibility.Visible;
             btnAggUser.Visibility = Visibility.Visible;
+            btnAEliminarUser.Visibility = Visibility.Visible;
             OcultarParaUser();
         }
 
@@ -745,11 +871,14 @@ namespace PedidosRapids.Vista
         private void MostrarAggUser()
         {
             lblNuevoUser.Visibility = Visibility.Visible;
+            lblIdEmpleado.Visibility = Visibility.Visible;
+            txtIdEmpleado.Visibility = Visibility.Visible;
             lblAggUser.Visibility = Visibility.Visible;
             txtAggUser.Visibility = Visibility.Visible;
             lblContrasenia.Visibility = Visibility.Visible;
             txtContrasenia.Visibility = Visibility.Visible;
             btnAggUserBD.Visibility = Visibility.Visible;
+            btnAEliminarUser.Visibility = Visibility.Hidden;
             OcultarUser();
 
         }
@@ -862,7 +991,24 @@ namespace PedidosRapids.Vista
             public decimal Precio { get; set; }
             public int Existencia { get; set; }
             public string Bebida { get; set; }
+            public string Alcoholica { get; set; }
+            public string Id_Producto { get; set; }
             public bool Alcoholica { get; set; }
+
+        }
+
+        public class User
+        {
+            public int Id_Empleado { get; set; }
+            public string Usuario { get; set; }
+            public string Password { get; set; }
+        }
+
+        public class Empleado
+        {
+            public int Id_Persona{ get; set; }
+            public string Salario { get; set; }
+            public string Estado_Laboal { get; set; }
         }
 
 
