@@ -492,6 +492,7 @@
                         <Label x:Name="lblAlcoholicaEdit" Content="Alcoholica:" HorizontalAlignment="Left" Height="44" Margin="70,497,0,0" Width="131" FontSize="24" VerticalAlignment="Top" Visibility="Hidden"/>
                         <CheckBox x:Name="chkAlcoholica" Height="30" Margin="218,511,687,205" Visibility="Hidden"/>
                     </Grid>
+
                 </Border>
             </Grid>
         </Border>

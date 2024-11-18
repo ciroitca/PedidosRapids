@@ -16,6 +16,9 @@ using System.Windows.Shapes;
 using System.Runtime;
 using System.Data.SqlClient;
 using System.Data;
+using static PedidosRapids.Vista.Main;
+using System.Collections.ObjectModel;
+using System.Xml.Linq;
 
 
 /*************** Falta un botón de cerrar sesión ***************************/
@@ -39,6 +42,7 @@ namespace PedidosRapids.Vista
             CargarBebidas();
             CargarUsuarios();
             MostrarValorEnTextBox();
+            CargarDatosBebidas();
             grdPlatos1.ItemsSource = datos; // Enlazar los datos al DataGrid
             grdOrdenes1.ItemsSource = datosOrdenes;// Enlazar los datos al DataGrid
             grdMesas1.ItemsSource = datosMesa;
@@ -87,6 +91,7 @@ namespace PedidosRapids.Vista
         //muestra las opciones de platos
         private void btnPlatos_Checked(object sender, RoutedEventArgs e)
         {
+            OcultarFormAgregarBebida();
             OcultarParaPlatos();
             lblPlatos1.Visibility = Visibility.Visible;
             grdPlatos1.Visibility = Visibility.Visible;
@@ -112,6 +117,8 @@ namespace PedidosRapids.Vista
         }
         private void btnOrdenes_Checked(object sender, RoutedEventArgs e)
         {
+            OcultarFormAgregarBebida();
+            OcultarParaPlatos();
             OcultarParaOrdenes();
             lblOrden1.Visibility = Visibility.Visible;
             grdOrdenes1.Visibility = Visibility.Visible;
@@ -121,6 +128,7 @@ namespace PedidosRapids.Vista
 
         private void btnMesas_Checked(object sender, RoutedEventArgs e)
         {
+            OcultarFormAgregarBebida();
             OcultarParaMesas();
             lblMesas1.Visibility = Visibility.Visible;
             grdMesas1.Visibility = Visibility.Visible;
@@ -281,7 +289,9 @@ namespace PedidosRapids.Vista
 
         private void btnAdminBebida_Checked(object sender, RoutedEventArgs e)
         {
+            btnAdminBebida.IsChecked = false;
             MostrarAdBebida();
+            OcultarFormAgregarBebida();  
         }
 
         private void btnAdminEm_Checked(object sender, RoutedEventArgs e)
@@ -369,9 +379,11 @@ namespace PedidosRapids.Vista
                     {
                         datosBebidas.Add(new Bebidas
                         {
-                            Bebida = reader["Bebida"].ToString(),
-                            Alcoholica = reader["Alcoholica"].ToString(),
-                            Id_Producto = reader["Id_Producto"].ToString()
+                            Id_Producto = reader.GetInt32(reader.GetOrdinal("Id_Producto")),
+                            Precio = Convert.ToDecimal(reader.GetValue(reader.GetOrdinal("Precio"))),
+                            Existencia = reader.GetInt32(reader.GetOrdinal("Existencia")),
+                            Bebida = reader.GetString(reader.GetOrdinal("Bebida")),
+                            Alcoholica = reader.GetBoolean(reader.GetOrdinal("Alcoholica"))
                         });
                     }
 
@@ -539,6 +551,7 @@ namespace PedidosRapids.Vista
             OcultarParaMesas();
             OcultarParaPlatos();
             OcultarParaOrdenes();
+            OcultarFormEditBebidas();
         }
         private void MostrarEditUser()
         {
@@ -556,6 +569,7 @@ namespace PedidosRapids.Vista
             OcultarParaMesas();
             OcultarParaPlatos();
             OcultarParaOrdenes();
+            OcultarFormEditBebidas();
         }
 
         //Funcion para ocultar todo excepto lo que se debe mostrar para ordenes
@@ -570,6 +584,9 @@ namespace PedidosRapids.Vista
             grdBebidas1.Visibility = Visibility.Hidden;
             btnEliminarBebida.Visibility = Visibility.Hidden;
             btnAggBebida.Visibility = Visibility.Hidden;
+            btnEditarBebida.Visibility = Visibility.Hidden;
+            lblAdminBebidas1.Visibility = Visibility.Hidden;
+            OcultarFormEditBebidas();
         }
         //Funcion para ocultar todo excepto lo que se debe mostrar para Platos
         private void OcultarParaOrdenes()
@@ -579,10 +596,13 @@ namespace PedidosRapids.Vista
             lblPlatos1.Visibility = Visibility.Hidden;
             grdPlatos1.Visibility = Visibility.Hidden;
             btnAgregarPlatos.Visibility = Visibility.Hidden;
-            lblAdminBebidas1.Visibility = Visibility.Visible;
             grdBebidas1.Visibility = Visibility.Hidden;
             btnEliminarBebida.Visibility = Visibility.Hidden;
             btnAggBebida.Visibility = Visibility.Hidden;
+            btnAgregarPlatos.Visibility = Visibility.Hidden;
+            lblBebida1s.Visibility = Visibility.Hidden;
+            lblAdminBebidas1.Visibility= Visibility.Hidden;
+            OcultarFormEditBebidas();
         }
 
         private void OcultarParaMesas()
@@ -593,10 +613,12 @@ namespace PedidosRapids.Vista
             lblPlatos1.Visibility = Visibility.Hidden;
             grdPlatos1.Visibility = Visibility.Hidden;
             btnAgregarPlatos.Visibility = Visibility.Hidden;
-            lblAdminBebidas1.Visibility = Visibility.Visible;
+            lblAdminBebidas1.Visibility = Visibility.Hidden;
             grdBebidas1.Visibility = Visibility.Hidden;
             btnEliminarBebida.Visibility = Visibility.Hidden;
             btnAggBebida.Visibility = Visibility.Hidden;
+            btnAgregarPlatos.Visibility = Visibility.Hidden;
+            OcultarFormEditBebidas();
         }
 
         private void MostrarMenu()
@@ -671,6 +693,8 @@ namespace PedidosRapids.Vista
             lblIdEmpleado.Visibility = Visibility.Hidden;
             txtIdEmpleado.Visibility = Visibility.Hidden;
             btnAEliminarUser.Visibility = Visibility.Hidden;
+            OcultarFormEditBebidas();
+
         }
 
         private void OcultarParaAgOrden()
@@ -694,15 +718,26 @@ namespace PedidosRapids.Vista
             grdBebidas1.Visibility = Visibility.Hidden;
             btnEliminarBebida.Visibility = Visibility.Hidden;
             btnAggBebida.Visibility = Visibility.Hidden;
+            OcultarFormEditBebidas();
         }
 
         private void MostrarAdBebida()
         {
+            lblPlatos1.Visibility = Visibility.Hidden;
             lblAdminBebidas1.Visibility = Visibility.Visible;
             grdBebidas1.Visibility = Visibility.Visible;
             btnEliminarBebida.Visibility = Visibility.Visible;
             btnEditBebida.Visibility = Visibility.Visible;
             btnAggBebida.Visibility= Visibility.Visible;
+            btnEditarBebida.Visibility = Visibility.Visible;
+            btnAgregarPlatos.Visibility = Visibility.Hidden;
+            btnAgOrden.Visibility = Visibility.Hidden;
+            lblOrden1.Visibility = Visibility.Hidden;
+            grdOrdenes1.Visibility = Visibility.Hidden;
+            btnAgOrden.Visibility = Visibility.Hidden;
+            lblMesas1.Visibility = Visibility.Hidden;
+            grdMesas1.Visibility = Visibility.Hidden;
+            OcultarFormEditBebidas();
         }
 
         private void MostrarAdEmpleado()
@@ -769,6 +804,7 @@ namespace PedidosRapids.Vista
 
         private void MostrarAggBebida()
         {
+            btnAdminBebida.IsChecked = false;
             lblAggBebida1.Visibility = Visibility.Visible;
             lblNombreBebida.Visibility = Visibility.Visible;
             txtNameBebida1.Visibility = Visibility.Visible;
@@ -779,7 +815,10 @@ namespace PedidosRapids.Vista
             txtPriceBebida.Visibility = Visibility.Visible;
             lblCantidadBebida.Visibility = Visibility.Visible;
             txtCantBebida.Visibility = Visibility.Visible;
-            btnAggBebida.Visibility= Visibility.Hidden;
+            btnAggBebida.Visibility = Visibility.Hidden;
+            btnEditBebida.Visibility = Visibility.Visible;
+            btnAgregarPlatos.Visibility = Visibility.Hidden;
+            OcultarFormEditBebidas();
         }
 
         private void AgregarBebida()
@@ -797,7 +836,7 @@ namespace PedidosRapids.Vista
             lblAdminBebidas1.Visibility = Visibility.Hidden;
             grdBebidas1.Visibility = Visibility.Hidden;
             btnEliminarBebida.Visibility = Visibility.Hidden;
-            btnEditBebida.Visibility = Visibility.Hidden;
+            btnEditBebida.Visibility = Visibility.Visible;
             btnAggBebida.Visibility = Visibility.Hidden;
             btnAdminEm.Visibility = Visibility.Hidden;
             btnAdminUsers.Visibility = Visibility.Hidden;
@@ -805,6 +844,29 @@ namespace PedidosRapids.Vista
             btnAggBebidaABD.Visibility = Visibility.Visible;
             lblId_Bebida.Visibility = Visibility.Visible;
             txtId_Bebida.Visibility = Visibility.Visible;
+            btnEditarBebida.Visibility = Visibility.Hidden;
+            lblOrden1.Visibility = Visibility.Hidden;
+            grdOrdenes1.Visibility = Visibility.Hidden;
+            btnAgOrden.Visibility = Visibility.Hidden;
+            OcultarFormEditBebidas();
+        }
+
+        private void OcultarFormAgregarBebida()
+        {
+            btnAdminBebida.IsChecked = false;
+            lblAggBebida1.Visibility = Visibility.Hidden;
+            lblNombreBebida.Visibility = Visibility.Hidden;
+            lblAlcoholicaB.Visibility = Visibility.Hidden;
+            lblPrecioBebida.Visibility = Visibility.Hidden;
+            txtNameBebida1.Visibility = Visibility.Hidden;
+            rdSiBebida1.Visibility= Visibility.Hidden;
+            rdNoBebida1.Visibility = Visibility.Hidden;
+            txtPriceBebida.Visibility = Visibility.Hidden;
+            lblCantidadBebida.Visibility = Visibility.Hidden;
+            txtCantBebida.Visibility = Visibility.Hidden;
+            lblId_Bebida.Visibility = Visibility.Hidden;
+            txtId_Bebida.Visibility = Visibility.Hidden;
+            btnAggBebidaABD.Visibility= Visibility.Hidden;
         }
         public class Categoria
         {
@@ -831,6 +893,10 @@ namespace PedidosRapids.Vista
 
         public class Bebidas
         {
+            public int Id_Bebida { get; set; }
+            public int Id_Producto { get; set; }
+            public decimal Precio { get; set; }
+            public int Existencia { get; set; }
             public string Bebida { get; set; }
             public string Alcoholica { get; set; }
             public string Id_Producto { get; set; }
@@ -849,7 +915,9 @@ namespace PedidosRapids.Vista
             public int Id_Persona{ get; set; }
             public string Salario { get; set; }
             public string Estado_Laboal { get; set; }
+            public bool Alcoholica { get; set; }
         }
+
 
         //
         //
@@ -882,8 +950,7 @@ namespace PedidosRapids.Vista
             lblTiempo.Visibility = Visibility.Visible;
             txtTiempo.Visibility = Visibility.Visible;
             btnInsertarPlatos.Visibility = Visibility.Visible;
-
-
+            OcultarFormEditBebidas();
         }
 
         private void btnVolPlatos_Click(object sender, RoutedEventArgs e)
@@ -904,8 +971,26 @@ namespace PedidosRapids.Vista
             txtPlatillo.Visibility = Visibility.Hidden;
             lblTiempo.Visibility = Visibility.Hidden;
             txtTiempo.Visibility = Visibility.Hidden;  
-            btnInsertarPlatos.Visibility =(Visibility) Visibility.Hidden;     
+            btnInsertarPlatos.Visibility =(Visibility) Visibility.Hidden;
+            OcultarFormEditBebidas();
                        
+        }
+
+        private void OcultarFormEditBebidas()
+        {
+            lblEditBebidas.Visibility = Visibility.Hidden;
+            lblId_BebidaEdit.Visibility = Visibility.Hidden;
+            txtIdBebida.Visibility = Visibility.Hidden;
+            lblId_Producto.Visibility = Visibility.Hidden;
+            txtIdProducto.Visibility = Visibility.Hidden;
+            lblPrecioEdit.Visibility = Visibility.Hidden;
+            txtPrecio.Visibility = Visibility.Hidden;
+            lblCantiadEdit.Visibility = Visibility.Hidden;
+            txtCantidad.Visibility = Visibility.Hidden;
+            lblBebidaEdit.Visibility = Visibility.Hidden;
+            txtBebida.Visibility = Visibility.Hidden;
+            lblAlcoholicaEdit.Visibility = Visibility.Hidden;
+            chkAlcoholica.Visibility = Visibility.Hidden;
         }
 
         private void btnInsertarPlatos_click(object sender, RoutedEventArgs e)
@@ -955,7 +1040,247 @@ namespace PedidosRapids.Vista
 
         private void btnAggBebida_Checked(object sender, RoutedEventArgs e)
         {
+            btnVolverBebidas.Visibility = Visibility.Visible;
             AgregarBebida();
+        }
+
+        private async void btnEliminarBebida_Checked(object sender, RoutedEventArgs e)
+        {
+            btnEliminarBebida.IsChecked = false;
+            // Verificar si hay una fila seleccionada
+            if (grdBebidas1.SelectedItem == null)
+            {
+                MessageBox.Show("Por favor, seleccione una bebida para eliminar.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // Obtener la bebida seleccionada
+            var bebidaSeleccionada = (Bebidas)grdBebidas1.SelectedItem;
+
+            // Mostrar mensaje de confirmación
+            var resultado = MessageBox.Show($"¿Está seguro que desea eliminar la bebida '{bebidaSeleccionada.Bebida}'?",
+                                          "Confirmar eliminación",
+                                          MessageBoxButton.YesNo,
+                                          MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    // Llamar al procedmiento almacenado
+                    using (SqlConnection conn = new SqlConnection("Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24"))
+                    {
+                        await conn.OpenAsync();
+
+                        using (SqlCommand cmd = new SqlCommand("Eliminar_Bebida", conn))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@Id_Bebida", bebidaSeleccionada.Id_Bebida);
+
+                            await cmd.ExecuteNonQueryAsync();
+                        }
+                    }
+
+                    if (grdBebidas1.ItemsSource is List<Bebidas> lista)
+                    {
+                        var observableCollection = new ObservableCollection<Bebidas>(lista);
+                        observableCollection.Remove(bebidaSeleccionada);
+                        grdBebidas1.ItemsSource = observableCollection;
+                    }
+                    // O si ya es ObservableCollection
+                    else if (grdBebidas1.ItemsSource is ObservableCollection<Bebidas> observable)
+                    {
+                        observable.Remove(bebidaSeleccionada);
+                    }
+
+                    // Actualizar el DataGrid
+                    var itemsSource = (ObservableCollection<Bebidas>)grdBebidas1.ItemsSource;
+                    itemsSource.Remove(bebidaSeleccionada);
+
+                    MessageBox.Show("Bebida eliminada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al eliminar la bebida: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private async Task CargarDatosBebidas()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection("Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24"))
+                {
+                    await conn.OpenAsync();
+
+                    using (SqlCommand cmd = new SqlCommand("Listar_Bebidas", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        var reader = await cmd.ExecuteReaderAsync();
+                        var bebidas = new ObservableCollection<Bebidas>();
+
+                        while (await reader.ReadAsync())
+                        {
+                            var bebida = new Bebidas
+                            {
+                                Id_Bebida = reader.GetInt32(reader.GetOrdinal("Id_Bebida")),
+                                Id_Producto = reader.GetInt32(reader.GetOrdinal("Id_Producto")),
+                                Existencia = reader.GetInt32(reader.GetOrdinal("Existencia")),
+                                Bebida = reader.IsDBNull(reader.GetOrdinal("Bebida")) ? string.Empty : reader.GetString(reader.GetOrdinal("Bebida")),
+                                Alcoholica = reader.GetBoolean(reader.GetOrdinal("Alcoholica"))
+                            };
+
+                            // Manejo especial para el precio
+                            var precioOrdinal = reader.GetOrdinal("Precio");
+                            if (!reader.IsDBNull(precioOrdinal))
+                            {
+                                // Intentamos obtener el valor como decimal directamente
+                                bebida.Precio = reader.GetDecimal(precioOrdinal);
+                            }
+                            else
+                            {
+                                bebida.Precio = 0m; // Valor por defecto si es nulo
+                            }
+
+                            bebidas.Add(bebida);
+                        }
+
+                        grdBebidas1.ItemsSource = bebidas;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar los datos: {ex.Message}\nStack Trace: {ex.StackTrace}",
+                              "Error",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Error);
+            }
+        }
+
+
+        private void btnEditarBebida_Checked(object sender, RoutedEventArgs e)
+        {           
+            btnEditarBebida.IsChecked = false;
+            if (grdBebidas1.SelectedItem == null)
+            {
+                MessageBox.Show("Por favor, seleccione una bebida para editar.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var bebidaSeleccionada = (Bebidas)grdBebidas1.SelectedItem;
+            btnEditarBebidaABD.Visibility = Visibility.Visible;
+            btnVolverBebidas.Visibility = Visibility.Visible;
+            lblAdminBebidas1.Visibility = Visibility.Hidden;
+            grdBebidas1.Visibility = Visibility.Hidden;
+            btnEliminarBebida.Visibility = Visibility.Hidden;
+            btnEditBebida.Visibility = Visibility.Visible;
+            btnAggBebida.Visibility = Visibility.Hidden;
+            btnEditarBebida.Visibility = Visibility.Hidden;
+            // Llenar los TextBox con los datos de la bebida seleccionada
+            txtIdBebida.Text = bebidaSeleccionada.Id_Bebida.ToString();
+            txtIdProducto.Text = bebidaSeleccionada.Id_Producto.ToString();
+            txtPrecio.Text = bebidaSeleccionada.Precio.ToString();
+            txtCantidad.Text = bebidaSeleccionada.Existencia.ToString();
+            txtBebida.Text = bebidaSeleccionada.Bebida;
+            chkAlcoholica.IsChecked = bebidaSeleccionada.Alcoholica;
+
+            lblEditBebidas.Visibility = Visibility.Visible;
+            lblId_BebidaEdit.Visibility = Visibility.Visible;
+            txtIdBebida.Visibility = Visibility.Visible;
+            lblId_Producto.Visibility = Visibility.Visible;
+            txtIdProducto.Visibility = Visibility.Visible;
+            lblPrecioEdit.Visibility = Visibility.Visible;
+            txtPrecio.Visibility = Visibility.Visible;
+            lblCantiadEdit.Visibility = Visibility.Visible;
+            txtCantidad.Visibility = Visibility.Visible;
+            lblBebidaEdit.Visibility =Visibility.Visible;
+            txtBebida.Visibility = Visibility.Visible;
+            lblAlcoholicaEdit.Visibility = Visibility.Visible;
+            chkAlcoholica.Visibility = Visibility.Visible;
+        }
+
+        private async void btnEditarBebidaABD_Checked(object sender, RoutedEventArgs e)
+        {            
+            try
+            {
+                // Validar los datos ingresados
+                if (string.IsNullOrWhiteSpace(txtBebida.Text) ||
+                    string.IsNullOrWhiteSpace(txtPrecio.Text) ||
+                    string.IsNullOrWhiteSpace(txtCantidad.Text))
+                {
+                    MessageBox.Show("Por favor, complete todos los campos requeridos.",
+                                  "Datos incompletos",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Convertir los valores
+                int idBebida = int.Parse(txtIdBebida.Text);
+                int idProducto = int.Parse(txtIdProducto.Text);
+                decimal precio = decimal.Parse(txtPrecio.Text);
+                int cantidad = int.Parse(txtCantidad.Text);
+                bool alcoholica = chkAlcoholica.IsChecked ?? false;
+
+                using (SqlConnection conn = new SqlConnection("Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24"))
+                {
+                    await conn.OpenAsync();
+
+                    using (SqlCommand cmd = new SqlCommand("Actualizar_Bebida", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@Id_Bebida", idBebida);
+                        cmd.Parameters.AddWithValue("@Id_Producto", idProducto);
+                        cmd.Parameters.AddWithValue("@Precio", precio);
+                        cmd.Parameters.AddWithValue("@Cantidad", cantidad);
+                        cmd.Parameters.AddWithValue("@Bebida", txtBebida.Text);
+                        cmd.Parameters.AddWithValue("@Alcoholica", alcoholica);
+
+                        await cmd.ExecuteNonQueryAsync();
+                    }
+                }
+
+                MessageBox.Show("Bebida actualizada correctamente.",
+                              "Éxito",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Information);
+
+                // Volver a la vista principal y recargar datos
+                MostrarMenu();
+                MostrarAdBebida();
+                OcultarFormAgregarBebida();
+                OcultarFormEditBebidas();
+                btnEditarBebidaABD.Visibility = Visibility.Hidden;
+                btnVolverBebidas.Visibility = Visibility.Hidden;
+                await CargarDatosBebidas();
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Por favor, ingrese valores válidos en los campos numéricos.",
+                              "Error de formato",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al actualizar la bebida: {ex.Message}",
+                              "Error",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Error);
+            }
+        }
+
+        private void btnVolverBebidas_Checked(object sender, RoutedEventArgs e)
+        {
+            btnEditarBebidaABD.Visibility = Visibility.Hidden;
+            btnVolverBebidas.Visibility = Visibility.Hidden;
+            OcultarFormEditBebidas();
+            MostrarAdBebida();
+            OcultarFormAgregarBebida();
         }
     }
 
