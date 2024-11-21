@@ -22,7 +22,6 @@ using System.Xml.Linq;
 using System.Text.RegularExpressions;
 
 
-
 /*************** Falta un botón de cerrar sesión ***************************/
 
 
@@ -35,20 +34,49 @@ namespace PedidosRapids.Vista
         private List<Mesas> datosMesa;
         private List<Bebidas> datosBebidas;
         private List<User> datosUsuarios;
-        public Main()
+        public Main(string userRole)
+
         {
             InitializeComponent();
-            CargarCategorias(); // Cargar las categorías al iniciar
-            CargarOrdenes();// Cargar las ordenes al iniciar
+
+            // Configuración basada en el rol
+            if (userRole == "Empleado")
+            {
+                // Oculta botones, menús u otros elementos exclusivos del administrador
+
+                //btnUser.Visibility = Visibility.Collapsed;
+                btnUser.Foreground = new SolidColorBrush(Colors.Gray);
+                btnUser.IsEnabled = false;
+                //adminButton.Visibility = Visibility.Collapsed; // 
+                //adminMenu.IsEnabled = false;                   // 
+            }
+            else if (userRole == "Administrador")
+            {
+                // Opciones exclusivas del administrador (si las hay)
+            }
+
+            // Cargar datos iniciales
+            CargarCategorias();
+            CargarOrdenes();
             CargarMesas();
             CargarBebidas();
             CargarUsuarios();
             MostrarValorEnTextBox();
             CargarDatosBebidas();
-            grdPlatos1.ItemsSource = datos; // Enlazar los datos al DataGrid
-            grdOrdenes1.ItemsSource = datosOrdenes;// Enlazar los datos al DataGrid
+
+            // Enlazar datos a DataGrids
+            grdPlatos1.ItemsSource = datos;
+            grdOrdenes1.ItemsSource = datosOrdenes;
             grdMesas1.ItemsSource = datosMesa;
             grdBebidas1.ItemsSource = datosBebidas;
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
         }
 
         [DllImport("user32.dll")]
@@ -64,7 +92,7 @@ namespace PedidosRapids.Vista
         }
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+           // Application.Current.Shutdown();
         }
         private void btnMinimize_Click(object sender, RoutedEventArgs e)
         {
@@ -866,27 +894,6 @@ namespace PedidosRapids.Vista
 
         }
 
-        private void OcultarParaAggBebidas() 
-        { 
-        }
-            /*lblBebida1s.Visibility = Visibility.Hidden;
-            btnEliminarBebida.Visibility = Visibility.Hidden;
-            btnAggBebida.Visibility = Visibility.Hidden;
-            grdBebidas1.Visibility = Visibility.Hidden;
-            //BOTONES DEL MENÚ
-            btnPlatos.Visibility = Visibility.Hidden;
-            btnUser.Visibility = Visibility.Hidden;
-            btnOrdenes.Visibility = Visibility.Hidden;
-            btnEditBebida.Visibility = Visibility.Hidden;
-            btnSalir.Visibility = Visibility.Hidden;
-            btnCambiarUsuario.Visibility = Visibility.Hidden;
-            btnMesas.Visibility = Visibility.Hidden;
-            lblAdminBebidas1.Visibility = Visibility.Hidden;
-            grdBebidas1.Visibility = Visibility.Hidden;
-            btnEliminarBebida.Visibility = Visibility.Hidden;
-            btnAggBebida.Visibility = Visibility.Hidden;
-            }*/
-
         private void MostrarAdBebida()
         {
             lblPlatos1.Visibility = Visibility.Hidden;
@@ -1068,6 +1075,7 @@ namespace PedidosRapids.Vista
         public class Mesas
         {
             public string Mesa { get; set; }
+            public string Id_Mesa { get; set; } 
         }
 
         public class Bebidas
@@ -1224,7 +1232,6 @@ namespace PedidosRapids.Vista
             btnAggBebida.IsChecked = false; 
             btnVolverBebidas.Visibility = Visibility.Visible;
             btnSalirMenuAggBebidas.Visibility = Visibility.Visible;
-            OcultarParaAggBebidas();
             AgregarBebida();
             
         }
