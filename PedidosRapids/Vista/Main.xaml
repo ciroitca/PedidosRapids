@@ -475,10 +475,11 @@
                         <!--BOTON PARA AGREGAR MESA A LA BASE DE DATOS-->
 
 
-						<!--BOTON PARA ACTUALIZAR LA BEBIDA EN LA BD-->
-						<RadioButton x:Name="btnEditarBebidaABD"  Style="{StaticResource ComunButton}"
-                             Tag="{StaticResource color3}"
-                             Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="578,614,0,0" FontSize="36" Checked="btnEditarBebidaABD_Checked" Visibility="Hidden">
+
+						
+						<!-- CONTENIDO / PLATOS -->
+						<DataGrid x:Name="grdPlatos1" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" Visibility="Hidden"/>
+						<Label x:Name="lblPlatos1" Content="PLATOS" HorizontalAlignment="Center" Height="51" Margin="0,66,0,0" VerticalAlignment="Top" Width="144" FontSize="36" Visibility="Hidden"/>
 							<StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
 								<TextBlock Text="ACTUALIZAR BEBIDA" Style="{StaticResource botonComunText}" FontSize="22"/>
 							</StackPanel>
@@ -492,6 +493,7 @@
 								<TextBlock Text="VOLVER" Style="{StaticResource botonComunText}" FontSize="22"/>
 							</StackPanel>
 						</RadioButton>
+
 
 						<!-- CONTENIDO / PLATOS -->
 						<DataGrid x:Name="grdPlatos1" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" Visibility="Hidden"/>
