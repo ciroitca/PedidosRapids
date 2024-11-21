@@ -34,6 +34,9 @@ namespace PedidosRapids.Vista
         private List<Mesas> datosMesa;
         private List<Bebidas> datosBebidas;
         private List<User> datosUsuarios;
+
+        private List<Empleado> datosEmpleados;
+
         public Main(string userRole)
 
         {
@@ -63,6 +66,7 @@ namespace PedidosRapids.Vista
             CargarMesas();
             CargarBebidas();
             CargarUsuarios();
+            CargarEmpleados();
             MostrarValorEnTextBox();
             CargarDatosBebidas();
 
@@ -323,6 +327,7 @@ namespace PedidosRapids.Vista
                     if (rowsAffected > 0)
                     {
                         MessageBox.Show("Usuario agregado con exito");
+                        CargarUsuarios();
                     }
                     else
                     {
@@ -339,39 +344,38 @@ namespace PedidosRapids.Vista
 
         private void btnAEliminarUser_Checked(object sender, RoutedEventArgs e)
         {
-            // Verifica si hay un elemento seleccionado en el DataGrid
             if (grdAdUsers.SelectedItem is User selectedUser)
-    {
-        // Mostrar una confirmación al usuario
-        var result = MessageBox.Show($"¿Estás seguro de que deseas eliminar al usuario '{selectedUser.Usuario}'?",
+            {
+                var result = MessageBox.Show($"¿Estás seguro de que deseas eliminar al usuario '{selectedUser.Usuario}'?",
                                      "Confirmación",
                                      MessageBoxButton.YesNo,
                                      MessageBoxImage.Warning);
 
-        if (result == MessageBoxResult.Yes)
-        {
-            // Ejecutar el procedimiento almacenado para eliminar al usuario
-            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
-            string storedProcedure = "Eliminar_Usuario";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            if (result == MessageBoxResult.Yes)
             {
-                SqlCommand command = new SqlCommand(storedProcedure, connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@Id_Usuario", selectedUser.Id_Empleado);
+                string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+                string storedProcedure = "Eliminar_Usuario";
 
-                try
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
-                    command.ExecuteNonQuery(); // Ejecuta el procedimiento almacenado
-                    MessageBox.Show("Usuario eliminado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    SqlCommand command = new SqlCommand(storedProcedure, connection);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                    // Recarga los datos del DataGrid
-                    CargarUsuarios();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al eliminar el usuario: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    command.Parameters.AddWithValue("@Id_Usuario", selectedUser.Id_Usuario);
+
+                    try
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                    
+                        
+                        MessageBox.Show("Operación completada.", "Resultado", MessageBoxButton.OK, MessageBoxImage.Information);
+                    
+                        CargarUsuarios();
+                    }
+                    catch (SqlException ex)
+                    {
+                        MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -380,9 +384,51 @@ namespace PedidosRapids.Vista
     {
         MessageBox.Show("Por favor, selecciona un usuario para eliminar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
     }
-            btnAEliminarUser.IsChecked = false;
-    }
-      
+
+    btnAEliminarUser.IsChecked = false;
+}
+
+        private void btnAggEmpleadoBD_Checked(object sender, RoutedEventArgs e)
+{
+        MessageBox.Show("Botón presionado");
+    string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+    string storedProcedure = "Agregar_Empleado";
+
+    using (SqlConnection connection = new SqlConnection(connectionString))
+    {
+        SqlCommand command = new SqlCommand(storedProcedure, connection);
+        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+        
+        command.Parameters.AddWithValue("@Nombre", txtNombre.Text);
+        command.Parameters.AddWithValue("@Apellido", txtApellido.Text);
+        command.Parameters.AddWithValue("@Salario", decimal.Parse(txtSalario.Text));
+        command.Parameters.AddWithValue("@Estado_Laboral", txtEstadoLaboral.Text);
+        command.Parameters.AddWithValue("@Email", txtEmail.Text);
+        command.Parameters.AddWithValue("@Direccion", txtDireccion.Text);
+
+        try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Usuario agregado con exito");
+                        CargarEmpleados();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo agregar el usuario.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            }
+            btnAggEmpleadoBD.IsChecked = false;
+        }
 
         private void btnAggBebida1_Checked(object sender, RoutedEventArgs e)
         {
@@ -434,10 +480,103 @@ namespace PedidosRapids.Vista
             MostrarAggEmpleado();
         }
 
-        private void btnEditEmpleado_Checked(object sender, RoutedEventArgs e)
+        private void btnVolverUsuarios_Checked(object sender, RoutedEventArgs e)
         {
-
+            VolverAtrasUsuario();
         }
+
+        private void btnVolverEmpleados_Checked(object sender, RoutedEventArgs e)
+        {
+            VolverAtrasEmpleado();
+        }
+
+        private void btnEditEmpleado_Checked(object sender, RoutedEventArgs e)
+    {
+        // Verificar que haya un empleado seleccionado en el DataGrid
+        if (grdEmpleados.SelectedItem is Empleado selectedEmpleado)
+        {
+            
+            lblNombre.Visibility = Visibility.Visible;
+            txtNombre.Visibility = Visibility.Visible;
+            lblApellido.Visibility = Visibility.Visible;
+            txtApellido.Visibility = Visibility.Visible;
+            lblSalario.Visibility = Visibility.Visible;
+            txtSalario.Visibility = Visibility.Visible;
+            lblEstadoLaboral.Visibility = Visibility.Visible;
+            txtEstadoLaboral.Visibility = Visibility.Visible;
+            lblEmail.Visibility = Visibility.Visible;
+            txtEmail.Visibility = Visibility.Visible;
+            lblDireccion.Visibility = Visibility.Visible;
+            txtDireccion.Visibility = Visibility.Visible;
+            btnEditEmpleadoBD.Visibility = Visibility.Visible;
+            btnVolverEmpleados.Visibility = Visibility.Visible;
+            OcultarEmpleado();
+            // Rellenar los campos con los datos del empleado seleccionado
+            txtNombre.Text = selectedEmpleado.Nombre;
+            txtApellido.Text = selectedEmpleado.Apellido;
+            txtSalario.Text = selectedEmpleado.Salario.ToString();
+            txtEstadoLaboral.Text = selectedEmpleado.Estado_Laboral;
+            txtEmail.Text = selectedEmpleado.Email;
+            txtDireccion.Text = selectedEmpleado.Direccion;
+        }
+        else
+        {
+            MessageBox.Show("Por favor, selecciona un empleado para editar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+        btnEditEmpleado.IsChecked=false;
+    }
+        
+        private void btnEditEmpleadoBD_Checked(object sender, RoutedEventArgs e)
+        {
+            if (grdEmpleados.SelectedItem is Empleado selectedEmpleado)
+            {
+                string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+                string storedProcedure = "Editar_Empleado";
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand command = new SqlCommand(storedProcedure, connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@Id_Empleado", selectedEmpleado.Id_Empleado);
+                    command.Parameters.AddWithValue("@Nombre", txtNombre.Text);
+                    command.Parameters.AddWithValue("@Apellido", txtApellido.Text);
+                    command.Parameters.AddWithValue("@Salario", decimal.Parse(txtSalario.Text));
+                    command.Parameters.AddWithValue("@Estado_Laboral", txtEstadoLaboral.Text);
+                    command.Parameters.AddWithValue("@Email", txtEmail.Text);
+                    command.Parameters.AddWithValue("@Direccion", txtDireccion.Text);
+
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected > 0)
+                {
+                    MessageBox.Show("Empleado actualizado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    
+                    CargarEmpleados();
+                }
+                else
+                {
+                    MessageBox.Show("No se encontró el empleado para actualizar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+    else
+    {
+     
+        MessageBox.Show("Por favor, selecciona un empleado para editar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+    }
+    btnEditEmpleadoBD.IsChecked = false;
+}
+       
+
 
         private void btnAggUser_Checked(object sender, RoutedEventArgs e)
         {
@@ -445,6 +584,51 @@ namespace PedidosRapids.Vista
         }
 
         private void btnEliminarEmpleado_Checked(object sender, RoutedEventArgs e)
+        {
+    
+            if (grdEmpleados.SelectedItem is Empleado selectedEmpleado)
+            {
+                var result = MessageBox.Show($"¿Estás seguro de que deseas eliminar al empleado '{selectedEmpleado.Nombre} {selectedEmpleado.Apellido}'?", 
+                                     "Confirmación", 
+                                     MessageBoxButton.YesNo, 
+                                     MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {           
+                string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+                string storedProcedure = "Eliminar_Empleado"; 
+    
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand command = new SqlCommand(storedProcedure, connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Id_Empleado", selectedEmpleado.Id_Empleado);
+
+                try
+                {
+                    connection.Open();
+                    // Ejecutar el procedimiento almacenado
+                    command.ExecuteNonQuery();
+
+                    MessageBox.Show("Empleado eliminado correctamente.", "Resultado", MessageBoxButton.OK, MessageBoxImage.Information);
+                    CargarEmpleados();
+                }
+                catch (SqlException ex)
+                {
+                   
+                    MessageBox.Show($"Error al eliminar el empleado: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+    }
+    else
+    {
+        MessageBox.Show("Por favor, selecciona un empleado para eliminar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+    }
+    btnEliminarEmpleado.IsChecked = false;
+}   
+
+        private void btnSalirAggBebidas_Checked(object sender, RoutedEventArgs e)
         {
 
         }
@@ -623,6 +807,7 @@ namespace PedidosRapids.Vista
                     {
                         datosUsuarios.Add(new User
                         {
+                            Id_Usuario = Convert.ToInt32(reader["Id_Usuario"]),
                             Id_Empleado = Convert.ToInt32(reader["Id_Empleado"]),
                             Usuario = reader["Usuario"].ToString(),
                             Password = reader["Contrasena"].ToString()
@@ -643,7 +828,47 @@ namespace PedidosRapids.Vista
 
         private void CargarEmpleados()
         {
+            datosEmpleados = new List<Empleado>();
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedure = "ListarEmpleados";
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        datosEmpleados.Add(new Empleado
+                        {
+                            Id_Persona = Convert.ToInt32(reader["Id_Persona"]),
+                            Nombre = reader["Nombre"].ToString(),
+                            Apellido = reader["Apellido"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            Direccion = reader["Direccion"].ToString(),
+                            Id_Municipio = Convert.ToInt32(reader["Id_Municipio"]),
+                            NombreMunicipio = reader["Nombre_Municipio"].ToString(),
+                            NombreDepartamento = reader["Nombre_Departamento"].ToString(),
+                            Telefono = reader["Telefono"].ToString(),
+                            Salario = Convert.ToDecimal(reader["Salario"]),
+                            Estado_Laboral = reader["Estado_Laboral"].ToString()
+                        });
+                    }
+
+                    reader.Close();
+                    grdEmpleados.ItemsSource = datosEmpleados;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+
+            }
         }
 
         private void MostrarValorEnTextBox()
@@ -869,7 +1094,25 @@ namespace PedidosRapids.Vista
             lblIdEmpleado.Visibility = Visibility.Hidden;
             txtIdEmpleado.Visibility = Visibility.Hidden;
             btnAEliminarUser.Visibility = Visibility.Hidden;
+            lblTitulo.Visibility = Visibility.Hidden;
+            lblIdPersona.Visibility = Visibility.Hidden;
+            txtIdPersona.Visibility = Visibility.Hidden;
+            lblNombre.Visibility = Visibility.Hidden;
+            txtNombre.Visibility = Visibility.Hidden;
+            lblApellido.Visibility = Visibility.Hidden;
+            txtApellido.Visibility = Visibility.Hidden;
+            lblSalario.Visibility = Visibility.Hidden;
+            txtSalario.Visibility = Visibility.Hidden;
+            lblEstadoLaboral.Visibility = Visibility.Hidden;
+            txtEstadoLaboral.Visibility = Visibility.Hidden;
+            lblEmail.Visibility = Visibility.Hidden;
+            txtEmail.Visibility = Visibility.Hidden;
+            lblDireccion.Visibility = Visibility.Hidden;
+            txtDireccion.Visibility = Visibility.Hidden;
+            btnAggEmpleadoBD.Visibility = Visibility.Hidden;
+            btnEditEmpleadoBD.Visibility = Visibility.Hidden;
             OcultarFormEditBebidas();
+
         }
 
         private void OcultarParaAgOrden()
@@ -956,11 +1199,38 @@ namespace PedidosRapids.Vista
             lblAdministrarUser.Visibility = Visibility.Hidden;
             grdAdUsers.Visibility = Visibility.Hidden;
             btnAggUser.Visibility = Visibility.Hidden;
+            btnAEliminarUser.Visibility = Visibility.Hidden;
+        }
+
+        private void OcultarEmpleado()
+        {
+            lblAdministrarEmpleados.Visibility = Visibility.Hidden;
+            grdEmpleados.Visibility = Visibility.Hidden;
+            btnAggEmpleado.Visibility = Visibility.Hidden;
+            btnEditEmpleado.Visibility = Visibility.Hidden;
+            btnEliminarEmpleado.Visibility = Visibility.Hidden;
         }
 
         private void MostrarAggEmpleado()
         {
-
+            lblTitulo.Visibility = Visibility.Visible;
+            lblIdPersona.Visibility = Visibility.Visible;
+            txtIdPersona.Visibility = Visibility.Visible;
+            lblNombre.Visibility = Visibility.Visible;
+            txtNombre.Visibility = Visibility.Visible;
+            lblApellido.Visibility = Visibility.Visible;
+            txtApellido.Visibility = Visibility.Visible;
+            lblSalario.Visibility = Visibility.Visible;
+            txtSalario.Visibility = Visibility.Visible;
+            lblEstadoLaboral.Visibility = Visibility.Visible;
+            txtEstadoLaboral.Visibility = Visibility.Visible;
+            lblEmail.Visibility = Visibility.Visible;
+            txtEmail.Visibility = Visibility.Visible;
+            lblDireccion.Visibility = Visibility.Visible;
+            txtDireccion.Visibility = Visibility.Visible;
+            btnAggEmpleadoBD.Visibility = Visibility.Visible;
+            btnVolverEmpleados.Visibility = Visibility.Visible;
+            OcultarEmpleado();
         }
 
         private void MostrarAggUser()
@@ -973,9 +1243,46 @@ namespace PedidosRapids.Vista
             lblContrasenia.Visibility = Visibility.Visible;
             txtContrasenia.Visibility = Visibility.Visible;
             btnAggUserBD.Visibility = Visibility.Visible;
-            btnAEliminarUser.Visibility = Visibility.Hidden;
+            btnVolverUsuarios.Visibility = Visibility.Visible;
             OcultarUser();
 
+        }
+
+        private void VolverAtrasUsuario()
+        {
+            MostrarAdUsers();
+            lblNuevoUser.Visibility = Visibility.Hidden;
+            lblIdEmpleado.Visibility = Visibility.Hidden;
+            txtIdEmpleado.Visibility = Visibility.Hidden;
+            lblAggUser.Visibility = Visibility.Hidden;
+            txtAggUser.Visibility = Visibility.Hidden;
+            lblContrasenia.Visibility = Visibility.Hidden;
+            txtContrasenia.Visibility = Visibility.Hidden;
+            btnAggUserBD.Visibility = Visibility.Hidden;
+            btnVolverUsuarios.Visibility = Visibility.Hidden;
+        }
+
+        private void VolverAtrasEmpleado()
+        {
+            MostrarAdEmpleado();
+            lblTitulo.Visibility = Visibility.Hidden;
+            lblIdPersona.Visibility = Visibility.Hidden;
+            txtIdPersona.Visibility = Visibility.Hidden;
+            lblNombre.Visibility = Visibility.Hidden;
+            txtNombre.Visibility = Visibility.Hidden;
+            lblApellido.Visibility = Visibility.Hidden;
+            txtApellido.Visibility = Visibility.Hidden;
+            lblSalario.Visibility = Visibility.Hidden;
+            txtSalario.Visibility = Visibility.Hidden;
+            lblEstadoLaboral.Visibility = Visibility.Hidden;
+            txtEstadoLaboral.Visibility = Visibility.Hidden;
+            lblEmail.Visibility = Visibility.Hidden;
+            txtEmail.Visibility = Visibility.Hidden;
+            lblDireccion.Visibility = Visibility.Hidden;
+            txtDireccion.Visibility = Visibility.Hidden;
+            btnAggEmpleadoBD.Visibility = Visibility.Hidden;
+            btnVolverEmpleados.Visibility = Visibility.Hidden;
+            btnEditEmpleadoBD.Visibility = Visibility.Hidden;
         }
 
         private void MostrarAggBebida()
@@ -1093,6 +1400,7 @@ namespace PedidosRapids.Vista
 
         public class User
         {
+            public int Id_Usuario { get; set; }
             public int Id_Empleado { get; set; }
             public string Usuario { get; set; }
             public string Password { get; set; }
@@ -1100,9 +1408,17 @@ namespace PedidosRapids.Vista
 
         public class Empleado
         {
-            public int Id_Persona{ get; set; }
-            public string Salario { get; set; }
-            public string Estado_Laboal { get; set; }
+            public int Id_Persona { get; set; }
+            public string Nombre { get; set; }
+            public string Apellido { get; set; }
+            public string Email { get; set; }
+            public string Direccion { get; set; }
+            public int Id_Municipio { get; set; }
+            public string Nombre_Municipio { get; set; }
+            public string Nombre_Departamento { get; set; }
+            public string Telefono { get; set; }
+            public decimal Salario { get; set; }
+            public string Estado_Laboral { get; set; }
         }
 
 
