@@ -19,6 +19,7 @@ using System.Data;
 using static PedidosRapids.Vista.Main;
 using System.Collections.ObjectModel;
 using System.Xml.Linq;
+using System.Text.RegularExpressions;
 
 
 /*************** Falta un botón de cerrar sesión ***************************/
@@ -33,8 +34,8 @@ namespace PedidosRapids.Vista
         private List<Mesas> datosMesa;
         private List<Bebidas> datosBebidas;
         private List<User> datosUsuarios;
-
         public Main(string userRole)
+
         {
             InitializeComponent();
 
@@ -59,6 +60,7 @@ namespace PedidosRapids.Vista
             CargarOrdenes();
             CargarMesas();
             CargarBebidas();
+            CargarUsuarios();
             MostrarValorEnTextBox();
             CargarDatosBebidas();
 
@@ -159,6 +161,8 @@ namespace PedidosRapids.Vista
             OcultarParaMesas();
             lblMesas1.Visibility = Visibility.Visible;
             grdMesas1.Visibility = Visibility.Visible;
+            btnEliminarMesa.Visibility = Visibility.Visible;            
+            btnAgregarMesa.Visibility = Visibility.Visible;
         }
 
 
@@ -184,8 +188,61 @@ namespace PedidosRapids.Vista
             }
         }
 
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void DecimalValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            // Permitir solo números y coma
+            var textBox = (TextBox)sender;
+            var fullText = textBox.Text.Insert(textBox.SelectionStart, e.Text);
+
+            // Solo permite una coma
+            if (e.Text == "," && textBox.Text.Contains(","))
+            {
+                e.Handled = true;
+                return;
+            }
+
+            // Verifica que sea un número válido con coma
+            e.Handled = !decimal.TryParse(fullText.Replace(',', '.'), out _);
+        }
+
+        private void txtPriceBebida_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            // Permite el uso de backspace y delete
+            if (e.Key == Key.Back || e.Key == Key.Delete)
+            {
+                e.Handled = false;
+            }
+        }
+
         private void btnAggBebidaABD_Checked(object sender, RoutedEventArgs e)
         {
+            // Validaciones para el ID y nombre...
+
+            // Validación del precio
+            if (!decimal.TryParse(txtPriceBebida.Text.Replace(',', '.'),
+                System.Globalization.NumberStyles.Any,
+                System.Globalization.CultureInfo.InvariantCulture,
+                out decimal precio) || precio <= 0)
+            {
+                MostrarError("El precio debe ser un número positivo.");
+                btnAggBebidaABD.IsChecked = false;
+                return;
+            }
+
+            // Validación de la cantidad
+            if (!int.TryParse(txtCantBebida.Text, out int cantidad) || cantidad <= 0)
+            {
+                MostrarError("La cantidad debe ser un número entero positivo.");
+                btnAggBebidaABD.IsChecked = false;
+                return;
+            }
+
             string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
             string storedProcedure = "Agregar_Bebida";
 
@@ -194,12 +251,11 @@ namespace PedidosRapids.Vista
                 SqlCommand command = new SqlCommand(storedProcedure, connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@Id_Producto", int.Parse(txtId_Bebida.Text));
-                command.Parameters.AddWithValue("@NombreBebida", txtNameBebida1.Text);
-                command.Parameters.AddWithValue("@Alcoholica", rdSiBebida1.IsChecked == true ? "True" : "False");
-                command.Parameters.AddWithValue("@Precio", float.Parse(txtPriceBebida.Text));
-                command.Parameters.AddWithValue("@Cantidad", int.Parse(txtCantBebida.Text));
-                
+                command.Parameters.AddWithValue("@Id_Producto", txtIdBebida.Text);
+                command.Parameters.AddWithValue("@NombreBebida", txtNameBebida1.Text.Trim());
+                command.Parameters.AddWithValue("@Alcoholica", rdSiBebida1.IsChecked == true);
+                command.Parameters.AddWithValue("@Precio", precio);
+                command.Parameters.AddWithValue("@Cantidad", cantidad); // Ahora usamos la cantidad del TextBox
 
                 try
                 {
@@ -208,11 +264,67 @@ namespace PedidosRapids.Vista
 
                     if (rowsAffected > 0)
                     {
-                        MessageBox.Show("Bebidas Agregadas con exito");
+                        MessageBox.Show("Bebida agregada con éxito", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                        LimpiarCampos();
+                        CargarBebidas();
                     }
                     else
                     {
-                        MessageBox.Show("No se pudo agregar la bebida.");
+                        MostrarError("No se pudo agregar la bebida.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MostrarError($"Error al agregar la bebida: {ex.Message}");
+                }
+            }
+
+            btnAggBebidaABD.IsChecked = false;
+        }
+
+
+        private void MostrarError(string mensaje)
+        {
+            MessageBox.Show(mensaje, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            btnAggBebidaABD.IsChecked = false;
+        }
+
+        private void LimpiarCampos()
+        {
+            txtId_Bebida.Text = string.Empty;
+            txtNameBebida1.Text = string.Empty;
+            txtPriceBebida.Text = string.Empty;
+            txtCantBebida.Text = string.Empty;
+            rdSiBebida1.IsChecked = false;
+            rdNoBebida1.IsChecked = false;
+        }
+
+        private void btnAggUserBD_Checked(object sender, RoutedEventArgs e)
+        {
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedure = "Agregar_Usuario";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@Id_Empleado", int.Parse(txtIdEmpleado.Text));
+                command.Parameters.AddWithValue("@Usuario", txtAggUser.Text);
+                command.Parameters.AddWithValue("Password", txtContrasenia.Text);
+
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Usuario agregado con exito");
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo agregar el usuario.");
                     }
                 }
                 catch (Exception ex)
@@ -220,14 +332,55 @@ namespace PedidosRapids.Vista
                     MessageBox.Show("Error: " + ex.Message);
                 }
             }
-
-            btnAggBebidaABD.IsChecked = false;
+            btnAggUserBD.IsChecked = false;
         }
 
-        private void btnAggUserBD_Checked(object sender, RoutedEventArgs e)
+        private void btnAEliminarUser_Checked(object sender, RoutedEventArgs e)
         {
+            // Verifica si hay un elemento seleccionado en el DataGrid
+            if (grdAdUsers.SelectedItem is User selectedUser)
+    {
+        // Mostrar una confirmación al usuario
+        var result = MessageBox.Show($"¿Estás seguro de que deseas eliminar al usuario '{selectedUser.Usuario}'?",
+                                     "Confirmación",
+                                     MessageBoxButton.YesNo,
+                                     MessageBoxImage.Warning);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            // Ejecutar el procedimiento almacenado para eliminar al usuario
             string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedure = "Eliminar_Usuario";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id_Usuario", selectedUser.Id_Empleado);
+
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery(); // Ejecuta el procedimiento almacenado
+                    MessageBox.Show("Usuario eliminado exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Recarga los datos del DataGrid
+                    CargarUsuarios();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al eliminar el usuario: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
+    }
+    else
+    {
+        MessageBox.Show("Por favor, selecciona un usuario para eliminar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+    }
+            btnAEliminarUser.IsChecked = false;
+    }
+      
 
         private void btnAggBebida1_Checked(object sender, RoutedEventArgs e)
         {
@@ -347,25 +500,37 @@ namespace PedidosRapids.Vista
 
                     while (reader.Read())
                     {
-                        datosBebidas.Add(new Bebidas
+                        var bebida = new Bebidas
                         {
                             Id_Producto = reader.GetInt32(reader.GetOrdinal("Id_Producto")),
                             Precio = Convert.ToDecimal(reader.GetValue(reader.GetOrdinal("Precio"))),
                             Existencia = reader.GetInt32(reader.GetOrdinal("Existencia")),
                             Bebida = reader.GetString(reader.GetOrdinal("Bebida")),
                             Alcoholica = reader.GetBoolean(reader.GetOrdinal("Alcoholica"))
-                        });
+                        };
+                        datosBebidas.Add(bebida);
                     }
 
                     reader.Close();
+
+                    // Actualizar el DataGrid
+                    grdBebidas1.ItemsSource = null; // Limpiar el source actual
+                    grdBebidas1.ItemsSource = datosBebidas;
+
+                    // Configurar el formato de la columna de precio
+                    var precioColumn = grdBebidas1.Columns.FirstOrDefault(c => c.Header.ToString() == "Precio");
+                    if (precioColumn != null && precioColumn is DataGridTextColumn dtColumn)
+                    {
+                        (dtColumn.Binding as Binding).StringFormat = "{0:N2}";
+                    }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: " + ex.Message);
                 }
-
             }
         }
+
         public void CargarCategorias()
         {
             datos = new List<Categoria>();
@@ -436,6 +601,48 @@ namespace PedidosRapids.Vista
             }
         }
 
+        public void CargarUsuarios()
+        {
+            datosUsuarios = new List<User>();
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedure = "Listar_Usuarios";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        datosUsuarios.Add(new User
+                        {
+                            Id_Empleado = Convert.ToInt32(reader["Id_Empleado"]),
+                            Usuario = reader["Usuario"].ToString(),
+                            Password = reader["Contrasena"].ToString()
+                            // Agrega más propiedades si es necesario
+                        });
+                    }
+
+                    reader.Close();
+                    grdAdUsers.ItemsSource = datosUsuarios;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+
+            }
+        }
+
+        private void CargarEmpleados()
+        {
+
+        }
 
         private void MostrarValorEnTextBox()
         {
@@ -657,6 +864,9 @@ namespace PedidosRapids.Vista
             lblContrasenia.Visibility = Visibility.Hidden;
             txtContrasenia.Visibility = Visibility.Hidden;
             btnAggUserBD.Visibility = Visibility.Hidden;
+            lblIdEmpleado.Visibility = Visibility.Hidden;
+            txtIdEmpleado.Visibility = Visibility.Hidden;
+            btnAEliminarUser.Visibility = Visibility.Hidden;
             OcultarFormEditBebidas();
         }
 
@@ -727,6 +937,7 @@ namespace PedidosRapids.Vista
             lblAdministrarUser.Visibility = Visibility.Visible;
             grdAdUsers.Visibility = Visibility.Visible;
             btnAggUser.Visibility = Visibility.Visible;
+            btnAEliminarUser.Visibility = Visibility.Visible;
             OcultarParaUser();
         }
 
@@ -753,11 +964,14 @@ namespace PedidosRapids.Vista
         private void MostrarAggUser()
         {
             lblNuevoUser.Visibility = Visibility.Visible;
+            lblIdEmpleado.Visibility = Visibility.Visible;
+            txtIdEmpleado.Visibility = Visibility.Visible;
             lblAggUser.Visibility = Visibility.Visible;
             txtAggUser.Visibility = Visibility.Visible;
             lblContrasenia.Visibility = Visibility.Visible;
             txtContrasenia.Visibility = Visibility.Visible;
             btnAggUserBD.Visibility = Visibility.Visible;
+            btnAEliminarUser.Visibility = Visibility.Hidden;
             OcultarUser();
 
         }
@@ -872,6 +1086,21 @@ namespace PedidosRapids.Vista
             public int Existencia { get; set; }
             public string Bebida { get; set; }
             public bool Alcoholica { get; set; }
+
+        }
+
+        public class User
+        {
+            public int Id_Empleado { get; set; }
+            public string Usuario { get; set; }
+            public string Password { get; set; }
+        }
+
+        public class Empleado
+        {
+            public int Id_Persona{ get; set; }
+            public string Salario { get; set; }
+            public string Estado_Laboal { get; set; }
         }
 
 
@@ -1247,6 +1476,108 @@ namespace PedidosRapids.Vista
             OcultarFormEditBebidas();
             MostrarAdBebida();
             OcultarFormAgregarBebida();
+        }
+
+        private void btnAgregarMesa_Checked(object sender, RoutedEventArgs e)
+        {
+            btnAgregarMesa.IsChecked = false;
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedure = "Agregar_Mesa";
+
+            // Como estado inicial siempre será "Disponible" cuando se agrega una nueva mesa
+            string estadoInicial = "Disponible";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                // Solo necesitamos el parámetro @Estado
+                command.Parameters.AddWithValue("@Estado", estadoInicial);
+
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Mesa agregada con éxito", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                        CargarMesas(); // Asumiendo que tienes un método para actualizar la lista de mesas
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo agregar la mesa.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private async void btnEliminarMesa_Checked(object sender, RoutedEventArgs e)
+        {
+            btnEliminarMesa.IsChecked = false;
+            // Verificar si hay una fila seleccionada
+            if (grdMesas1.SelectedItem == null)
+            {
+                MessageBox.Show("Por favor, seleccione una mesa para eliminar.", "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // Obtener la mesa seleccionada
+            var mesaSeleccionada = (Mesas)grdMesas1.SelectedItem;
+
+            // Mostrar mensaje de confirmación
+            var resultado = MessageBox.Show($"¿Está seguro que desea eliminar la mesa '{mesaSeleccionada.Mesa}'?",
+                                          "Confirmar eliminación",
+                                          MessageBoxButton.YesNo,
+                                          MessageBoxImage.Question);
+
+            if (resultado == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    // Llamar al procedimiento almacenado
+                    using (SqlConnection conn = new SqlConnection("Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24"))
+                    {
+                        await conn.OpenAsync();
+
+                        using (SqlCommand cmd = new SqlCommand("Eliminar_Mesa", conn))
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.Parameters.AddWithValue("@Id_Mesa", mesaSeleccionada.Id_Mesa);
+
+                            await cmd.ExecuteNonQueryAsync();
+                        }
+                    }
+
+                    if (grdMesas1.ItemsSource is List<Mesas> lista)
+                    {
+                        var observableCollection = new ObservableCollection<Mesas>(lista);
+                        observableCollection.Remove(mesaSeleccionada);
+                        grdMesas1.ItemsSource = observableCollection;
+                    }
+                    // O si ya es ObservableCollection
+                    else if (grdMesas1.ItemsSource is ObservableCollection<Mesas> observable)
+                    {
+                        observable.Remove(mesaSeleccionada);
+                    }
+
+                    // Actualizar el DataGrid
+                    var itemsSource = (ObservableCollection<Mesas>)grdMesas1.ItemsSource;
+                    itemsSource.Remove(mesaSeleccionada);
+
+                    MessageBox.Show("Mesa eliminada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al eliminar la mesa: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
         }
     }
 
