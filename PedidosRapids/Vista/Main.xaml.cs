@@ -423,7 +423,7 @@ namespace PedidosRapids.Vista
         {
             datosMesa = new List<Mesas>();
             string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
-            string storedProcedureName = "Listar_Ordenes";
+            string storedProcedureName = "Listar_Mesas";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -435,24 +435,32 @@ namespace PedidosRapids.Vista
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
 
+                    var mesasUnicas = new HashSet<string>();
+
                     while (reader.Read())
                     {
-                        datosMesa.Add(new Mesas
+                        string mesa = reader["Mesa"].ToString();
+                        if (!mesasUnicas.Contains(mesa))
                         {
-                            Mesa = reader["Mesa"].ToString()
-                            // Agrega más propiedades si es necesario
-                        });
+                            mesasUnicas.Add(mesa);
+                            datosMesa.Add(new Mesas { Mesa = mesa });
+                        }
                     }
 
                     reader.Close();
+
+                    // Actualizar el DataGrid después de cargar los datos
+                    grdMesas1.ItemsSource = null;
+                    grdMesas1.ItemsSource = datosMesa;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: " + ex.Message);
                 }
-
             }
         }
+
+
 
         private void CargarBebidas()
         {
@@ -1477,7 +1485,6 @@ namespace PedidosRapids.Vista
             string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
             string storedProcedure = "Agregar_Mesa";
 
-            // Como estado inicial siempre será "Disponible" cuando se agrega una nueva mesa
             string estadoInicial = "Disponible";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -1485,7 +1492,6 @@ namespace PedidosRapids.Vista
                 SqlCommand command = new SqlCommand(storedProcedure, connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                // Solo necesitamos el parámetro @Estado
                 command.Parameters.AddWithValue("@Estado", estadoInicial);
 
                 try
@@ -1496,7 +1502,13 @@ namespace PedidosRapids.Vista
                     if (rowsAffected > 0)
                     {
                         MessageBox.Show("Mesa agregada con éxito", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                        CargarMesas(); // Asumiendo que tienes un método para actualizar la lista de mesas
+
+                        // Recargar los datos de las mesas
+                        CargarMesas();
+
+                        // Actualizar el DataGrid
+                        grdMesas1.ItemsSource = null;
+                        grdMesas1.ItemsSource = datosMesa;
                     }
                     else
                     {
@@ -1509,6 +1521,7 @@ namespace PedidosRapids.Vista
                 }
             }
         }
+
 
         private async void btnEliminarMesa_Checked(object sender, RoutedEventArgs e)
         {
@@ -1541,7 +1554,7 @@ namespace PedidosRapids.Vista
                         using (SqlCommand cmd = new SqlCommand("Eliminar_Mesa", conn))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@Id_Mesa", mesaSeleccionada.Id_Mesa);
+                            cmd.Parameters.AddWithValue("@Id_Mesa", mesaSeleccionada.Mesa);
 
                             await cmd.ExecuteNonQueryAsync();
                         }
