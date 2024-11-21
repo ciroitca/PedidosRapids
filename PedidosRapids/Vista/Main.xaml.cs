@@ -447,6 +447,7 @@ namespace PedidosRapids.Vista
             btnEditBebida.Visibility = Visibility.Visible;
             btnEliminarBebida.Visibility = Visibility.Visible;
             btnAggBebida.Visibility = Visibility.Visible;
+            btnEditarBebida.Visibility = Visibility.Visible;
 
 
         }
@@ -996,6 +997,8 @@ namespace PedidosRapids.Vista
         //Funcion para ocultar todo excepto lo que se debe mostrar para Platos
         private void OcultarParaOrdenes()
         {
+            btnEliminarMesa.Visibility = Visibility.Hidden;
+            btnAgregarMesa.Visibility = Visibility.Hidden;
             btnEditarBebida.Visibility = Visibility.Hidden;
             btnEliminarMesa.Visibility = Visibility.Hidden;
             btnAgregarMesa.Visibility = Visibility.Hidden;
@@ -1125,6 +1128,7 @@ namespace PedidosRapids.Vista
             txtDireccion.Visibility = Visibility.Hidden;
             btnAggEmpleadoBD.Visibility = Visibility.Hidden;
             btnEditEmpleadoBD.Visibility = Visibility.Hidden;
+            btnEditarBebida.Visibility = Visibility.Hidden;
             OcultarFormEditBebidas();
 
         }
