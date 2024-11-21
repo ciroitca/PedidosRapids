@@ -628,11 +628,7 @@ namespace PedidosRapids.Vista
     btnEliminarEmpleado.IsChecked = false;
 }   
 
-        private void btnSalirAggBebidas_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+    
         public void CargarMesas()
         {
             datosMesa = new List<Mesas>();
@@ -852,8 +848,8 @@ namespace PedidosRapids.Vista
                             Email = reader["Email"].ToString(),
                             Direccion = reader["Direccion"].ToString(),
                             Id_Municipio = Convert.ToInt32(reader["Id_Municipio"]),
-                            NombreMunicipio = reader["Nombre_Municipio"].ToString(),
-                            NombreDepartamento = reader["Nombre_Departamento"].ToString(),
+                            Nombre_Municipio = reader["Nombre_Municipio"].ToString(),
+                            Nombre_Departamento = reader["Nombre_Departamento"].ToString(),
                             Telefono = reader["Telefono"].ToString(),
                             Salario = Convert.ToDecimal(reader["Salario"]),
                             Estado_Laboral = reader["Estado_Laboral"].ToString()
@@ -1419,6 +1415,7 @@ namespace PedidosRapids.Vista
             public string Telefono { get; set; }
             public decimal Salario { get; set; }
             public string Estado_Laboral { get; set; }
+            public string Id_Empleado { get; set; }
         }
 
 

@@ -233,9 +233,6 @@
                         <!-- *** ELEMENOS A VISUALIZAR EN ESTA SECCIÓN *** -->
 
 
-						<!--///// CONTENIDO SECCIÓN MENÚ ** PLATOS ** \\\\\-->
-						<!-- *** ELEMENOS A VISUALIZAR EN ESTA SECCIÓN *** -->
-
 						<!-- BOTON -AGREGAR PLATOS- -->
 
 						<RadioButton x:Name="btnAgregarPlatos"  Style="{StaticResource ComunButton}"
@@ -268,10 +265,7 @@
 						</RadioButton>
 
 
-						<!-- BOTON -AGREGAR AGREGAR ORDEN- -->
-
-
-
+						
 						<!--BOTON PARA AGREGAR LA ORDEN-->
 						<RadioButton x:Name="btnAgOrdenBD"  Style="{StaticResource ComunButton}"
                                 Tag="{StaticResource color3}"
@@ -291,8 +285,8 @@
 							</StackPanel>
 						</RadioButton>
 
-						<!--BOTON PARA ADMINISTRAR LAS BEBIDAS-->
-						<!--BOTON PARA ADMINISTRAR LAS BEBIDAS-->
+						
+                        <!--BOTON PARA ADMINISTRAR LAS BEBIDAS-->
 						<RadioButton x:Name="btnAdminBebida"  Style="{StaticResource ComunButton}"
                                 Tag="{StaticResource color3}"
                                 Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="118,186,0,0" FontSize="36" Visibility="Hidden"  Checked="btnAdminBebida_Checked" >
@@ -403,6 +397,15 @@
 
 						<!--BOTON PARA VOLVER EMPLEADOS-->
 						<RadioButton x:Name="btnVolverEmpleados"  Style="{StaticResource ComunButton}"
+                                Tag="{StaticResource color3}"
+                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="608,564,0,0" FontSize="36" Checked="btnAggBebida_Checked" Visibility="Hidden"  >
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+                                <TextBlock Text="AGREGAR BEBIDA" Style="{StaticResource botonComunText}" FontSize="22"/>
+                            </StackPanel>
+                        </RadioButton>
+
+                        <!--BOTON PARA AGREGAR BEBIDAS-->
+                        <RadioButton x:Name="btnAggBebida"  Style="{StaticResource ComunButton}"
                                 Tag="{StaticResource color3}"
                                 Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="608,564,0,0" FontSize="36" Checked="btnAggBebida_Checked" Visibility="Hidden"  >
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
