@@ -13,10 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-
 namespace PedidosRapids.Vista
 {
-    
     public partial class login : Window
     {
         public login()
@@ -44,7 +42,6 @@ namespace PedidosRapids.Vista
             {
                 this.Close();
             }
-          
         }
 
         private void IniciarSesion_Click(object sender, RoutedEventArgs e)
@@ -53,26 +50,25 @@ namespace PedidosRapids.Vista
             string usuario = txtUsuario.Text;
             string contraseña = txtContra.Password;
 
-         
             // Validamos las credenciales
             UsuarioInfo info = ValidarCredenciales(usuario, contraseña);
 
             if (info != null)
-
             {
-                // Si las credenciales son válidas, verificamos el usuario específico
-                if (info.NombreUsuario == usuario && info.ContrasenaUsuario == contraseña)
-                {
-                   Main admin = new Main();
-                    admin.Show();
-                    this.Close();
-                }
-            }
+                // Determinamos el rol según el nombre de usuario
+                string userRole = (usuario == "admin") ? "Administrador" : "Empleado";
 
+                // Mostramos un mensaje de bienvenida
+                MessageBox.Show($"¡Bienvenido, {usuario}!", "Inicio de Sesión", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Cargamos la ventana correspondiente
+                Main admin = new Main(userRole); // Pasamos el rol como parámetro
+                admin.Show();
+                this.Close();
+            }
             else
             {
-                MessageBox.Show("Credenciales no válidas", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Credenciales no válidas", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -82,7 +78,6 @@ namespace PedidosRapids.Vista
             UsuarioInfo usuarioInfo = null;
 
             using (SqlConnection conexion = new SqlConnection(conexionString))
-
             {
                 try
                 {
@@ -122,5 +117,3 @@ namespace PedidosRapids.Vista
         }
     }
 }
-
-
