@@ -457,14 +457,12 @@ namespace PedidosRapids.Vista
         private void btnAdminBebida_Checked(object sender, RoutedEventArgs e)
         {
             btnAdminBebida.IsChecked = false;
-            OcultarFormAgregarBebida();
+            MostrarAdBebida();
             OcultarParaBebidas();
-            lblBebida1s.Visibility = Visibility.Visible;
-            grdBebidas1.Visibility = Visibility.Visible;
-            btnEditarBebida.Visibility = Visibility.Visible;
-            btnEliminarBebida.Visibility = Visibility.Visible;
             btnAggBebida.Visibility = Visibility.Visible;
-
+            lblBebida1s.Visibility = Visibility.Visible;
+            grdPlatos1.Visibility = Visibility.Hidden;
+              
         }
 
         private void btnAdminEm_Checked(object sender, RoutedEventArgs e)
@@ -635,7 +633,7 @@ namespace PedidosRapids.Vista
         {
             datosMesa = new List<Mesas>();
             string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
-            string storedProcedureName = "Listar_Mesas";
+            string storedProcedureName = "Listar_Ordenes";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -647,32 +645,24 @@ namespace PedidosRapids.Vista
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
 
-                    var mesasUnicas = new HashSet<string>();
-
                     while (reader.Read())
                     {
-                        string mesa = reader["Mesa"].ToString();
-                        if (!mesasUnicas.Contains(mesa))
+                        datosMesa.Add(new Mesas
                         {
-                            mesasUnicas.Add(mesa);
-                            datosMesa.Add(new Mesas { Mesa = mesa });
-                        }
+                            Mesa = reader["Mesa"].ToString()
+                            // Agrega más propiedades si es necesario
+                        });
                     }
 
                     reader.Close();
-
-                    // Actualizar el DataGrid después de cargar los datos
-                    grdMesas1.ItemsSource = null;
-                    grdMesas1.ItemsSource = datosMesa;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: " + ex.Message);
                 }
+
             }
         }
-
-
 
         private void CargarBebidas()
         {
@@ -945,9 +935,6 @@ namespace PedidosRapids.Vista
         //Funcion para ocultar todo excepto lo que se debe mostrar para ordenes
         private void OcultarParaPlatos()
         {
-            btnEditarBebida.Visibility = Visibility.Hidden;
-            btnEliminarMesa.Visibility = Visibility.Hidden;
-            btnAgregarMesa.Visibility = Visibility.Hidden;
             lblOrden1.Visibility = Visibility.Hidden;
             grdOrdenes1.Visibility = Visibility.Hidden;
             btnAgOrden.Visibility = Visibility.Hidden;
@@ -963,8 +950,7 @@ namespace PedidosRapids.Vista
 
         private void OcultarParaBebidas()
         {
-            btnEliminarMesa.Visibility = Visibility.Hidden;
-            btnAgregarMesa.Visibility = Visibility.Hidden;
+            
             btnAgregarPlatos.Visibility = Visibility.Hidden;
             lblOrden1.Visibility = Visibility.Hidden;
             grdOrdenes1.Visibility = Visibility.Hidden;
@@ -997,9 +983,6 @@ namespace PedidosRapids.Vista
         private void OcultarParaOrdenes()
         {
             btnEditarBebida.Visibility = Visibility.Hidden;
-            btnEliminarMesa.Visibility = Visibility.Hidden;
-            btnAgregarMesa.Visibility = Visibility.Hidden;
-            btnEditarBebida.Visibility = Visibility.Hidden;
             lblMesas1.Visibility = Visibility.Hidden;
             grdMesas1.Visibility = Visibility.Hidden;
             lblPlatos1.Visibility = Visibility.Hidden;
@@ -1020,7 +1003,6 @@ namespace PedidosRapids.Vista
 
         private void OcultarParaMesas()
         {
-            btnEditarBebida.Visibility = Visibility.Hidden;
             lblOrden1.Visibility = Visibility.Hidden;
             grdOrdenes1.Visibility = Visibility.Hidden;
             btnAgOrden.Visibility = Visibility.Hidden;
@@ -1167,7 +1149,7 @@ namespace PedidosRapids.Vista
             grdOrdenes1.Visibility = Visibility.Hidden;
             lblMesas1.Visibility = Visibility.Hidden;
             grdMesas1.Visibility = Visibility.Hidden;
-            btnEditarBebida.Visibility = Visibility.Visible;
+            
             OcultarParaBebidas();
             OcultarFormEditBebidas();
         }
@@ -1806,7 +1788,6 @@ namespace PedidosRapids.Vista
             btnAggBebida.Visibility = Visibility.Visible;
             btnEditarBebidaABD.Visibility = Visibility.Hidden;
             btnVolverBebidas.Visibility = Visibility.Hidden;
-            btnEditarBebida.Visibility = Visibility.Visible;
             OcultarFormEditBebidas();
             MostrarAdBebida();
             OcultarFormAgregarBebida();
@@ -1818,6 +1799,7 @@ namespace PedidosRapids.Vista
             string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
             string storedProcedure = "Agregar_Mesa";
 
+            // Como estado inicial siempre será "Disponible" cuando se agrega una nueva mesa
             string estadoInicial = "Disponible";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -1825,6 +1807,7 @@ namespace PedidosRapids.Vista
                 SqlCommand command = new SqlCommand(storedProcedure, connection);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
 
+                // Solo necesitamos el parámetro @Estado
                 command.Parameters.AddWithValue("@Estado", estadoInicial);
 
                 try
@@ -1835,13 +1818,7 @@ namespace PedidosRapids.Vista
                     if (rowsAffected > 0)
                     {
                         MessageBox.Show("Mesa agregada con éxito", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                        // Recargar los datos de las mesas
-                        CargarMesas();
-
-                        // Actualizar el DataGrid
-                        grdMesas1.ItemsSource = null;
-                        grdMesas1.ItemsSource = datosMesa;
+                        CargarMesas(); // Asumiendo que tienes un método para actualizar la lista de mesas
                     }
                     else
                     {
@@ -1854,7 +1831,6 @@ namespace PedidosRapids.Vista
                 }
             }
         }
-
 
         private async void btnEliminarMesa_Checked(object sender, RoutedEventArgs e)
         {
@@ -1887,7 +1863,7 @@ namespace PedidosRapids.Vista
                         using (SqlCommand cmd = new SqlCommand("Eliminar_Mesa", conn))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
-                            cmd.Parameters.AddWithValue("@Id_Mesa", mesaSeleccionada.Mesa);
+                            cmd.Parameters.AddWithValue("@Id_Mesa", mesaSeleccionada.Id_Mesa);
 
                             await cmd.ExecuteNonQueryAsync();
                         }
