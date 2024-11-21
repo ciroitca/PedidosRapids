@@ -44,10 +44,12 @@ namespace PedidosRapids.Vista
             {
                 // Oculta botones, menús u otros elementos exclusivos del administrador
 
-                //btnUser.Visibility = Visibility.Collapsed;
-                btnUser.Foreground = new SolidColorBrush(Colors.Gray);
+               
+                btnUser.Foreground = new SolidColorBrush(Colors.Black);
                 btnUser.IsEnabled = false;
-                //adminButton.Visibility = Visibility.Collapsed; // 
+                btnAgregarMesa.Foreground = new SolidColorBrush(Colors.Black);
+                btnAgregarMesa.IsEnabled = false;
+                                //adminButton.Visibility = Visibility.Collapsed; // 
                 //adminMenu.IsEnabled = false;                   // 
             }
             else if (userRole == "Administrador")
