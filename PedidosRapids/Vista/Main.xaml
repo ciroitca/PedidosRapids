@@ -244,16 +244,21 @@
 							</StackPanel>
 						</RadioButton>
 
-						<RadioButton x:Name="btnInsertarPlatos"  Style="{StaticResource ComunButton}"
-                             Tag="{StaticResource color3}"
-                             Command="{Binding ShowCustomerViewCommand}" Checked="btnInsertarPlatos_click" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="50"
-                                     Visibility="Hidden">
-							<StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
-								<TextBlock Text="INSERTAR" Style="{StaticResource botonComunText}"/>
-							</StackPanel>
-						</RadioButton>
+                        <RadioButton x:Name="btnInsertarPlatos"
+             Style="{StaticResource ComunButton}"
+             Tag="{StaticResource color3}"
+             Command="{Binding ShowCustomerViewCommand}"
+             Checked="btnInsertarPlatos_Click" 
+                            VerticalAlignment="Bottom"
+             HorizontalAlignment="Right"
+             Margin="50"
+             Visibility="Hidden">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+                                <TextBlock Text="INSERTAR" Style="{StaticResource botonComunText}"/>
+                            </StackPanel>
+                        </RadioButton>
 
-						<!-- BOTON -AGREGAR AGREGAR ORDEN- -->
+                        <!-- BOTON -AGREGAR AGREGAR ORDEN- -->
 
 						<RadioButton x:Name="btnAgOrden"  Style="{StaticResource ComunButton}"
                                  Tag="{StaticResource color3}"

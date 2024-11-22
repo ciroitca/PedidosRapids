@@ -952,6 +952,7 @@ namespace PedidosRapids.Vista
         }
 
 
+
         private void mostrarMenuAdmin()
         {
             lblAdmin1.Visibility = Visibility.Visible;
@@ -1573,10 +1574,79 @@ namespace PedidosRapids.Vista
             
         }
 
-        private void btnInsertarPlatos_click(object sender, RoutedEventArgs e)
-        { 
-            //BOTON INSERTAR PLATOS ACÁ, AGREGAR LA LOGICA        
+        // Método para insertar un platillo en la base de datos
+        private void btnInsertarPlatos_Click(object sender, RoutedEventArgs e)
+        {
+            // Validar los datos ingresados
+            if (string.IsNullOrWhiteSpace(txtCategoria.Text) ||
+                string.IsNullOrWhiteSpace(txtPlatillo.Text) ||
+                string.IsNullOrWhiteSpace(txtTiempo.Text) ||
+                string.IsNullOrWhiteSpace(txtDescripcion.Text))
+            {
+                MessageBox.Show("Por favor, complete todos los campos requeridos.",
+                                "Datos incompletos",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
+                return;
+            }
+
+            // Convertir los datos
+            if (!int.TryParse(txtCategoria.Text, out int idCategoria))
+            {
+                MessageBox.Show("El ID de la categoría debe ser un número válido.",
+                                "Error de validación",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                return;
+            }
+
+            string tiempoPreparacion = txtTiempo.Text;
+            string descripcion = txtDescripcion.Text;
+            string nombrePlatillo = txtPlatillo.Text;
+            int Id_Producto = 0;
+
+
+            // Conexión a la base de datos
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("Agregar_Platillo", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Configurar los parámetros del procedimiento almacenado
+                command.Parameters.AddWithValue("@Id_Categoria", idCategoria);
+                command.Parameters.AddWithValue("@TiempoPreparacion", tiempoPreparacion);
+                command.Parameters.AddWithValue("@Descripcion", descripcion);
+                command.Parameters.AddWithValue("@Nombre_Platillo", nombrePlatillo);
+                command.Parameters.AddWithValue("@Id_Producto", Id_Producto);
+
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Platillo insertado correctamente.",
+                                    "Éxito",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Information);
+
+                    // Limpiar los campos
+                    txtCategoria.Text = "";
+                    txtPlatillo.Text = "";
+                    txtTiempo.Text = "";
+                    txtDescripcion.Text = "";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al insertar el platillo: {ex.Message}",
+                                    "Error",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+                }
+            }
         }
+
+
 
 
 
@@ -1976,6 +2046,7 @@ namespace PedidosRapids.Vista
             }
 
         }
+
     }
 
 }
