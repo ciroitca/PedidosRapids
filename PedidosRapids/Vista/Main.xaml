@@ -572,6 +572,9 @@
                         <TextBox x:Name="txtAggUser" HorizontalAlignment="Left" Height="30" Margin="358,325,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
                         <Label x:Name="lblContrasenia" Content="CONTRASEÑA:" HorizontalAlignment="Left" Height="51" Margin="118,419,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
                         <TextBox x:Name="txtContrasenia" HorizontalAlignment="Left" Height="30" Margin="358,419,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
+                        <Label x:Name="lblRol" Content="ROL:" HorizontalAlignment="Left" Height="51" Margin="118,513,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
+                        <TextBox x:Name="txtRol" HorizontalAlignment="Left" Height="30" Margin="358,513,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
+
 
                         <!-- Form nuevo/editar Empleado -->
                         <Label x:Name="lblTitulo" Content="Agregar Empleado"
