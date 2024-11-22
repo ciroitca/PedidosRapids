@@ -34,7 +34,7 @@ namespace PedidosRapids.Vista
         private List<Mesas> datosMesa;
         private List<Bebidas> datosBebidas;
         private List<User> datosUsuarios;
-
+        private List<Platillo> datosPlatillos;
         private List<Empleado> datosEmpleados;
 
         public Main(string userRole)
@@ -69,12 +69,14 @@ namespace PedidosRapids.Vista
             CargarEmpleados();
             MostrarValorEnTextBox();
             CargarDatosBebidas();
+            CargarPlatillos();
 
             // Enlazar datos a DataGrids
             grdPlatos1.ItemsSource = datos;
             grdOrdenes1.ItemsSource = datosOrdenes;
             grdMesas1.ItemsSource = datosMesa;
             grdBebidas1.ItemsSource = datosBebidas;
+            grdPlatos1.ItemsSource = datosPlatillos;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -907,6 +909,48 @@ namespace PedidosRapids.Vista
             }
         }
 
+        private void CargarPlatillos()
+        {
+            // Inicializar la lista de platillos
+            datosPlatillos = new List<Platillo>();
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedure = "Listar_Platillos"; // Nombre del procedimiento almacenado
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                try
+                {
+                    connection.Open(); // Abrir la conexión con la base de datos
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    // Leer los datos obtenidos del procedimiento almacenado
+                    while (reader.Read())
+                    {
+                        datosPlatillos.Add(new Platillo
+                        {
+                            Id_Platillo = Convert.ToInt32(reader["Id_Platillo"]),
+                            Id_Categoria = reader["Id_Categoria"] != DBNull.Value ? Convert.ToInt32(reader["Id_Categoria"]) : 0,
+                            Tiempo_Preparacion = reader["TiempoPreparacion"]?.ToString(),
+                            Descripcion = reader["Descripcion"]?.ToString(),
+                            Nombre_Platillo = reader["Nombre_Platillo"]?.ToString(),
+                            Id_Producto = reader["Id_Producto"] != DBNull.Value ? Convert.ToInt32(reader["Id_Producto"]) : 0
+                        });
+                    }
+
+                    reader.Close(); // Cerrar el lector de datos
+                    grdPlatos1.ItemsSource = datosPlatillos; // Enlazar los datos al DataGrid
+                }
+                catch (Exception ex)
+                {
+                    // Mostrar un mensaje de error en caso de excepciones
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            }
+        }
+
 
         private void mostrarMenuAdmin()
         {
@@ -1438,6 +1482,16 @@ namespace PedidosRapids.Vista
             public decimal Salario { get; set; }
             public string Estado_Laboral { get; set; }
             public string Id_Empleado { get; set; }
+        }
+
+        public class Platillo
+        {
+            public int Id_Platillo { get; set; }
+            public int Id_Categoria { get; set; }
+            public string Tiempo_Preparacion { get; set; }
+            public string Descripcion { get; set; }
+            public string Nombre_Platillo { get; set; }
+            public int Id_Producto { get; set; }
         }
 
 
