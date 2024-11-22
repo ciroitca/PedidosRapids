@@ -483,6 +483,11 @@ namespace PedidosRapids.Vista
         {
             LimpiarFormulario();
             MostrarAggEmpleado();
+
+            // Configurar el formulario para nuevo empleado
+            txtIdPersona.Text = string.Empty;
+            txtIdPersona.IsEnabled = false; // Deshabilitar el ID porque será autogenerado
+            btnGuardar.Tag = "nuevo"; // Marcar que es un nuevo empleado
         }
 
         private void btnVolverUsuarios_Checked(object sender, RoutedEventArgs e)
@@ -2201,50 +2206,58 @@ namespace PedidosRapids.Vista
                     return;
                 }
 
-                // Crear la conexión y comando para el procedimiento almacenado
                 using (SqlConnection conn = new SqlConnection("Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24"))
                 {
-                    using (SqlCommand cmd = new SqlCommand("EditarEmpleado", conn))
+                    SqlCommand cmd;
+                    if (btnGuardar.Tag?.ToString() == "nuevo")
                     {
-                        cmd.CommandType = CommandType.StoredProcedure;
-
-                        // Agregar los parámetros
+                        // Usar el procedimiento de inserción para nuevo empleado
+                        cmd = new SqlCommand("InsertarNuevoEmpleado", conn);
+                    }
+                    else
+                    {
+                        // Usar el procedimiento de edición para empleado existente
+                        cmd = new SqlCommand("EditarEmpleado", conn);
                         cmd.Parameters.AddWithValue("@Id_Persona", int.Parse(txtIdPersona.Text));
-                        cmd.Parameters.AddWithValue("@Nombre", txtNombre.Text.Trim());
-                        cmd.Parameters.AddWithValue("@Apellido", txtApellido.Text.Trim());
-                        cmd.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(txtEmail.Text) ? DBNull.Value : (object)txtEmail.Text.Trim());
-                        cmd.Parameters.AddWithValue("@Direccion", string.IsNullOrEmpty(txtDireccion.Text) ? DBNull.Value : (object)txtDireccion.Text.Trim());
-                        cmd.Parameters.AddWithValue("@Id_Municipio", cmbMunicipio.SelectedValue);
-                        cmd.Parameters.AddWithValue("@Telefono", string.IsNullOrEmpty(txtTelefono.Text) ? DBNull.Value : (object)txtTelefono.Text.Trim());
-                        cmd.Parameters.AddWithValue("@Salario", salario);
-                        cmd.Parameters.AddWithValue("@Estado_Laboral", string.IsNullOrEmpty(txtEstadoLaboral.Text) ? DBNull.Value : (object)txtEstadoLaboral.Text.Trim());
+                    }
 
-                        conn.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                        // Ejecutar el procedimiento almacenado
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                string mensaje = reader["Mensaje"].ToString();
-                                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // Agregar los parámetros comunes
+                    cmd.Parameters.AddWithValue("@Nombre", txtNombre.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Apellido", txtApellido.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(txtEmail.Text) ? DBNull.Value : (object)txtEmail.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Direccion", string.IsNullOrEmpty(txtDireccion.Text) ? DBNull.Value : (object)txtDireccion.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Id_Municipio", cmbMunicipio.Text); // Enviamos el nombre del municipio
+                    cmd.Parameters.AddWithValue("@Telefono", string.IsNullOrEmpty(txtTelefono.Text) ? DBNull.Value : (object)txtTelefono.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Salario", salario);
+                    cmd.Parameters.AddWithValue("@Estado_Laboral", string.IsNullOrEmpty(txtEstadoLaboral.Text) ? DBNull.Value : (object)txtEstadoLaboral.Text.Trim());
 
-                                // Actualizar el DataGrid
-                                CargarEmpleados();
+                    conn.Open();
 
-                                // Limpiar y ocultar el formulario
-                                LimpiarFormulario();
-                                OcultarFormulario();
-                                MostrarAdEmpleado();                             
-                            }
-                        }
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show(btnGuardar.Tag?.ToString() == "nuevo" ?
+                            "Empleado agregado exitosamente." :
+                            "Empleado actualizado exitosamente.",
+                            "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        // Actualizar el DataGrid
+                        CargarEmpleados();
+
+                        // Limpiar y ocultar el formulario
+                        LimpiarFormulario();
+                        OcultarFormulario();
+                        MostrarAdEmpleado();
+                        btnGuardar.Tag = null; // Limpiar el tag
+                    }
+                    catch (SqlException sqlEx)
+                    {
+                        MessageBox.Show($"Error en la base de datos: {sqlEx.Message}",
+                            "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
-            }
-            catch (SqlException sqlEx)
-            {
-                MessageBox.Show($"Error en la base de datos: {sqlEx.Message}",
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
@@ -2252,6 +2265,7 @@ namespace PedidosRapids.Vista
                     "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         // Método auxiliar para manejar valores nulos
         private object GetNullableValue(string value)
