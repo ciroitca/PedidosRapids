@@ -244,16 +244,21 @@
 							</StackPanel>
 						</RadioButton>
 
-						<RadioButton x:Name="btnInsertarPlatos"  Style="{StaticResource ComunButton}"
-                             Tag="{StaticResource color3}"
-                             Command="{Binding ShowCustomerViewCommand}" Checked="btnInsertarPlatos_click" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="50"
-                                     Visibility="Hidden">
-							<StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
-								<TextBlock Text="INSERTAR" Style="{StaticResource botonComunText}"/>
-							</StackPanel>
-						</RadioButton>
+                        <RadioButton x:Name="btnInsertarPlatos"
+             Style="{StaticResource ComunButton}"
+             Tag="{StaticResource color3}"
+             Command="{Binding ShowCustomerViewCommand}"
+             Checked="btnInsertarPlatos_Click" 
+                            VerticalAlignment="Bottom"
+             HorizontalAlignment="Right"
+             Margin="50"
+             Visibility="Hidden">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+                                <TextBlock Text="INSERTAR" Style="{StaticResource botonComunText}"/>
+                            </StackPanel>
+                        </RadioButton>
 
-						<!-- BOTON -AGREGAR AGREGAR ORDEN- -->
+                        <!-- BOTON -AGREGAR AGREGAR ORDEN- -->
 
 						<RadioButton x:Name="btnAgOrden"  Style="{StaticResource ComunButton}"
                                  Tag="{StaticResource color3}"
@@ -398,9 +403,9 @@
 						<!--BOTON PARA VOLVER EMPLEADOS-->
 						<RadioButton x:Name="btnVolverEmpleados"  Style="{StaticResource ComunButton}"
                                 Tag="{StaticResource color3}"
-                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="608,564,0,0" FontSize="36" Checked="btnAggBebida_Checked" Visibility="Hidden"  >
+                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="608,564,0,0" FontSize="36" Visibility="Hidden"  >
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
-                                <TextBlock Text="AGREGAR BEBIDA" Style="{StaticResource botonComunText}" FontSize="22"/>
+                                <TextBlock Text="Volver" Style="{StaticResource botonComunText}" FontSize="22"/>
                             </StackPanel>
                         </RadioButton>
 
