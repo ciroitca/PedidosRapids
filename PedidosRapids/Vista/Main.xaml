@@ -503,7 +503,25 @@
 						<DataGrid x:Name="grdMesas1" HorizontalAlignment="Left" Height="346" Margin="49,0,0,0" VerticalAlignment="Center" Width="874" av:ItemsSource="{av:SampleData ItemCount=5}" Visibility="Hidden"/>
 
                         <!-- CONTENIDO / USUARIO -->
-                        <Label x:Name="lblNUserEdit1" Content="NOMBRE DE USUARIO:" HorizontalAlignment="Left" Height="51" Margin="118,238,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
+
+						<Label x:Name="lblIdUsuarioEdit" Content="ID USUARIO:" HorizontalAlignment="Left" FontSize="20" Margin="118,50,0,0" VerticalAlignment="Top" Width="216" Visibility="Hidden"/>
+						<TextBox x:Name="txtIdUsuarioEdit" HorizontalAlignment="Left" Height="30" Margin="358,50,0,0" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
+
+						<!-- Nuevo Nombre de Usuario -->
+						<Label x:Name="lblNuevoNombreUsuario" Content="Nuevo Usuario:" HorizontalAlignment="Left" FontSize="20" Margin="118,100,0,0" VerticalAlignment="Top" Width="216" Visibility="Hidden"/>
+						<TextBox x:Name="txtNuevoNombreUsuario" HorizontalAlignment="Left" Height="30" Margin="358,100,0,0" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
+
+						<!-- Nueva Contraseña -->
+						<Label x:Name="lblNuevaContrasenia" Content="Nueva Contraseña:" HorizontalAlignment="Left" FontSize="20" Margin="118,150,0,0" VerticalAlignment="Top" Width="216" Visibility="Hidden"/>
+						<TextBox x:Name="txtNuevaContrasenia" HorizontalAlignment="Left" Height="30" Margin="358,150,0,0" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
+
+						<!-- Nuevo Rol -->
+						<Label x:Name="lblNuevoRol" Content="Nuevo Rol:" HorizontalAlignment="Left" FontSize="20" Margin="118,200,0,0" VerticalAlignment="Top" Width="216" Visibility="Hidden"/>
+						<TextBox x:Name="txtNuevoRol" HorizontalAlignment="Left" Height="30" Margin="358,200,0,0" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
+
+
+
+						<Label x:Name="lblNUserEdit1" Content="NOMBRE DE USUARIO:" HorizontalAlignment="Left" Height="51" Margin="118,238,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
                         <Label x:Name="lblEdUser1" Content="EDITAR USUARIO" HorizontalAlignment="Left" Height="50" Margin="344,64,0,0" VerticalAlignment="Top" Width="284" FontSize="36" Visibility="Hidden"/>
                         <TextBox x:Name="txtUserEd1" HorizontalAlignment="Left" Height="30" Margin="358,238,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" IsReadOnly="True" Visibility="Hidden"/>
                         <Label x:Name="lblNUserName1" Content="NUEVO NOMBRE" HorizontalAlignment="Left" Height="51" Margin="118,325,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
@@ -529,7 +547,8 @@
 						<TextBox x:Name="txtAggUser" HorizontalAlignment="Left" Height="30" Margin="358,325,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
 						<Label x:Name="lblContrasenia" Content="CONTRASEÑA:" HorizontalAlignment="Left" Height="51" Margin="118,419,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
 						<TextBox x:Name="txtContrasenia" HorizontalAlignment="Left" Height="30" Margin="358,419,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
-						
+						<Label x:Name="lblRol" Content="ROL:" HorizontalAlignment="Left" Height="51" Margin="118,513,0,0" VerticalAlignment="Top" Width="216" FontSize="20" Visibility="Hidden"/>
+                        <TextBox x:Name="txtRol" HorizontalAlignment="Left" Height="30" Margin="358,513,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Visibility="Hidden"/>
 						<!-- Form nuevo Empleado -->
 						<Label x:Name="lblTitulo" Content="Agregar Empleado"
 							   HorizontalAlignment="Center" VerticalAlignment="Top"
