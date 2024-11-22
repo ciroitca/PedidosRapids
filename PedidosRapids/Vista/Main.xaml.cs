@@ -496,40 +496,44 @@ namespace PedidosRapids.Vista
         }
 
         private void btnEditEmpleado_Checked(object sender, RoutedEventArgs e)
-    {
-        // Verificar que haya un empleado seleccionado en el DataGrid
-        if (grdEmpleados.SelectedItem is Empleado selectedEmpleado)
         {
-            
-            lblNombre.Visibility = Visibility.Visible;
-            txtNombre.Visibility = Visibility.Visible;
-            lblApellido.Visibility = Visibility.Visible;
-            txtApellido.Visibility = Visibility.Visible;
-            lblSalario.Visibility = Visibility.Visible;
-            txtSalario.Visibility = Visibility.Visible;
-            lblEstadoLaboral.Visibility = Visibility.Visible;
-            txtEstadoLaboral.Visibility = Visibility.Visible;
-            lblEmail.Visibility = Visibility.Visible;
-            txtEmail.Visibility = Visibility.Visible;
-            lblDireccion.Visibility = Visibility.Visible;
-            txtDireccion.Visibility = Visibility.Visible;
-            btnEditEmpleadoBD.Visibility = Visibility.Visible;
-            btnVolverEmpleados.Visibility = Visibility.Visible;
-            OcultarEmpleado();
-            // Rellenar los campos con los datos del empleado seleccionado
-            txtNombre.Text = selectedEmpleado.Nombre;
-            txtApellido.Text = selectedEmpleado.Apellido;
-            txtSalario.Text = selectedEmpleado.Salario.ToString();
-            txtEstadoLaboral.Text = selectedEmpleado.Estado_Laboral;
-            txtEmail.Text = selectedEmpleado.Email;
-            txtDireccion.Text = selectedEmpleado.Direccion;
+            try
+            {
+                // Verificar que haya un empleado seleccionado
+                if (grdEmpleados.SelectedItem == null)
+                {
+                    MessageBox.Show("Por favor, seleccione un empleado para editar.", "Aviso",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                // Obtener el empleado seleccionado del DataGrid
+                var empleado = (Empleado)grdEmpleados.SelectedItem;
+
+                // Mostrar el formulario
+                MostrarAggEmpleado();
+
+                // Cargar los datos en los campos
+                txtIdPersona.Text = empleado.Id_Persona.ToString();
+                txtNombre.Text = empleado.Nombre;
+                txtApellido.Text = empleado.Apellido;
+                txtSalario.Text = empleado.Salario.ToString();
+                txtEstadoLaboral.Text = empleado.Estado_Laboral;
+                txtEmail.Text = empleado.Email;
+                txtDireccion.Text = empleado.Direccion;
+                cmbMunicipio.SelectedValue = empleado.Id_Municipio;
+                txtTelefono.Text = empleado.Telefono;
+
+                // Deshabilitar el ID ya que no debe modificarse
+                txtIdPersona.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar los datos del empleado: {ex.Message}",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-        else
-        {
-            MessageBox.Show("Por favor, selecciona un empleado para editar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
-        }
-        btnEditEmpleado.IsChecked=false;
-    }
+
 
         private void btnEditEmpleadoBD_Checked(object sender, RoutedEventArgs e)
         {
@@ -786,11 +790,27 @@ namespace PedidosRapids.Vista
         // Método para ocultar el formulario
         private void OcultarFormulario()
         {
+            OcultarEmpleado();
             lblTitulo.Visibility = Visibility.Hidden;
             lblIdPersona.Visibility = Visibility.Hidden;
             txtIdPersona.Visibility = Visibility.Hidden;
-            // ... (ocultar todos los demás controles)
-            stackBotones.Visibility = Visibility.Hidden;
+            lblNombre.Visibility = Visibility.Hidden;
+            txtNombre.Visibility = Visibility.Hidden;
+            lblApellido.Visibility = Visibility.Hidden;
+            txtApellido.Visibility = Visibility.Hidden;
+            lblSalario.Visibility = Visibility.Hidden;
+            txtSalario.Visibility = Visibility.Hidden;
+            lblEstadoLaboral.Visibility = Visibility.Hidden;
+            txtEstadoLaboral.Visibility = Visibility.Hidden;
+            lblEmail.Visibility = Visibility.Hidden;
+            txtEmail.Visibility = Visibility.Hidden;
+            lblDireccion.Visibility = Visibility.Hidden;
+            txtDireccion.Visibility = Visibility.Hidden;
+            lblMunicipio.Visibility = Visibility.Hidden;
+            cmbMunicipio.Visibility = Visibility.Hidden;
+            lblTelefono.Visibility = Visibility.Hidden;
+            txtTelefono.Visibility = Visibility.Hidden;
+            btnGuardar.Visibility = Visibility.Hidden;
         }
 
         // Manejador del botón Cancelar
@@ -2162,91 +2182,74 @@ namespace PedidosRapids.Vista
         {
             try
             {
-                // Validar campos requeridos
+                // Validar campos obligatorios
                 if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
                     string.IsNullOrWhiteSpace(txtApellido.Text) ||
                     string.IsNullOrWhiteSpace(txtSalario.Text) ||
                     cmbMunicipio.SelectedValue == null)
                 {
-                    MessageBox.Show("Por favor complete todos los campos requeridos", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Por favor, complete todos los campos obligatorios.",
+                        "Validación", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                // Validar que el salario sea un número válido
+                if (!decimal.TryParse(txtSalario.Text, out decimal salario))
                 {
-                    connection.Open();
+                    MessageBox.Show("El salario debe ser un número válido.",
+                        "Validación", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
-                    // Si tenemos un ID, actualizamos, si no, insertamos
-                    if (!string.IsNullOrEmpty(txtIdPersona.Text))
+                // Crear la conexión y comando para el procedimiento almacenado
+                using (SqlConnection conn = new SqlConnection("Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24"))
+                {
+                    using (SqlCommand cmd = new SqlCommand("EditarEmpleado", conn))
                     {
-                        // Actualizar empleado existente
-                        using (SqlCommand cmd = new SqlCommand("EditarEmpleado", connection))
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Agregar los parámetros
+                        cmd.Parameters.AddWithValue("@Id_Persona", int.Parse(txtIdPersona.Text));
+                        cmd.Parameters.AddWithValue("@Nombre", txtNombre.Text.Trim());
+                        cmd.Parameters.AddWithValue("@Apellido", txtApellido.Text.Trim());
+                        cmd.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(txtEmail.Text) ? DBNull.Value : (object)txtEmail.Text.Trim());
+                        cmd.Parameters.AddWithValue("@Direccion", string.IsNullOrEmpty(txtDireccion.Text) ? DBNull.Value : (object)txtDireccion.Text.Trim());
+                        cmd.Parameters.AddWithValue("@Id_Municipio", cmbMunicipio.SelectedValue);
+                        cmd.Parameters.AddWithValue("@Telefono", string.IsNullOrEmpty(txtTelefono.Text) ? DBNull.Value : (object)txtTelefono.Text.Trim());
+                        cmd.Parameters.AddWithValue("@Salario", salario);
+                        cmd.Parameters.AddWithValue("@Estado_Laboral", string.IsNullOrEmpty(txtEstadoLaboral.Text) ? DBNull.Value : (object)txtEstadoLaboral.Text.Trim());
+
+                        conn.Open();
+
+                        // Ejecutar el procedimiento almacenado
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            cmd.CommandType = CommandType.StoredProcedure;
-
-                            cmd.Parameters.AddWithValue("@Id_Persona", int.Parse(txtIdPersona.Text));
-                            cmd.Parameters.AddWithValue("@Nombre", txtNombre.Text.Trim());
-                            cmd.Parameters.AddWithValue("@Apellido", txtApellido.Text.Trim());
-                            cmd.Parameters.AddWithValue("@Email", GetNullableValue(txtEmail.Text));
-                            cmd.Parameters.AddWithValue("@Direccion", GetNullableValue(txtDireccion.Text));
-                            cmd.Parameters.AddWithValue("@Id_Municipio", cmbMunicipio.SelectedValue);
-                            cmd.Parameters.AddWithValue("@Telefono", GetNullableValue(txtTelefono.Text));
-                            cmd.Parameters.AddWithValue("@Salario", decimal.Parse(txtSalario.Text));
-                            cmd.Parameters.AddWithValue("@Estado_Laboral", GetNullableValue(txtEstadoLaboral.Text));
-
-                            using (SqlDataReader reader = cmd.ExecuteReader())
+                            if (reader.Read())
                             {
-                                if (reader.Read())
-                                {
-                                    string mensaje = reader["Mensaje"].ToString();
-                                    MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                                }
+                                string mensaje = reader["Mensaje"].ToString();
+                                MessageBox.Show(mensaje, "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                                // Actualizar el DataGrid
+                                CargarEmpleados();
+
+                                // Limpiar y ocultar el formulario
+                                LimpiarFormulario();
+                                OcultarFormulario();
+                                MostrarAdEmpleado();                             
                             }
                         }
                     }
-                    else
-                    {
-                        // Insertar nuevo empleado
-                        using (SqlCommand cmd = new SqlCommand("InsertarNuevoEmpleado", connection))
-                        {
-                            cmd.CommandType = CommandType.StoredProcedure;
-
-                            cmd.Parameters.AddWithValue("@Nombre", txtNombre.Text.Trim());
-                            cmd.Parameters.AddWithValue("@Apellido", txtApellido.Text.Trim());
-                            cmd.Parameters.AddWithValue("@Email", GetNullableValue(txtEmail.Text));
-                            cmd.Parameters.AddWithValue("@Direccion", GetNullableValue(txtDireccion.Text));
-                            cmd.Parameters.AddWithValue("@Id_Municipio", cmbMunicipio.SelectedValue);
-                            cmd.Parameters.AddWithValue("@Telefono", GetNullableValue(txtTelefono.Text));
-                            cmd.Parameters.AddWithValue("@Salario", decimal.Parse(txtSalario.Text));
-                            cmd.Parameters.AddWithValue("@Estado_Laboral", GetNullableValue(txtEstadoLaboral.Text));
-
-                            int result = (int)cmd.ExecuteNonQuery();
-                            if (result >= 0)
-                            {
-                                MessageBox.Show("Empleado agregado exitosamente", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                            }
-                        }
-                    }
-
-                    // Limpiar y actualizar después de guardar
-                    LimpiarFormulario();
-                    OcultarFormulario();
-                    CargarEmpleados(); 
                 }
             }
-            catch (FormatException)
+            catch (SqlException sqlEx)
             {
-                MessageBox.Show("Por favor ingrese valores válidos en los campos numéricos", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show($"Error de base de datos: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error en la base de datos: {sqlEx.Message}",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error al guardar los cambios: {ex.Message}",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
