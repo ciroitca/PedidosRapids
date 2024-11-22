@@ -8,6 +8,7 @@
         Background="Transparent"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown">
+     
     <Border CornerRadius="15">
         <Border.Background>
             <ImageBrush ImageSource="/Img/loginImage.jpg">
