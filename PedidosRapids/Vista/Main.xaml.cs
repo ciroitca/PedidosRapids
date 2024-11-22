@@ -34,7 +34,7 @@ namespace PedidosRapids.Vista
         private List<Mesas> datosMesa;
         private List<Bebidas> datosBebidas;
         private List<User> datosUsuarios;
-
+        private List<Platillo> datosPlatillos;
         private List<Empleado> datosEmpleados;
 
         public Main(string userRole)
@@ -70,12 +70,18 @@ namespace PedidosRapids.Vista
             MostrarValorEnTextBox();
             CargarDatosBebidas();
             CargarMunicipios();
+            CargarPlatillos();
+
 
             // Enlazar datos a DataGrids
             grdPlatos1.ItemsSource = datos;
             grdOrdenes1.ItemsSource = datosOrdenes;
             grdMesas1.ItemsSource = datosMesa;
             grdBebidas1.ItemsSource = datosBebidas;
+            grdPlatos1.ItemsSource = datosPlatillos;
+            grdAdUsers.ItemsSource = datosUsuarios;
+
+
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -319,6 +325,7 @@ namespace PedidosRapids.Vista
                 command.Parameters.AddWithValue("@Id_Empleado", int.Parse(txtIdEmpleado.Text));
                 command.Parameters.AddWithValue("@Usuario", txtAggUser.Text);
                 command.Parameters.AddWithValue("Password", txtContrasenia.Text);
+                command.Parameters.AddWithValue("@Rol", txtRol.Text);
 
                 try
                 {
@@ -994,27 +1001,28 @@ namespace PedidosRapids.Vista
             string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
             string storedProcedure = "Listar_Usuarios";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand command = new SqlCommand(storedProcedure, connection);
-                command.CommandType = CommandType.StoredProcedure;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand command = new SqlCommand(storedProcedure, connection);
+                    command.CommandType = CommandType.StoredProcedure;
 
                 try
                 {
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
 
-                    while (reader.Read())
+                while (reader.Read())
+                {
+                    datosUsuarios.Add(new User
                     {
-                        datosUsuarios.Add(new User
-                        {
-                            Id_Usuario = Convert.ToInt32(reader["Id_Usuario"]),
-                            Id_Empleado = Convert.ToInt32(reader["Id_Empleado"]),
-                            Usuario = reader["Usuario"].ToString(),
-                            Password = reader["Contrasena"].ToString()
-                            // Agrega más propiedades si es necesario
-                        });
-                    }
+                        Id_Usuario = reader.IsDBNull(reader.GetOrdinal("Id_Usuario")) ? 0 : Convert.ToInt32(reader["Id_Usuario"]),
+                        Id_Empleado = reader.IsDBNull(reader.GetOrdinal("Id_Empleado")) ? 0 : Convert.ToInt32(reader["Id_Empleado"]),
+                        Usuario = reader.IsDBNull(reader.GetOrdinal("Usuario")) ? string.Empty : reader["Usuario"].ToString(),
+                        Password = reader.IsDBNull(reader.GetOrdinal("Contrasena")) ? string.Empty : reader["Contrasena"].ToString(),
+                        Rol = reader.IsDBNull(reader.GetOrdinal("Rol")) ? string.Empty : reader["Rol"].ToString()
+                    
+                    });
+                }
 
                     reader.Close();
                     grdAdUsers.ItemsSource = datosUsuarios;
@@ -1023,7 +1031,6 @@ namespace PedidosRapids.Vista
                 {
                     MessageBox.Show("Error: " + ex.Message);
                 }
-
             }
         }
 
@@ -1153,6 +1160,49 @@ namespace PedidosRapids.Vista
             }
         }
 
+        private void CargarPlatillos()
+        {
+            // Inicializar la lista de platillos
+            datosPlatillos = new List<Platillo>();
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+            string storedProcedure = "Listar_Platillos"; // Nombre del procedimiento almacenado
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                try
+                {
+                    connection.Open(); // Abrir la conexión con la base de datos
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    // Leer los datos obtenidos del procedimiento almacenado
+                    while (reader.Read())
+                    {
+                        datosPlatillos.Add(new Platillo
+                        {
+                            Id_Platillo = Convert.ToInt32(reader["Id_Platillo"]),
+                            Id_Categoria = reader["Id_Categoria"] != DBNull.Value ? Convert.ToInt32(reader["Id_Categoria"]) : 0,
+                            Tiempo_Preparacion = reader["TiempoPreparacion"]?.ToString(),
+                            Descripcion = reader["Descripcion"]?.ToString(),
+                            Nombre_Platillo = reader["Nombre_Platillo"]?.ToString(),
+                            Id_Producto = reader["Id_Producto"] != DBNull.Value ? Convert.ToInt32(reader["Id_Producto"]) : 0
+                        });
+                    }
+
+                    reader.Close(); // Cerrar el lector de datos
+                    grdPlatos1.ItemsSource = datosPlatillos; // Enlazar los datos al DataGrid
+                }
+                catch (Exception ex)
+                {
+                    // Mostrar un mensaje de error en caso de excepciones
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            }
+        }
+
+
 
         private void mostrarMenuAdmin()
         {
@@ -1171,14 +1221,22 @@ namespace PedidosRapids.Vista
         }
         private void MostrarEditUser()
         {
+            lblIdUsuarioEdit.Visibility = Visibility.Visible;
+            txtIdUsuarioEdit.Visibility = Visibility.Visible;
+            lblNuevoNombreUsuario.Visibility = Visibility.Visible;
+            txtNuevoNombreUsuario.Visibility = Visibility.Visible;
+            lblNuevaContrasenia.Visibility = Visibility.Visible;
+            txtNuevaContrasenia.Visibility = Visibility.Visible;
+            lblNuevoRol.Visibility = Visibility.Visible;
+            txtNuevoRol.Visibility = Visibility.Visible;
             btnMainMenu.Visibility = Visibility.Visible;
-            lblNPassEd1.Visibility = Visibility.Visible;
-            lblNUserEdit1.Visibility = Visibility.Visible;
-            lblEdUser1.Visibility = Visibility.Visible;
-            lblNUserName1.Visibility = Visibility.Visible;
-            txtUserEd1.Visibility = Visibility.Visible;
-            txtNUserName1.Visibility = Visibility.Visible;
-            txtNPass1.Visibility = Visibility.Visible;
+            lblNPassEd1.Visibility = Visibility.Hidden;
+            lblNUserEdit1.Visibility = Visibility.Hidden;
+            lblEdUser1.Visibility = Visibility.Hidden;
+            lblNUserName1.Visibility = Visibility.Hidden;
+            txtUserEd1.Visibility = Visibility.Hidden;
+            txtNUserName1.Visibility = Visibility.Hidden;
+            txtNPass1.Visibility = Visibility.Hidden;
             btnEditUser.Visibility = Visibility.Visible;
             btnEditBebida.Visibility = Visibility.Hidden;
             OcultarParaAgOrden();
@@ -1374,6 +1432,16 @@ namespace PedidosRapids.Vista
             txtDireccion.Visibility = Visibility.Hidden;
             btnAggEmpleadoBD.Visibility = Visibility.Hidden;
             btnEditEmpleadoBD.Visibility = Visibility.Hidden;
+            lblRol.Visibility = Visibility.Hidden;
+            txtRol.Visibility = Visibility.Hidden;
+            lblIdUsuarioEdit.Visibility = Visibility.Hidden;
+            txtIdUsuarioEdit.Visibility = Visibility.Hidden;
+            lblNuevoNombreUsuario.Visibility = Visibility.Hidden;
+            txtNuevoNombreUsuario.Visibility = Visibility.Hidden;
+            lblNuevaContrasenia.Visibility = Visibility.Hidden;
+            txtNuevaContrasenia.Visibility = Visibility.Hidden;
+            lblNuevoRol.Visibility = Visibility.Hidden;
+            txtNuevoRol.Visibility = Visibility.Hidden;
             btnEditarBebida.Visibility = Visibility.Hidden;
             lblMunicipio.Visibility = Visibility.Hidden;
             cmbMunicipio.Visibility = Visibility.Hidden;
@@ -1514,6 +1582,8 @@ namespace PedidosRapids.Vista
             txtAggUser.Visibility = Visibility.Visible;
             lblContrasenia.Visibility = Visibility.Visible;
             txtContrasenia.Visibility = Visibility.Visible;
+            lblRol.Visibility = Visibility.Visible;
+            txtRol.Visibility = Visibility.Visible;
             btnAggUserBD.Visibility = Visibility.Visible;
             btnVolverUsuarios.Visibility = Visibility.Visible;
             OcultarUser();
@@ -1530,6 +1600,8 @@ namespace PedidosRapids.Vista
             txtAggUser.Visibility = Visibility.Hidden;
             lblContrasenia.Visibility = Visibility.Hidden;
             txtContrasenia.Visibility = Visibility.Hidden;
+            lblRol.Visibility = Visibility.Hidden;
+            txtRol.Visibility = Visibility.Hidden;
             btnAggUserBD.Visibility = Visibility.Hidden;
             btnVolverUsuarios.Visibility = Visibility.Hidden;
         }
@@ -1676,6 +1748,7 @@ namespace PedidosRapids.Vista
             public int Id_Empleado { get; set; }
             public string Usuario { get; set; }
             public string Password { get; set; }
+            public string Rol { get; set; }
         }
 
         public class Municipio
@@ -1696,6 +1769,16 @@ namespace PedidosRapids.Vista
             public string Telefono { get; set; }
             public float Salario { get; set; }  // Cambiado de decimal a float
             public string Estado_Laboral { get; set; }
+        }
+
+        public class Platillo
+        {
+            public int Id_Platillo { get; set; }
+            public int Id_Categoria { get; set; }
+            public string Tiempo_Preparacion { get; set; }
+            public string Descripcion { get; set; }
+            public string Nombre_Platillo { get; set; }
+            public int Id_Producto { get; set; }
         }
 
 
@@ -1779,10 +1862,79 @@ namespace PedidosRapids.Vista
             
         }
 
-        private void btnInsertarPlatos_click(object sender, RoutedEventArgs e)
-        { 
-            //BOTON INSERTAR PLATOS ACÁ, AGREGAR LA LOGICA        
+        // Método para insertar un platillo en la base de datos
+        private void btnInsertarPlatos_Click(object sender, RoutedEventArgs e)
+        {
+            // Validar los datos ingresados
+            if (string.IsNullOrWhiteSpace(txtCategoria.Text) ||
+                string.IsNullOrWhiteSpace(txtPlatillo.Text) ||
+                string.IsNullOrWhiteSpace(txtTiempo.Text) ||
+                string.IsNullOrWhiteSpace(txtDescripcion.Text))
+            {
+                MessageBox.Show("Por favor, complete todos los campos requeridos.",
+                                "Datos incompletos",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
+                return;
+            }
+
+            // Convertir los datos
+            if (!int.TryParse(txtCategoria.Text, out int idCategoria))
+            {
+                MessageBox.Show("El ID de la categoría debe ser un número válido.",
+                                "Error de validación",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                return;
+            }
+
+            string tiempoPreparacion = txtTiempo.Text;
+            string descripcion = txtDescripcion.Text;
+            string nombrePlatillo = txtPlatillo.Text;
+            int Id_Producto = 0;
+
+
+            // Conexión a la base de datos
+            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("Agregar_Platillo", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                // Configurar los parámetros del procedimiento almacenado
+                command.Parameters.AddWithValue("@Id_Categoria", idCategoria);
+                command.Parameters.AddWithValue("@TiempoPreparacion", tiempoPreparacion);
+                command.Parameters.AddWithValue("@Descripcion", descripcion);
+                command.Parameters.AddWithValue("@Nombre_Platillo", nombrePlatillo);
+                command.Parameters.AddWithValue("@Id_Producto", Id_Producto);
+
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Platillo insertado correctamente.",
+                                    "Éxito",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Information);
+
+                    // Limpiar los campos
+                    txtCategoria.Text = "";
+                    txtPlatillo.Text = "";
+                    txtTiempo.Text = "";
+                    txtDescripcion.Text = "";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al insertar el platillo: {ex.Message}",
+                                    "Error",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+                }
+            }
         }
+
+
 
 
 
@@ -1791,14 +1943,25 @@ namespace PedidosRapids.Vista
             MostrarEditUser();
             btnUser.IsChecked = false;
 
-            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
-            string query = "UPDATE Usuario SET Usuario = @Usuario, Password = @Password WHERE Id_Usuario = 1";
+            // Validación de que el ID de usuario es un número válido
+            if (string.IsNullOrEmpty(txtIdUsuarioEdit.Text) || !int.TryParse(txtIdUsuarioEdit.Text, out int idUsuario))
+            {
+                MessageBox.Show("Por favor, ingrese un ID de usuario válido.");
+                return;
+            }
+
+                string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
+                string storedProcedure = "Editar_Usuario";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Usuario", txtNUserName1.Text);
-                command.Parameters.AddWithValue("@Password", txtNPass1.Text);
+                SqlCommand command = new SqlCommand(storedProcedure, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@Id_Usuario", idUsuario);
+                command.Parameters.AddWithValue("@Usuario", txtNuevoNombreUsuario.Text);
+                command.Parameters.AddWithValue("@Contrasena", txtNuevaContrasenia.Text);
+                command.Parameters.AddWithValue("@Rol", txtNuevoRol.Text);
 
                 try
                 {
@@ -1807,20 +1970,23 @@ namespace PedidosRapids.Vista
 
                     if (rowsAffected > 0)
                     {
-                        MessageBox.Show("Usuario Actualizado Corectamente");
-                        txtNUserName1.Text = "";
-                        txtNPass1.Text = "";
+                        MessageBox.Show("Usuario actualizado correctamente.");
+                        txtIdUsuarioEdit.Text = "";
+                        txtNuevoNombreUsuario.Text = "";
+                        txtNuevaContrasenia.Text = "";
+                        txtNuevoRol.Text = "";
+
+                        CargarUsuarios();  // Opcional: Actualiza el grid de usuarios
                     }
                     else
                     {
-                        MessageBox.Show("No se encontró el Usuario con el ID especificado.");
+                        MessageBox.Show("No se encontró el usuario con el ID especificado.");
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: " + ex.Message);
                 }
-
             }
         }
 
@@ -2272,6 +2438,7 @@ namespace PedidosRapids.Vista
         {
             return string.IsNullOrWhiteSpace(value) ? (object)DBNull.Value : (object)value.Trim();
         }
+
 
     }
 
