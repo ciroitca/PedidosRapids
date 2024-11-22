@@ -78,6 +78,8 @@ namespace PedidosRapids.Vista
             grdBebidas1.ItemsSource = datosBebidas;
             grdPlatos1.ItemsSource = datosPlatillos;
             grdAdUsers.ItemsSource = datosUsuarios;
+
+
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -1193,6 +1195,7 @@ namespace PedidosRapids.Vista
             txtNuevaContrasenia.Visibility = Visibility.Hidden;
             lblNuevoRol.Visibility = Visibility.Hidden;
             txtNuevoRol.Visibility = Visibility.Hidden;
+            btnEditarBebida.Visibility = Visibility.Hidden;
             OcultarFormEditBebidas();
 
         }
