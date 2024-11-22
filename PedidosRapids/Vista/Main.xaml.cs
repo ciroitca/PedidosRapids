@@ -235,65 +235,94 @@ namespace PedidosRapids.Vista
 
         private void btnAggBebidaABD_Checked(object sender, RoutedEventArgs e)
         {
-            // Validaciones para el ID y nombre...
-
-            // Validación del precio
-            if (!decimal.TryParse(txtPriceBebida.Text.Replace(',', '.'),
-                System.Globalization.NumberStyles.Any,
-                System.Globalization.CultureInfo.InvariantCulture,
-                out decimal precio) || precio <= 0)
+            try
             {
-                MostrarError("El precio debe ser un número positivo.");
-                btnAggBebidaABD.IsChecked = false;
-                return;
-            }
+                // Validación del ID
+                if (!int.TryParse(txtId_Bebida.Text, out int idBebida))
+                {
+                    MostrarError("El ID debe ser un número válido.");
+                    btnAggBebidaABD.IsChecked = false;
+                    return;
+                }
 
-            // Validación de la cantidad
-            if (!int.TryParse(txtCantBebida.Text, out int cantidad) || cantidad <= 0)
-            {
-                MostrarError("La cantidad debe ser un número entero positivo.");
-                btnAggBebidaABD.IsChecked = false;
-                return;
-            }
+                // Validación del precio
+                if (!decimal.TryParse(txtPriceBebida.Text.Replace(',', '.'),
+                    System.Globalization.NumberStyles.Any,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out decimal precio) || precio <= 0)
+                {
+                    MostrarError("El precio debe ser un número positivo.");
+                    btnAggBebidaABD.IsChecked = false;
+                    return;
+                }
 
-            string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
-            string storedProcedure = "Agregar_Bebida";
+                // Validación de la cantidad
+                if (!int.TryParse(txtCantBebida.Text, out int cantidad) || cantidad <= 0)
+                {
+                    MostrarError("La cantidad debe ser un número entero positivo.");
+                    btnAggBebidaABD.IsChecked = false;
+                    return;
+                }
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand command = new SqlCommand(storedProcedure, connection);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
+                // Validación del nombre
+                if (string.IsNullOrWhiteSpace(txtNameBebida1.Text))
+                {
+                    MostrarError("El nombre de la bebida es requerido.");
+                    btnAggBebidaABD.IsChecked = false;
+                    return;
+                }
 
-                command.Parameters.AddWithValue("@Id_Producto", txtIdBebida.Text);
-                command.Parameters.AddWithValue("@NombreBebida", txtNameBebida1.Text.Trim());
-                command.Parameters.AddWithValue("@Alcoholica", rdSiBebida1.IsChecked == true);
-                command.Parameters.AddWithValue("@Precio", precio);
-                command.Parameters.AddWithValue("@Cantidad", cantidad); // Ahora usamos la cantidad del TextBox
+                string connectionString = "Data Source=tcp:sqlproyecto2024.database.windows.net,1433;Initial Catalog=sqlproyecto;User ID=proyecto24;Password=Proyecto-24";
 
-                try
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    int rowsAffected = command.ExecuteNonQuery();
 
-                    if (rowsAffected > 0)
+                    // Primero verificamos si el ID ya existe
+                    string checkQuery = "SELECT COUNT(*) FROM dbo.Producto WHERE Id_Producto = @Id";
+                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, connection))
                     {
-                        MessageBox.Show("Bebida agregada con éxito", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                        LimpiarCampos();
-                        CargarBebidas();
+                        checkCmd.Parameters.AddWithValue("@Id", idBebida);
+                        int count = (int)checkCmd.ExecuteScalar();
+                        if (count > 0)
+                        {
+                            MostrarError($"Ya existe un producto con el ID {idBebida}");
+                            return;
+                        }
                     }
-                    else
+
+                    // Si no existe, procedemos a insertar
+                    string storedProcedure = "Agregar_Bebida";
+                    using (SqlCommand command = new SqlCommand(storedProcedure, connection))
                     {
-                        MostrarError("No se pudo agregar la bebida.");
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@Id_Producto", idBebida);
+                        command.Parameters.AddWithValue("@NombreBebida", txtNameBebida1.Text.Trim());
+                        command.Parameters.AddWithValue("@Alcoholica", rdSiBebida1.IsChecked == true);
+                        command.Parameters.AddWithValue("@Precio", precio);
+                        command.Parameters.AddWithValue("@Cantidad", cantidad);
+
+                        command.ExecuteNonQuery();
                     }
+
+                    MessageBox.Show("Bebida agregada con éxito", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    LimpiarCampos();
+                    CargarBebidas();
                 }
-                catch (Exception ex)
-                {
-                    MostrarError($"Error al agregar la bebida: {ex.Message}");
-                }
+            }
+            catch (SqlException sqlEx)
+            {
+                MostrarError($"Error de base de datos: {sqlEx.Message}\nNúmero de error: {sqlEx.Number}");
+            }
+            catch (Exception ex)
+            {
+                MostrarError($"Error al agregar la bebida: {ex.Message}");
             }
 
             btnAggBebidaABD.IsChecked = false;
         }
+
 
 
         private void MostrarError(string mensaje)
