@@ -316,7 +316,7 @@
                         <!--BOTON PARA EDITAR LOS EMPLEADOS-->
                         <RadioButton x:Name="btnEditEmpleado"  Style="{StaticResource ComunButton}"
                                 Tag="{StaticResource color3}"
-                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="20,0,0,20" FontSize="36" Checked="btnEditEmpleado_Checked">
+                                Command="{Binding ShowCustomerViewCommand}"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="20,0,0,20" FontSize="36" Checked="btnEditEmpleado_Checked" Visibility="Hidden">
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
                                 <TextBlock Text="EDITAR EMPLEADOS" Style="{StaticResource botonComunText}" FontSize="22"/>
                             </StackPanel>
